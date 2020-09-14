@@ -1,0 +1,302 @@
+﻿@page "/cars"
+@using CarLot.Data
+@using CarLot.Models;
+@inject CarLot.Data.CarService carService
+@inject IJSRuntime _jsRuntime
+@inherits OwningComponentBase<CarService>
+
+
+
+
+<h1 id="cars-for-sale">Our Cars For Sale</h1>
+
+@if (cars == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div>
+        <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("carModal",0))'>Add</MatButton>
+    </div>
+    @foreach (var car in cars)
+    {
+        <h1>ID: @car.CarId</h1>
+        <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(car.Image)" />
+        <h1>@car.Make</h1>
+        <button type="button" class="btn btn-primary" @onclick='@(e =>  OpenModal("carModal",car.CarId))'>Edit</button>
+        <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", car.CarId))'>Delete</button>
+    }
+
+}
+
+<div>
+    <div class="modal fade" id="carModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Car's Information</h5>
+                    <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">X</MatButton>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data">
+                        <input type="hidden" @bind="Model.CarId" id="carId">
+                        <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
+                        <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.Make" Label="Make"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Price" Label="Price" Icon="attach_money"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Mileage" Label="Mileage"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.DriveTrain" Label="Drivetrain"></MatTextField>
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.Transmission" Label="Transmission"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Cylinders" Label="Cylinders"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Fuel" Label="Fuel"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.DoorCount" Label="Door Count"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.Features" Label="Features" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.BodyStyle" Label="Body Style" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.ExteriorColor" Label="Exterior Color" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.InteriorColor" Label="Interior Color" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.SellerNotes" Label="Seller Notes" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <h2>Tell Us More About Your Car</h2>
+                        <p id="p-apply-check">Please Check All That Applies To Your Car.</p>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Car Available For Home Delivery?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.HomeDelivery" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Car Available For a Virtual Appointments?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.VirtualAppointments" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Car New?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.New" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
+                                <MatH5>Is Your Car Used?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.Used" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Car Certified Preowned?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.CertifiedPreOwned" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
+                                <h5>Car's Year?</h5>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Year" Label="Year"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Car's Image</MatH5>
+                                <InputFile OnChange="HandleFileSelected" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">Close</MatButton>
+                    <MatButton Raised="true" Type="button" @onclick='@(e => SaveCar("carModal"))'>Save</MatButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Car?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick='@(e => ConfirmDelete("deleteConfirmation"))'>Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code
+{
+    public CarLot.Models.Car Model = new CarLot.Models.Car();
+    List<Car> cars;
+    public byte[] ImgUploaded { get; set; }
+    protected bool[] boolItems =
+           {
+                true,
+                false
+            };
+    public int carToDelete;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await load();
+    }
+
+    protected async Task load()
+    {
+        cars = await carService.GetCarsAsync();
+    }
+
+    public async Task OpenModal(string modalId, int itemCarId)
+    {
+        if (itemCarId == 0)
+        {
+            Model = new CarLot.Models.Car();
+          
+        }
+        else
+        {
+            Model = cars.Where(_ => _.CarId == itemCarId).FirstOrDefault();
+        }
+
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+    public async Task CloseModal(string modalId)
+    {
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+    }
+
+
+
+    public async Task SaveCar(string modalId)
+    {
+        if (Model.CarId == 0)
+        {
+
+            // id zero represents new item
+            Model.CreatedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            await carService.AddCarAsync(Model);
+            cars = await carService.GetCarsAsync();
+
+        }
+        else
+        {
+            Model.ModifiedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            var carToUpdate = await carService.UpdateCarAsync(Model.CarId);
+            cars.Where(_ => _.CarId == Model.CarId).FirstOrDefault();
+            cars.Add(carToUpdate);
+            cars = await carService.GetCarsAsync();
+        }
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+
+    }
+
+    async Task HandleFileSelected(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+
+        if (file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
+        }
+        
+
+    }
+
+    public async Task OpenDeleteModal(string modalId, int carItemId)
+    {
+        carToDelete = carItemId;
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+    public async Task ConfirmDelete(string modalId)
+    {
+        var carTodelete = cars.Where(_ => _.CarId == carToDelete).FirstOrDefault();
+        await carService.DeleteCarAsync(carToDelete);
+        cars.Remove(carTodelete);
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+    }
+
+
+}
+
+
+
