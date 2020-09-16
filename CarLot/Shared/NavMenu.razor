@@ -1,4 +1,9 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@{
+    <link href="./styles/NavMenuStyling.css" rel="stylesheet" />
+}
+
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">CarLot</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -9,32 +14,32 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <MatIcon Icon="home"></MatIcon> Home
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="buses">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Buses
+                <MatIcon Icon="directions_bus"></MatIcon> Buses
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="cars">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Cars
+                <MatIcon Icon="directions_car"></MatIcon> Cars
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="motorcycles">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Motorcycles
+                <MatIcon Icon="directions_bike"></MatIcon> Motorcycles
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="suvs">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Suvs
+                <MatIcon Icon="airport_shuttle"></MatIcon> SUVs
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="trucks">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Trucks
+                <MatIcon Icon="local_shipping"></MatIcon> Trucks
             </NavLink>
         </li>
     </ul>

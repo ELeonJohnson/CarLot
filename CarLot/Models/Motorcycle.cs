@@ -31,11 +31,13 @@ namespace CarLot.Models
         public string Transmission { get; set; }
         public string Cylinders { get; set; }
         public string Fuel { get; set; }
-        [Display(Name = "Door Count")]
-        public string DoorCount { get; set; }
+        [Display(Name = "Seat Count")]
+        public string SeatCount { get; set; }
         [Display(Name = "Seller Notes")]
         public string SellerNotes { get; set; }
+        [Display(Name = "dddd, MMMM dd, yyyy HH:mm tt")]
         public DateTime? CreatedDate { get; set; }
+        [Display(Name = "dddd, MMMM dd, yyyy HH:mm tt")]
         public DateTime? ModifiedDate { get; set; }
         public byte[] Image { get; set; }
 

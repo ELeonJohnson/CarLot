@@ -37,7 +37,9 @@ namespace CarLot.Models
         public string DoorCount { get; set; }
         [Display(Name = "Seller Notes")]
         public string SellerNotes { get; set; }
+        [Display(Name = "dddd, MMMM dd, yyyy HH:mm tt")]
         public DateTime? CreatedDate { get; set; }
+        [Display(Name = "dddd, MMMM dd, yyyy HH:mm tt")]
         public DateTime? ModifiedDate { get; set; }
         public byte[] Image { get; set; }
 

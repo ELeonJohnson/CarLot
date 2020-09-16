@@ -6,5 +6,9 @@
   {
     "outputFile": "wwwroot/styles/Global.css",
     "inputFile": "wwwroot/styles/Global.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/NavMenuStyling.css",
+    "inputFile": "wwwroot/styles/NavMenuStyling.scss"
   }
 ]
