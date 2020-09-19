@@ -32,8 +32,10 @@ namespace CarLot.Data
             return await _context.SUVs.ToListAsync();
         }
 
-        public async Task<SUV> GetSUVsByIdAsync(int id)
+        public async Task<SUV> GetSUVByIdAsync(int id)
         {
+            var user = _context.SUVs.Include(r => r.ApplicationUser).Where(r => r.SUVId == id).FirstOrDefault();
+
             return await _context.SUVs.FindAsync(id);
         }
 

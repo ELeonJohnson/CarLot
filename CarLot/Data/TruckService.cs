@@ -32,8 +32,10 @@ namespace CarLot.Data
             return await _context.Trucks.ToListAsync();
         }
 
-        public async Task<Truck> GetTrucksByIdAsync(int id)
+        public async Task<Truck> GetTruckByIdAsync(int id)
         {
+            var user = _context.Trucks.Include(r => r.ApplicationUser).Where(r => r.TruckId == id).FirstOrDefault();
+
             return await _context.Trucks.FindAsync(id);
         }
 

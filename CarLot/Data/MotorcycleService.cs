@@ -34,9 +34,11 @@ namespace CarLot.Data
                 return await _context.Motorcycles.ToListAsync();
             }
 
-            public async Task<Motorcycle> GetMotorcyclesByIdAsync(int id)
+            public async Task<Motorcycle> GetMotorcycleByIdAsync(int id)
             {
-                return await _context.Motorcycles.FindAsync(id);
+            var user = _context.Motorcycles.Include(r => r.ApplicationUser).Where(r => r.MotorcycleId == id).FirstOrDefault();
+
+            return await _context.Motorcycles.FindAsync(id);
             }
 
             public async Task<Motorcycle> AddMotorcycleAsync(Motorcycle motorcycle)

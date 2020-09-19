@@ -208,3 +208,13 @@ C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\CarLot.pdb
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\CarLot.genruntimeconfig.cache
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\CarLot.csprojAssemblyReference.cache
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Buses\BusDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Buses\BusDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Cars\CarDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Cars\CarDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Motorcycles\MotorcycleDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\SUVs\SUVDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Trucks\TruckDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Motorcycles\MotorcycleDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\SUVs\SUVDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Trucks\TruckDetails.razor.g.cs

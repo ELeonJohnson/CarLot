@@ -34,6 +34,8 @@ namespace CarLot.Data
 
         public async Task<Car> GetCarByIdAsync(int id)
         {
+            var user = _context.Cars.Include(r => r.ApplicationUser).Where(r => r.CarId == id).FirstOrDefault();
+
             return await _context.Cars.FindAsync(id);
         }
 

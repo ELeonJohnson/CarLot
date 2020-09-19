@@ -26,6 +26,8 @@ else
         <h1>@suv.Make</h1>
         <button type="button" class="btn btn-primary" @onclick='@(e =>  OpenModal("suvModal",suv.SUVId))'>Edit</button>
         <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", suv.SUVId))'>Delete</button>
+        <a href="@($"suv/details/{suv.SUVId}")" class="btn btn-primary">Details</a>
+
     }
 
 }

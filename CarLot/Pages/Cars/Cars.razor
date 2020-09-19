@@ -26,6 +26,8 @@ else
         <h1>@car.Make</h1>
         <button type="button" class="btn btn-primary" @onclick='@(e =>  OpenModal("carModal",car.CarId))'>Edit</button>
         <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", car.CarId))'>Delete</button>
+        <a href="@($"car/details/{car.CarId}")" class="btn btn-primary">Details</a>
+
     }
 
 }
@@ -225,7 +227,7 @@ else
         if (itemCarId == 0)
         {
             Model = new CarLot.Models.Car();
-          
+
         }
         else
         {
@@ -277,7 +279,7 @@ else
             await file.Data.CopyToAsync(ms);
             ImgUploaded = ms.ToArray();
         }
-        
+
 
     }
 

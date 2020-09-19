@@ -8,5 +8,6 @@
     position: absolute;
     top: 8px;
     left: 16px;
-    color: white;
-    font-family: "Proza Libre", sans-serif; }
+    color: #fff;
+    font-family: "Proza Libre", sans-serif;
+    font-size: 3.5rem; }

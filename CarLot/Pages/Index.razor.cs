@@ -32,6 +32,8 @@ namespace CarLot.Pages
         public List<SUV> suvs { get; set; } = new List<SUV>();
         public List<Truck> trucks { get; set; } = new List<Truck>();
 
+        
+
 
 
         protected override async Task OnInitializedAsync()

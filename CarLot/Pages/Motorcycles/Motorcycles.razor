@@ -26,7 +26,10 @@ else
         <h1>@motorcycle.Make</h1>
         <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("motorcycleModal", motorcycle.MotorcycleId))'>Edit</button>
         <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", motorcycle.MotorcycleId))'>Delete</button>
+        <a href="@($"motorcycle/details/{motorcycle.MotorcycleId}")" class="btn btn-primary">Details</a>
+
     }
+
 
 }
 

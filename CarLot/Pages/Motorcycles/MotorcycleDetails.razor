@@ -1,0 +1,20 @@
+﻿@page "/motorcycle/details/{motorcycleId}"
+@using CarLot.Models
+@inject CarLot.Data.MotorcycleService motorcycleService
+
+
+<h1>@Motorcycle.Make</h1>
+<h1>@Motorcycle.ApplicationUser.UserName</h1>
+
+
+@code {
+    public Motorcycle Motorcycle { get; set; } = new Motorcycle();
+    [Parameter]
+    public string motorcycleId { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Motorcycle = await motorcycleService.GetMotorcycleByIdAsync(int.Parse(motorcycleId));
+    }
+}
+

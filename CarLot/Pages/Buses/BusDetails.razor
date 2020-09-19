@@ -1,0 +1,19 @@
+﻿@page "/bus/details/{busId}"
+@using CarLot.Models
+@inject CarLot.Data.BusService busService
+
+
+<h1>@Bus.Make</h1>
+<h1>@Bus.ApplicationUser.UserName</h1>
+
+
+@code {
+    public Bus Bus { get; set; } = new Bus();
+    [Parameter]
+    public string busId { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Bus = await busService.GetBusByIdAsync(int.Parse(busId));
+    }
+}

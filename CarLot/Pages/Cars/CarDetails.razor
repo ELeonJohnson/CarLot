@@ -1,0 +1,20 @@
+﻿@page "/car/details/{carId}"
+@using CarLot.Models
+@inject CarLot.Data.CarService carService
+
+
+<h1>@Car.Make</h1>
+<h1>@Car.ApplicationUser.UserName</h1>
+
+
+@code {
+    public Car Car { get; set; } = new Car();
+    [Parameter]
+    public string carId { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Car = await carService.GetCarByIdAsync(int.Parse(carId));
+    }
+}
+

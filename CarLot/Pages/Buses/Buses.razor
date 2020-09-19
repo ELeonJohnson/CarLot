@@ -26,7 +26,8 @@ else
         <h1>@bus.Make</h1>
         <button type="button" class="btn btn-primary" @onclick='@(e =>  OpenModal("busModal",bus.BusId))'>Edit</button>
         <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
-    }
+        <a href="@($"bus/details/{bus.BusId}")"  class="btn btn-primary">Details</a>
+     }
 
 }
 
@@ -209,6 +210,7 @@ else
                 false
             };
     public int busToDelete;
+
 
     protected override async Task OnInitializedAsync()
     {

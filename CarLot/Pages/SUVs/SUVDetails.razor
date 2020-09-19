@@ -1,0 +1,20 @@
+﻿@page "/suv/details/{suvId}"
+@using CarLot.Models
+@inject CarLot.Data.SUVService suvService
+
+
+<h1>@SUV.Make</h1>
+<h1>@SUV.ApplicationUser.UserName</h1>
+
+
+@code {
+    public SUV SUV { get; set; } = new SUV();
+    [Parameter]
+    public string suvId { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        SUV = await suvService.GetSUVByIdAsync(int.Parse(suvId));
+    }
+}
+
