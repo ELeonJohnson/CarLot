@@ -1,9 +1,4 @@
-﻿@{
-    <link href="./styles/NavMenuStyling.css" rel="stylesheet" />
-}
-
-
-<div class="top-row pl-4 navbar navbar-dark">
+﻿<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">CarLot</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -40,6 +35,17 @@
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="trucks">
                 <MatIcon Icon="local_shipping"></MatIcon> Trucks
+            </NavLink>
+        </li>
+        <hr />
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/Register">
+                <MatIcon Icon="description"></MatIcon> Register
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="Identity/Account/Login">
+                <MatIcon Icon="account_box"></MatIcon> Login
             </NavLink>
         </li>
     </ul>

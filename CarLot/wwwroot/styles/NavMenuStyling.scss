@@ -2,13 +2,20 @@
 
 body {
     app {
-        div {
-            div {
-                ul {
+        div.sidebar {
+            div.top-row.pl-4.navbar.navbar-dark {
+                a.navbar-brand {
                     font-family: $heading-font;
-                    li {
-                        a {
-                            icon {
+                }
+            }
+
+            div.collapse {
+                ul.nav.flex-column {
+                    font-family: $heading-font;
+
+                    li.nav-item.px-3 {
+                        a.nav-link {
+                            i.material-icons {
                                 margin-right: 5%;
                             }
                         }

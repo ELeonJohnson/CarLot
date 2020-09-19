@@ -10,5 +10,9 @@
   {
     "outputFile": "wwwroot/styles/NavMenuStyling.css",
     "inputFile": "wwwroot/styles/NavMenuStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/IndexStyling.css",
+    "inputFile": "wwwroot/styles/IndexStyling.scss"
   }
 ]

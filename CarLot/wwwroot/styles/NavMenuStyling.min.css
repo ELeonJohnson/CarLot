@@ -1,1 +1,1 @@
-﻿body app div div ul{font-family:"Proza Libre",sans-serif;}body app div div ul li a icon{margin-right:5%;}
+﻿body app div.sidebar div.top-row.pl-4.navbar.navbar-dark a.navbar-brand{font-family:"Proza Libre",sans-serif;}body app div.sidebar div.collapse ul.nav.flex-column{font-family:"Proza Libre",sans-serif;}body app div.sidebar div.collapse ul.nav.flex-column li.nav-item.px-3 a.nav-link i.material-icons{margin-right:5%;}

@@ -22,6 +22,11 @@ namespace CarLot.Data
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public async Task<List<Car>> GetFeaturedCars()
+        {
+            return await _context.Cars.OrderByDescending(c => c.CarId).Take(2).ToListAsync();
+        }
+
         public async Task<List<Car>> GetCarsAsync()
         {
             return await _context.Cars.ToListAsync();

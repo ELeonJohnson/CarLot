@@ -22,6 +22,11 @@ namespace CarLot.Data
 
         }
 
+        public async Task<List<Truck>> GetFeaturedTrucks()
+        {
+            return await _context.Trucks.OrderByDescending(c => c.TruckId).Take(2).ToListAsync();
+        }
+
         public async Task<List<Truck>> GetTrucksAsync()
         {
             return await _context.Trucks.ToListAsync();

@@ -1,6 +1,6 @@
 ﻿@page "/buses"
 @using CarLot.Data
-@using CarLot.Models;
+@using CarLot.Models
 @inject CarLot.Data.BusService busService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<BusService>
@@ -201,7 +201,7 @@ else
 @code
 {
     public CarLot.Models.Bus Model = new CarLot.Models.Bus();
-    List<Bus> buses;
+    public List<Bus> buses;
     public byte[] ImgUploaded { get; set; }
     protected bool[] boolItems =
            {
