@@ -4,6 +4,10 @@
 @inject CarLot.Data.CarService carService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<CarService>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 
 
 
@@ -24,9 +28,16 @@ else
         <h1>ID: @car.CarId</h1>
         <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(car.Image)" />
         <h1>@car.Make</h1>
-        <button type="button" class="btn btn-primary" @onclick='@(e =>  OpenModal("carModal",car.CarId))'>Edit</button>
-        <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", car.CarId))'>Delete</button>
-        <a href="@($"car/details/{car.CarId}")" class="btn btn-primary">Details</a>
+        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == car.ApplicationUserId)
+        {
+            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("carModal", car.CarId))'>Edit</button>
+            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", car.CarId))'>Delete</button>
+            <a href="@($"car/details/{car.CarId}")" class="btn btn-primary">Details</a>
+        }
+        else
+        {
+            <a href="@($"car/details/{car.CarId}")" class="btn btn-primary">Details</a>
+        }
 
     }
 

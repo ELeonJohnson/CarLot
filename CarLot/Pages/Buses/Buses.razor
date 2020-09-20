@@ -4,6 +4,11 @@
 @inject CarLot.Data.BusService busService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<BusService>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+
 
 
 
@@ -24,10 +29,18 @@ else
         <h1>ID: @bus.BusId</h1>
         <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" />
         <h1>@bus.Make</h1>
-        <button type="button" class="btn btn-primary" @onclick='@(e =>  OpenModal("busModal",bus.BusId))'>Edit</button>
-        <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
-        <a href="@($"bus/details/{bus.BusId}")"  class="btn btn-primary">Details</a>
-     }
+        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
+        {
+            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("busModal", bus.BusId))'>Edit</button>
+            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
+            <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
+        }
+        else
+        {
+            <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
+        }
+
+    }
 
 }
 
@@ -210,6 +223,8 @@ else
                 false
             };
     public int busToDelete;
+
+
 
 
     protected override async Task OnInitializedAsync()

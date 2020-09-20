@@ -51,6 +51,7 @@ namespace CarLot
             services.AddScoped<SUVService>();
             services.AddScoped<TruckService>();
             services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
+            services.AddHttpContextAccessor();
 
         }
 
