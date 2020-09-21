@@ -1,9 +1,6 @@
 ﻿@page "/"
 
 
-
-
-
 <div class="row">
     <div class="col">
         <div class="next-match-hero">
@@ -12,6 +9,29 @@
         </div>
     </div>
 </div>
+
+
+@* Add Code For Users To Click Through Different Edit Form Options To Search For Each Vehicle *@
+<EditForm Model="@DisplayBusesByMake">
+    <div class="col-12 row">
+        <select  @onchange="@ReturnBusesByMake" class="form-control">
+            <option disabled>--Select By Make--</option>
+            @foreach (var make in DisplayBusesByMake)
+            {
+                <option value="@make.Make">@make.Make</option>
+            }
+          
+        </select>       
+    </div>
+    <div class="col-12 row">
+        <span class="col-2"></span>
+        <a href="@($"buses/filter/{MakeOfBus}")" class="btn btn-primary">Search</a>
+    </div>
+</EditForm>
+
+
+
+
 
 
 

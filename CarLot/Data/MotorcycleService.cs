@@ -29,10 +29,17 @@ namespace CarLot.Data
             return await _context.Motorcycles.OrderByDescending(c => c.MotorcycleId).Take(2).ToListAsync();
         }
 
+        public async Task<List<Motorcycle>> GetMotorcycleByMakes(string makeOfMotorcycle)
+        {
+            return await _context.Motorcycles.Where(mm => mm.Make == makeOfMotorcycle).ToListAsync();
+        }
+
         public async Task<List<Motorcycle>> GetMotorcyclesAsync()
             {
                 return await _context.Motorcycles.ToListAsync();
             }
+
+            
 
             public async Task<Motorcycle> GetMotorcycleByIdAsync(int id)
             {

@@ -1,0 +1,23 @@
+﻿@page "/cars/filter/{carMake}"
+@using CarLot.Models
+@inject CarLot.Data.CarService carService
+
+@foreach (var filterCar in Car)
+{
+    <h1>@filterCar.Make</h1>
+    <h1>@filterCar.Price</h1>
+}
+
+
+
+@code {
+    public List<Car> Car { get; set; } = new List<Car>();
+    [Parameter]
+    public string carMake { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        Car = await carService.GetCarByMakes(carMake);
+    }
+}
+

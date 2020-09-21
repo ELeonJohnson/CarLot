@@ -218,3 +218,5 @@ C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Motorcycles\MotorcycleDetails.razor.g.cs
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\SUVs\SUVDetails.razor.g.cs
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Trucks\TruckDetails.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Buses\FilterBuses.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Buses\FilterBuses.razor.g.cs

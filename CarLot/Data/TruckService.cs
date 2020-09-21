@@ -27,6 +27,11 @@ namespace CarLot.Data
             return await _context.Trucks.OrderByDescending(c => c.TruckId).Take(2).ToListAsync();
         }
 
+        public async Task<List<Truck>> GetTruckByMakes(string makeOfTruck)
+        {
+            return await _context.Trucks.Where(tm => tm.Make == makeOfTruck).ToListAsync();
+        }
+
         public async Task<List<Truck>> GetTrucksAsync()
         {
             return await _context.Trucks.ToListAsync();

@@ -3,6 +3,7 @@ using CarLot.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,12 @@ namespace CarLot.Data
         public async Task<List<Bus>> GetFeaturedBuses()
         { 
             return await _context.Buses.OrderByDescending(b => b.BusId).Take(2).ToListAsync();
+        }
+
+
+        public async Task<List<Bus>> GetBusByMakes(string makeOfBus)
+        {
+            return await _context.Buses.Where(bm => bm.Make == makeOfBus).ToListAsync();
         }
 
         public async Task<List<Bus>> GetBusesAsync()
