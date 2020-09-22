@@ -29,7 +29,7 @@ namespace CarLot.Data
 
         public async Task<List<SUV>> GetSUVByMakes(string makeOfSUV)
         {
-            return await _context.SUVs.Where(sm => sm.Make == makeOfSUV).ToListAsync();
+            return await _context.SUVs.Where(sm => sm.Make == makeOfSUV).OrderByDescending(s => s.CreatedDate).ToListAsync();
         }
 
         public async Task<List<SUV>> GetSUVsAsync()

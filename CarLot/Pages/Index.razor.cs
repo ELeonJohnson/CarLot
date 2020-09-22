@@ -82,13 +82,13 @@ namespace CarLot.Pages
 
         }
 
-        void ReturnMotorcycleByMake(ChangeEventArgs e)
+        void ReturnMotorcyclesByMake(ChangeEventArgs e)
         {
             MakeOfMotorcycle = e.Value.ToString();
 
         }
 
-        void ReturnSUVByMake(ChangeEventArgs e)
+        void ReturnSUVsByMake(ChangeEventArgs e)
         {
             MakeOfSUV = e.Value.ToString();
 

@@ -3,31 +3,127 @@
 
 <div class="row">
     <div class="col">
-        <div class="next-match-hero">
+        <div id="next-match-hero">
             <img src="images/tesla-model-3.jpg" />
             <h1>Find Your <br /> Next Match</h1>
+        </div>
+        <div id="filter-col">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-bus-tab" data-toggle="tab" href="#nav-bus" role="tab" aria-controls="nav-bus" aria-selected="true">Buses</a>
+                    <a class="nav-item nav-link" id="nav-car-tab" data-toggle="tab" href="#nav-car" role="tab" aria-controls="nav-car" aria-selected="false">Cars</a>
+                    <a class="nav-item nav-link" id="nav-motorcycle-tab" data-toggle="tab" href="#nav-motorcycle" role="tab" aria-controls="nav-motorcycles" aria-selected="false">Motorcycles</a>
+                    <a class="nav-item nav-link" id="nav-suv-tab" data-toggle="tab" href="#nav-suv" role="tab" aria-controls="nav-suv" aria-selected="false">SUVs</a>
+                    <a class="nav-item nav-link" id="nav-truck-tab" data-toggle="tab" href="#nav-truck" role="tab" aria-controls="nav-truck" aria-selected="false">Trucks</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-bus" role="tabpanel" aria-labelledby="nav-bus-tab">
+                    <EditForm Model="@DisplayBusesByMake">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select @onchange="@ReturnBusesByMake" class="form-control">
+                                        <option disabled>Select By Make</option>
+                                        @foreach (var busMake in DisplayBusesByMake)
+                                        {
+                                            <option value="@busMake.Make">@busMake.Make</option>
+                                        }
+
+                                    </select>
+                                    <a href="@($"buses/filter/{MakeOfBus}")" class="btn">Search</a>
+                                </div>                             
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-car" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <EditForm Model="@DisplayCarsByMake">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select @onchange="@ReturnCarsByMake" class="form-control">
+                                        <option disabled>Select By Make</option>
+                                        @foreach (var carMake in DisplayCarsByMake)
+                                        {
+                                            <option value="@carMake.Make">@carMake.Make</option>
+                                        }
+
+                                    </select>
+                                    <a href="@($"cars/filter/{MakeOfCar}")" class="btn">Search</a>
+                                </div>                            
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-motorcycle" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <EditForm Model="@DisplayMotorcyclesByMake">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select @onchange="@ReturnMotorcyclesByMake" class="form-control">
+                                        <option disabled>Select By Make</option>
+                                        @foreach (var motorcycleMake in DisplayMotorcyclesByMake)
+                                        {
+                                            <option value="@motorcycleMake.Make">@motorcycleMake.Make</option>
+                                        }
+
+                                    </select>
+                                    <a href="@($"motorcycles/filter/{MakeOfMotorcycle}")" class="btn">Search</a>
+                                </div>                            
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-suv" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <EditForm Model="@DisplaySUVsByMake">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select @onchange="@ReturnSUVsByMake" class="form-control">
+                                        <option disabled>Select By Make</option>
+                                        @foreach (var suvMake in DisplaySUVsByMake)
+                                        {
+                                            <option value="@suvMake.Make">@suvMake.Make</option>
+                                        }
+
+                                    </select>
+                                    <a href="@($"suvs/filter/{MakeOfSUV}")" class="btn">Search</a>
+                                </div>           
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-truck" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <EditForm Model="@DisplayTrucksByMake">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <select @onchange="@ReturnTrucksByMake" class="form-control">
+                                        <option disabled>Select By Make</option>
+                                        @foreach (var truckMake in DisplayTrucksByMake)
+                                        {
+                                            <option value="@truckMake.Make">@truckMake.Make</option>
+                                        }
+
+                                    </select>
+                                    <a href="@($"trucks/filter/{MakeOfTruck}")" class="btn">Search</a>
+                                </div>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
-@* Add Code For Users To Click Through Different Edit Form Options To Search For Each Vehicle *@
-<EditForm Model="@DisplayBusesByMake">
-    <div class="col-12 row">
-        <select  @onchange="@ReturnBusesByMake" class="form-control">
-            <option disabled>--Select By Make--</option>
-            @foreach (var make in DisplayBusesByMake)
-            {
-                <option value="@make.Make">@make.Make</option>
-            }
-          
-        </select>       
-    </div>
-    <div class="col-12 row">
-        <span class="col-2"></span>
-        <a href="@($"buses/filter/{MakeOfBus}")" class="btn btn-primary">Search</a>
-    </div>
-</EditForm>
+
+
+
+
+
 
 
 

@@ -39,7 +39,8 @@ namespace CarLot.Data
 
         public async Task<List<Bus>> GetBusByMakes(string makeOfBus)
         {
-            return await _context.Buses.Where(bm => bm.Make == makeOfBus).ToListAsync();
+  
+            return await _context.Buses.Where(bm => bm.Make == makeOfBus).OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<List<Bus>> GetBusesAsync()

@@ -6,7 +6,7 @@ body {
             div.content.px-4 {
                 div.row {
                     div.col {
-                        div.next-match-hero {
+                        div#next-match-hero {
                             position: relative;
                             text-align: center;
 
@@ -22,6 +22,63 @@ body {
                                 color: $white;
                                 font-family: $heading-font;
                                 font-size: 3.5rem;
+                            }
+                        }
+
+                        div#filter-col {
+                            background-color: $purple;
+                            border-radius: 6px;
+                            padding: 16px;
+                            position: relative;
+                            width: 50%;
+                            margin: 0 auto;
+                            font-family: $text-font;
+                            bottom: 50px;
+
+                            nav {
+                                margin-bottom: 2.5%;
+
+                                div#nav-tab.nav.nav-tabs {
+                                    a {
+                                        color: $white;
+                                        border-color: $white;
+                                    }
+
+                                    a.active {
+                                        color: $black;
+                                    }
+                                }
+                            }
+
+                            div#nav-tabContent.tab-content {
+                                div.tab-pane {
+                                    form {
+                                        div.row {
+                                            div.col {
+                                                div.form-group {
+                                                    display: flex;
+
+                                                    select.form-control {
+                                                        border-top-right-radius: 0;
+                                                        border-bottom-right-radius: 0;
+                                                    }
+                                                    a.btn {
+                                                        color: $white;
+                                                        border-color: $green;
+                                                        background-color: $green;
+                                                        border-bottom-left-radius: 0;
+                                                        border-top-left-radius: 0;
+
+                                                        &:hover {
+                                                            border-color: $darker-green;
+                                                            background-color: $darker-green;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
