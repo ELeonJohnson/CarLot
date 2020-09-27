@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\images\benz-car-ad.jpg\**" />
+    <Content Remove="wwwroot\images\benz-car-ad.jpg\**" />
+    <EmbeddedResource Remove="wwwroot\images\benz-car-ad.jpg\**" />
+    <None Remove="wwwroot\images\benz-car-ad.jpg\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20200903200604_AddedModls.cs" />
     <Compile Remove="Migrations\20200903200604_AddedModls.Designer.cs" />
     <Compile Remove="Migrations\20200903200941_AddedModels.cs" />
@@ -33,10 +40,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

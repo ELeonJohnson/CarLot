@@ -24,7 +24,7 @@ namespace CarLot.Data
 
         public async Task<List<SUV>> GetFeaturedSUVs()
         {
-            return await _context.SUVs.OrderByDescending(c => c.SUVId).Take(2).ToListAsync();
+            return await _context.SUVs.Include(r => r.ApplicationUser).OrderByDescending(c => c.SUVId).Take(2).ToListAsync();
         }
 
         public async Task<List<SUV>> GetSUVByMakes(string makeOfSUV)

@@ -4,7 +4,7 @@ body {
     app {
         div.main {
             div.content.px-4 {
-                div.row {
+                div#hero-row.row {
                     div.col {
                         div#next-match-hero {
                             position: relative;
@@ -62,6 +62,7 @@ body {
                                                         border-top-right-radius: 0;
                                                         border-bottom-right-radius: 0;
                                                     }
+
                                                     a.btn {
                                                         color: $white;
                                                         border-color: $green;
@@ -75,6 +76,158 @@ body {
                                                         }
                                                     }
                                                 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                div#ad-1-row.row {
+                    height: 282px;
+
+                    div.col {
+                        a {
+                            img#index-ad-1 {
+                                height: 60% !important;
+                                width: 75%;
+                                display: block;
+                                margin: 0 auto;
+                            }
+                        }
+                    }
+                }
+
+                div#three-icon-row.row {
+                    background-color: $lightest-gray;
+                    margin-top: 5%;
+                    padding: 5%;
+
+                    div.col {
+                        div.mat-card.mdc-card {
+                            padding: 5%;
+
+                            i.material-icons {
+                                font-size: 75px;
+                                color: $purple;
+                                margin: 0 auto;
+                            }
+
+                            h6.mat.mat-h6 {
+                                color: $black;
+                                font-family: $heading-font;
+                                text-align: center;
+                            }
+
+                            p.mat.mat-body2 {
+                                a {
+                                    color: $black;
+                                    font-family: $text-font;
+
+                                    &:hover {
+                                        text-decoration: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                div#hot-vehicles.row {
+                    background-color: $lightest-gray;
+                    margin-top: 5%;
+                    padding: 5%;
+
+                    div#icon-section.col {
+                        max-width: 40%;
+
+
+                        i.material-icons {
+                            font-size: 96px;
+                            background-color: $light-purple;
+                            color: $white;
+                            border-radius: 6px;
+                            margin-left: 37%;
+                        }
+
+                        h1 {
+                            color: $black;
+                            font-family: $heading-font;
+                            text-align: center;
+                            font-weight: bold;
+                        }
+
+                        h4 {
+                            color: $black;
+                            font-family: $text-font;
+                            text-align: center;
+                        }
+
+                        img#ad-img {
+                            width: 85%;
+                            margin-top: 65%;
+                            margin-left: 7%;
+                        }
+                    }
+
+                    div#latest-vehicles.col {
+                        h2 {
+                            font-family: $heading-font;
+                            color: $black;
+                            font-weight: bold;
+                        }
+
+                        div.row.card-deck {
+                            margin-bottom: 10%;
+                            div.card {
+                                background-color: $lightest-gray;
+                                border: none;
+
+                                a {
+                                    &:hover {
+                                        text-decoration: none;
+                                    }
+
+                                    img.card-img-top {
+                                        width: 100%;
+                                        height: 140px;
+                                        border-radius: 3px;
+                                    }
+
+                                    div.card-body {
+                                        padding: 0;
+
+                                        p.card-text {
+                                            color: $black;
+                                            font-family: $text-font;
+                                            font-size: 14px;
+                                        }
+
+                                        div {
+                                            display: flex;
+                                            margin-top: 1%;
+
+                                            h5.card-title {
+                                                font-family: $text-font;
+                                                color: $black;
+                                                font-weight: bold;
+                                                font-size: 1rem;
+                                            }
+
+                                            i.material-icons {
+                                                font-size: 5px;
+                                                background-color: $lightest-gray;
+                                                color: $black;
+                                                margin-left: 0;
+                                                padding: 8px;
+                                            }
+
+                                            h5.card-text {
+                                                color: $black;
+                                                font-family: $text-font;
+                                                font-size: 1rem;
                                             }
                                         }
                                     }

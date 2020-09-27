@@ -1,7 +1,7 @@
 ﻿@page "/"
 
 
-<div class="row">
+<div id="hero-row" class="row">
     <div class="col">
         <div id="next-match-hero">
             <img src="images/tesla-model-3.jpg" />
@@ -32,7 +32,7 @@
 
                                     </select>
                                     <a href="@($"buses/filter/{MakeOfBus}")" class="btn">Search</a>
-                                </div>                             
+                                </div>
                             </div>
                         </div>
                     </EditForm>
@@ -51,7 +51,7 @@
 
                                     </select>
                                     <a href="@($"cars/filter/{MakeOfCar}")" class="btn">Search</a>
-                                </div>                            
+                                </div>
                             </div>
                         </div>
                     </EditForm>
@@ -70,7 +70,7 @@
 
                                     </select>
                                     <a href="@($"motorcycles/filter/{MakeOfMotorcycle}")" class="btn">Search</a>
-                                </div>                            
+                                </div>
                             </div>
                         </div>
                     </EditForm>
@@ -89,7 +89,7 @@
 
                                     </select>
                                     <a href="@($"suvs/filter/{MakeOfSUV}")" class="btn">Search</a>
-                                </div>           
+                                </div>
                             </div>
                         </div>
                     </EditForm>
@@ -118,19 +118,214 @@
     </div>
 </div>
 
+<div id="ad-1-row" class="row">
+    <div class="col">
+        <a href="https://www.erickandwolfi.com/eq-electric-intelligence-by-mercedesbenz">
+            <img id="index-ad-1" src="/images/benz-car-ad.jpg" />
+        </a>
+    </div>
+</div>
 
+<div id="three-icon-row" class="row">
+    <div class="col">
+        <MatCard Class="">
+            <MatIcon Icon="videocam"></MatIcon>
+            <MatCardContent>
+                <MatHeadline6>Watch Car Reviews & More</MatHeadline6>
+                <MatBody2>
+                    <a href="https://www.cars.com/videos/">
+                        See the latest videos from our team of experts.
+                    </a>
+                </MatBody2>
+            </MatCardContent>
+        </MatCard>
+    </div>
+    <div class="col">
+        <MatCard Class="">
+            <MatIcon Icon="language"></MatIcon>
+            <MatCardContent>
+                <MatHeadline6>Cars.com News</MatHeadline6>
+                <MatBody2>
+                    <a href="https://www.cars.com/news/">
+                        What you need to be informed from now until you buy,
+                        all in one place.
+                    </a>
+                </MatBody2>
+            </MatCardContent>
+        </MatCard>
+    </div>
+    <div class="col">
+        <MatCard Class="">
+            <MatIcon Icon="favorite"></MatIcon>
+            <MatCardContent>
+                <MatHeadline6>Over One Million Reviews</MatHeadline6>
+                <MatBody2>
+                    <a href="https://www.cars.com/fivestarsalesperson/">
+                        Choose a salesperson you like, meet a car you'll love.
+                    </a>
+                </MatBody2>
+            </MatCardContent>
+        </MatCard>
+    </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div id="hot-vehicles" class="row">
+    <div class="col" id="icon-section">
+        <MatIcon Icon="whatshot"></MatIcon>
+        <h1>Introducing <br /> Hot Vehicles</h1>
+        <h4>Check Out Our Latest <br /> Vehicles For Sale</h4>
+        <img id="ad-img" src="/images/hot-vehicle-ad.jpg" />
+    </div>
+    <div class="col" id="latest-vehicles">
+        <h2>Buses</h2>
+        <div class="row card-deck">
+            @foreach (var bus in FeaturedBuses)
+            {
+                <div class="card">
+                    <a href="@($"bus/details/{bus.BusId}")">
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" />
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">$@bus.Price</h5>
+                                <MatIcon Icon="fiber_manual_record"></MatIcon>
+                                <h5 class="card-text">@bus.ApplicationUser.State</h5>
+                            </div>
+                            @if (bus.New == true)
+                            {
+                                <p class="card-text">
+                                    New @bus.Year @bus.Make
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">
+                                    Used @bus.Year @bus.Make
+                                </p>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <h2>Cars</h2>
+        <div class="row card-deck">
+            @foreach (var car in FeaturedCars)
+            {
+                <div class="card">
+                    <a href="@($"car/details/{car.CarId}")">
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(car.Image)" />
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">$@car.Price</h5>
+                                <MatIcon Icon="fiber_manual_record"></MatIcon>
+                                <h5 class="card-text">@car.ApplicationUser.State</h5>
+                            </div>
+                            @if (car.New == true)
+                            {
+                                <p class="card-text">
+                                    New @car.Year @car.Make
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">
+                                    Used @car.Year @car.Make
+                                </p>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <h2>Motorcycles</h2>
+        <div class="row card-deck">
+            @foreach (var motorcycle in FeaturedMotorcycles)
+            {
+                <div class="card">
+                    <a href="@($"motorcycle/details/{motorcycle.MotorcycleId}")">
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(motorcycle.Image)" />
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">$@motorcycle.Price</h5>
+                                <MatIcon Icon="fiber_manual_record"></MatIcon>
+                                <h5 class="card-text">@motorcycle.ApplicationUser.State</h5>
+                            </div>
+                            @if (motorcycle.New == true)
+                            {
+                                <p class="card-text">
+                                    New @motorcycle.Year @motorcycle.Make
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">
+                                    Used @motorcycle.Year @motorcycle.Make
+                                </p>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <h2>SUVs</h2>
+        <div class="row card-deck">
+            @foreach (var suv in FeaturedSuvs)
+            {
+                <div class="card">
+                    <a href="@($"suv/details/{suv.SUVId}")">
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(suv.Image)" />
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">$@suv.Price</h5>
+                                <MatIcon Icon="fiber_manual_record"></MatIcon>
+                                <h5 class="card-text">@suv.ApplicationUser.State</h5>
+                            </div>
+                            @if (suv.New == true)
+                            {
+                                <p class="card-text">
+                                    New @suv.Year @suv.Make
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">
+                                    Used @suv.Year @suv.Make
+                                </p>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+        <h2>Trucks</h2>
+        <div class="row card-deck">
+            @foreach (var truck in FeaturedTrucks)
+            {
+                <div class="card">
+                    <a href="@($"truck/details/{truck.TruckId}")">
+                        <img class="card-img-top" src="data:image/jpeg;base64,@Convert.ToBase64String(truck.Image)" />
+                        <div class="card-body">
+                            <div>
+                                <h5 class="card-title">$@truck.Price</h5>
+                                <MatIcon Icon="fiber_manual_record"></MatIcon>
+                                <h5 class="card-text">@truck.ApplicationUser.State</h5>
+                            </div>
+                            @if (truck.New == true)
+                            {
+                                <p class="card-text">
+                                    New @truck.Year @truck.Make
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="card-text">
+                                    Used @truck.Year @truck.Make
+                                </p>
+                            }
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>   
+</div>

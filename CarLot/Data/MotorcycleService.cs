@@ -26,7 +26,7 @@ namespace CarLot.Data
 
         public async Task<List<Motorcycle>> GetFeaturedMotorcycles()
         {
-            return await _context.Motorcycles.OrderByDescending(c => c.MotorcycleId).Take(2).ToListAsync();
+            return await _context.Motorcycles.Include(r => r.ApplicationUser).OrderByDescending(c => c.MotorcycleId).Take(2).ToListAsync();
         }
 
         public async Task<List<Motorcycle>> GetMotorcycleByMakes(string makeOfMotorcycle)

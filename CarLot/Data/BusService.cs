@@ -32,8 +32,9 @@ namespace CarLot.Data
 
 
         public async Task<List<Bus>> GetFeaturedBuses()
-        { 
-            return await _context.Buses.OrderByDescending(b => b.BusId).Take(2).ToListAsync();
+        {
+            
+            return await _context.Buses.Include(r => r.ApplicationUser).OrderByDescending(b => b.BusId).Take(2).ToListAsync();
         }
 
 

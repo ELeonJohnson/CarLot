@@ -24,7 +24,7 @@ namespace CarLot.Data
 
         public async Task<List<Car>> GetFeaturedCars()
         {
-            return await _context.Cars.OrderByDescending(c => c.CarId).Take(2).ToListAsync();
+            return await _context.Cars.Include(r => r.ApplicationUser).OrderByDescending(c => c.CarId).Take(2).ToListAsync();
         }
 
         public async Task<List<Car>> GetCarByMakes(string makeOfCar)
