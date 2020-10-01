@@ -37,7 +37,7 @@ namespace CarLot
                     Configuration.GetConnectionString("DefaultConnection")),
                      ServiceLifetime.Transient);
 
-            services.AddIdentity<ApplicationUser, IdentityRole<int>>()
+            services.AddIdentity<ApplicationUser, IdentityRole<int>>().AddDefaultUI()
              .AddRoles<IdentityRole<int>>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
                

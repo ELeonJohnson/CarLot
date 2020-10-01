@@ -46,7 +46,7 @@ namespace CarLot.Data
 
         public async Task<List<Bus>> GetBusesAsync()
         {
-            return await _context.Buses.ToListAsync();
+            return await _context.Buses.Include(r => r.ApplicationUser).ToListAsync();
         }
 
         public async Task<Bus> GetBusByIdAsync(int id)

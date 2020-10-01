@@ -228,3 +228,4 @@ C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Motorcycles\FilterMotorcycles.razor.g.cs
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\SUVs\FilterSUVs.razor.g.cs
 C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Pages\Trucks\FilterTrucks.razor.g.cs
+C:\Users\Enoch\Desktop\Projects For Portfolio\CarLot\CarLot\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\_ValidationScriptsPartial.cshtml.g.cs

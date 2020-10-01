@@ -1,4 +1,12 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using CarLot.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+<link href="./styles/NavMenuStyling.css" rel="stylesheet" />
+
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">CarLot</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -38,16 +46,38 @@
             </NavLink>
         </li>
         <hr />
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Identity/Account/Register">
-                <MatIcon Icon="description"></MatIcon> Register
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="Identity/Account/Login">
-                <MatIcon Icon="account_box"></MatIcon> Login
-            </NavLink>
-        </li>
+
+        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User))
+        {
+            <AuthorizeView>
+                <Authorized>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" href="Identity/Account/Manage/Index">
+                            <MatIcon Icon="perm_identity"></MatIcon> @httpContextAccessor.HttpContext.User.Identity.Name!
+                        </NavLink>
+                    </li>
+                    <li class="nav-item px-3">
+                        <form class="form-inline" method="post" action="Identity/Account/LogOut">
+                            <MatIcon Icon="exit_to_app"></MatIcon> <button type="submit" class="nav-link btn btn-link">Logout</button>
+                        </form>
+                    </li>
+                </Authorized>
+            </AuthorizeView>
+        }
+        else
+        {
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Identity/Account/Register">
+                    <MatIcon Icon="description"></MatIcon> Register
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="Identity/Account/Login">
+                    <MatIcon Icon="account_box"></MatIcon> Login
+                </NavLink>
+            </li>
+        }
+
     </ul>
 </div>
 

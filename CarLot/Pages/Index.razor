@@ -1,4 +1,5 @@
 ﻿@page "/"
+<link href="./styles/IndexStyling.css" rel="stylesheet" />
 
 
 <div id="hero-row" class="row">
@@ -222,7 +223,7 @@
                             </div>
                             @if (car.New == true)
                             {
-                                <p class="card-text">
+                                <p class="card-text text-muted">
                                     New @car.Year @car.Make
                                 </p>
                             }

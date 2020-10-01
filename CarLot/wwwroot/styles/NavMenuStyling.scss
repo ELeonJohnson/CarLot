@@ -19,6 +19,21 @@ body {
                                 margin-right: 5%;
                             }
                         }
+
+                        form.form-inline {
+                            padding: 7%;
+                            color: $white;
+
+                            button.nav-link.btn.btn-link {
+                                font-family: $heading-font;
+                                color: $white;
+
+
+                                i.material-icons {
+                                    color: $white;
+                                }
+                            }
+                        }
                     }
                 }
             }

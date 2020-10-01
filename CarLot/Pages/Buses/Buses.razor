@@ -8,12 +8,14 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+<link href="./styles/Buses/BusIndexStyling.css" rel="stylesheet" />
 
 
+<div id="ad-1">
+    <img src="/images/bus-index-ad.jpg" />
+</div>
 
-
-
-<h1 id="buses-for-sale">Our Buses For Sale</h1>
+<h1 id="buses-for-sale">New & Used Buses For Sale</h1>
 
 @if (buses == null)
 {
@@ -21,299 +23,371 @@
 }
 else
 {
-    <div>
-        <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("busModal",0))'>Add</MatButton>
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("busModal",0))'>Add</MatButton>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div id="not-auth">
+                <p>
+                    <NavLink class="nav-link" href="Identity/Account/Register">Sign Up</NavLink>
+                    Or
+                    <NavLink class="nav-link" href="Identity/Account/Login">Login</NavLink>
+                    To Add A Bus
+                </p>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="row">
+        <div class="col" id="filter-col">
+
+        </div>
+        <div class="col" id="listing-col">
+            @foreach (var bus in buses)
+            {
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" class="card-img">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div id="isNew">
+                                    @if (bus.New == true)
+                                    {
+                                        <p class="card-text">
+                                            NEW
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">
+                                            USED
+                                        </p>
+                                    }
+                                </div>
+                                <h5 class="card-title">@bus.Year @bus.Make</h5>
+                                <p class="card-text" id="mileage">@bus.Mileage mi.</p>
+                                <h1 id="price" class="card-title">$@bus.Price</h1>
+                                <div id="delivery">
+                                    @if (bus.VirtualAppointments == true)
+                                    {
+                                        <span class="card-text">Virtual Appointments</span>    
+                                    }
+                                    @if (bus.HomeDelivery == true)
+                                    { 
+                                        <span class="card-text">Home Delivery</span>
+                                    }
+                                </div>
+                                <div id="row-within-card" class="row">
+                                    <div class="col">
+                                        <p class="card-text"><strong>Ext. Color:</strong> @bus.ExteriorColor</p>
+                                        <p class="card-text"><strong>Int. Color:</strong> @bus.InteriorColor</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text"><strong>Transmission:</strong> @bus.Transmission</p>
+                                        <p class="card-text"><strong>Drivetrain:</strong> @bus.DriveTrain</p>
+                                    </div>
+                                </div>
+                                <div id="more-details">
+                                    <p class="card-text">@bus.ApplicationUser.FirstName Of @bus.ApplicationUser.City, @bus.ApplicationUser.State</p>
+                                </div>
+                                <div id="details-btn">
+                                    <a href="@($"bus/details/{bus.BusId}")" class="btn btn-block">More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             }
+        </div>
     </div>
-    @foreach (var bus in buses)
-    {
-        <h1>ID: @bus.BusId</h1>
-        <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" />
-        <h1>@bus.Make</h1>
-        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
+}
+        @*@if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
         {
             <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("busModal", bus.BusId))'>Edit</button>
             <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
-            <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
+            
         }
         else
         {
             <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
-        }
-
-    }
-
-}
+        }*@
 
 
-<div>
-    <div class="modal fade" id="busModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Bus's Information</h5>
-                    <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">X</MatButton>
-                </div>
-                <div class="modal-body">
-                    <form enctype="multipart/form-data">
-                        <input type="hidden" @bind="Model.BusId" id="busId">
-                        <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
-                        <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.Make" Label="Make"></MatTextField>
-                                </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.Price" Label="Price" Icon="attach_money"></MatTextField>
-                                </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.Mileage" Label="Mileage"></MatTextField>
-                                </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.DriveTrain" Label="Drivetrain"></MatTextField>
-                                </p>
-                            </div>
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.Transmission" Label="Transmission"></MatTextField>
-                                </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.Cylinders" Label="Cylinders"></MatTextField>
-                                </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.Fuel" Label="Fuel"></MatTextField>
-                                </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.DoorCount" Label="Door Count"></MatTextField>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.Features" Label="Features" TextArea="true" FullWidth="true"></MatTextField>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.BodyStyle" Label="Body Style" TextArea="true" FullWidth="true"></MatTextField>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.ExteriorColor" Label="Exterior Color" TextArea="true" FullWidth="true"></MatTextField>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.InteriorColor" Label="Interior Color" TextArea="true" FullWidth="true"></MatTextField>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <p>
-                                    <MatTextField @bind-Value="Model.SellerNotes" Label="Seller Notes" TextArea="true" FullWidth="true"></MatTextField>
-                                </p>
-                            </div>
-                        </div>
-                        <h2>Tell Us More About Your Bus</h2>
-                        <p id="p-apply-check">Please Check All That Applies To Your Bus.</p>
-                        <div class="row">
-                            <div class="col">
-                                <MatH5>Is Your Bus Available For Home Delivery?</MatH5>
-                                <MatRadioGroup @bind-Value="Model.HomeDelivery" Items="boolItems">
 
-                                </MatRadioGroup>
+            <div>
+                <div class="modal fade" id="busModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Bus's Information</h5>
+                                <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">X</MatButton>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <MatH5>Is Your Bus Available For a Virtual Appointments?</MatH5>
-                                <MatRadioGroup @bind-Value="Model.VirtualAppointments" Items="boolItems">
+                            <div class="modal-body">
+                                <form enctype="multipart/form-data">
+                                    <input type="hidden" @bind="Model.BusId" id="busId">
+                                    <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
+                                    <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Make" Label="Make"></MatTextField>
+                                            </p>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Price" Label="Price" Icon="attach_money"></MatTextField>
+                                            </p>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Mileage" Label="Mileage"></MatTextField>
+                                            </p>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.DriveTrain" Label="Drivetrain"></MatTextField>
+                                            </p>
+                                        </div>
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Transmission" Label="Transmission"></MatTextField>
+                                            </p>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Cylinders" Label="Cylinders"></MatTextField>
+                                            </p>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Fuel" Label="Fuel"></MatTextField>
+                                            </p>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.DoorCount" Label="Door Count"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Features" Label="Features" TextArea="true" FullWidth="true"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.BodyStyle" Label="Body Style" TextArea="true" FullWidth="true"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.ExteriorColor" Label="Exterior Color" TextArea="true" FullWidth="true"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.InteriorColor" Label="Interior Color" TextArea="true" FullWidth="true"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <p>
+                                                <MatTextField @bind-Value="Model.SellerNotes" Label="Seller Notes" TextArea="true" FullWidth="true"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <h2>Tell Us More About Your Bus</h2>
+                                    <p id="p-apply-check">Please Check All That Applies To Your Bus.</p>
+                                    <div class="row">
+                                        <div class="col">
+                                            <MatH5>Is Your Bus Available For Home Delivery?</MatH5>
+                                            <MatRadioGroup @bind-Value="Model.HomeDelivery" Items="boolItems">
 
-                                </MatRadioGroup>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <MatH5>Is Your Bus New?</MatH5>
-                                <MatRadioGroup @bind-Value="Model.New" Items="boolItems">
+                                            </MatRadioGroup>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <MatH5>Is Your Bus Available For a Virtual Appointments?</MatH5>
+                                            <MatRadioGroup @bind-Value="Model.VirtualAppointments" Items="boolItems">
 
-                                </MatRadioGroup>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
+                                            </MatRadioGroup>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <MatH5>Is Your Bus New?</MatH5>
+                                            <MatRadioGroup @bind-Value="Model.New" Items="boolItems">
 
-                                <MatH5>Is Your Bus Used?</MatH5>
-                                <MatRadioGroup @bind-Value="Model.Used" Items="boolItems">
+                                            </MatRadioGroup>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
 
-                                </MatRadioGroup>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <MatH5>Is Your Bus Certified Preowned?</MatH5>
-                                <MatRadioGroup @bind-Value="Model.CertifiedPreOwned" Items="boolItems">
+                                            <MatH5>Is Your Bus Used?</MatH5>
+                                            <MatRadioGroup @bind-Value="Model.Used" Items="boolItems">
 
-                                </MatRadioGroup>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
+                                            </MatRadioGroup>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <MatH5>Is Your Bus Certified Preowned?</MatH5>
+                                            <MatRadioGroup @bind-Value="Model.CertifiedPreOwned" Items="boolItems">
 
-                                <h5>Bus's Year?</h5>
-                                <p>
-                                    <MatTextField @bind-Value="Model.Year" Label="Year"></MatTextField>
-                                </p>
+                                            </MatRadioGroup>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+
+                                            <h5>Bus's Year?</h5>
+                                            <p>
+                                                <MatTextField @bind-Value="Model.Year" Label="Year"></MatTextField>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <MatH5>Bus's Image</MatH5>
+                                            <InputFile multiple OnChange="HandleFileSelected" />
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">Close</MatButton>
+                                <MatButton Raised="true" Type="button" @onclick='@(e => SaveBus("busModal"))'>Save</MatButton>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <MatH5>Bus's Image</MatH5>
-                                <InputFile multiple OnChange="HandleFileSelected" />
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">Close</MatButton>
-                    <MatButton Raised="true" Type="button" @onclick='@(e => SaveBus("busModal"))'>Save</MatButton>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
-<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Bus?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
+            <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Bus?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" @onclick='@(e => ConfirmDelete("deleteConfirmation"))'>Ok</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" @onclick='@(e => ConfirmDelete("deleteConfirmation"))'>Ok</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
 
-
-@code
+            @code
 {
-    public CarLot.Models.Bus Model = new CarLot.Models.Bus();
-    public List<Bus> buses;
-    public byte[] ImgUploaded { get; set; }
-    protected bool[] boolItems =
-           {
+        public CarLot.Models.Bus Model = new CarLot.Models.Bus();
+            public List<Bus> buses;
+            public byte[] ImgUploaded { get; set; }
+            protected bool[] boolItems =
+                   {
                 true,
                 false
             };
-    public int busToDelete;
+            public int busToDelete;
 
 
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        await load();
-    }
+            protected override async Task OnInitializedAsync()
+            {
+                await load();
+            }
 
-    protected async Task load()
-    {
-        buses = await busService.GetBusesAsync();
-    }
+            protected async Task load()
+            {
+                buses = await busService.GetBusesAsync();
+            }
 
-    public async Task OpenModal(string modalId, int itemBusId)
-    {
-        if (itemBusId == 0)
-        {
-            Model = new CarLot.Models.Bus();
+            public async Task OpenModal(string modalId, int itemBusId)
+            {
+                if (itemBusId == 0)
+                {
+                    Model = new CarLot.Models.Bus();
 
-        }
-        else
-        {
-            Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
-        }
+                }
+                else
+                {
+                    Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
+                }
 
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
+                await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+            }
 
-    public async Task CloseModal(string modalId)
-    {
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
-
-
-
-    public async Task SaveBus(string modalId)
-    {
-        if (Model.BusId == 0)
-        {
-
-            // id zero represents new item
-            Model.CreatedDate = DateTime.Now;
-            Model.Image = ImgUploaded;
-            await busService.AddBusAsync(Model);
-            buses = await busService.GetBusesAsync();
-
-        }
-        else
-        {
-            Model.ModifiedDate = DateTime.Now;
-            Model.Image = ImgUploaded;
-            var busToUpdate = await busService.UpdateBusAsync(Model.BusId);
-            buses.Where(_ => _.BusId == Model.BusId).FirstOrDefault();
-            buses.Add(busToUpdate);
-            buses = await busService.GetBusesAsync();
-        }
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-
-    }
-
-    async Task HandleFileSelected(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-
-        if (file != null)
-        {
-            var ms = new MemoryStream();
-            await file.Data.CopyToAsync(ms);
-            ImgUploaded = ms.ToArray();
-        }
-    }
-
-    public async Task OpenDeleteModal(string modalId, int busItemId)
-    {
-        busToDelete = busItemId;
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
-
-    public async Task ConfirmDelete(string modalId)
-    {
-        var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
-        await busService.DeleteBusAsync(busToDelete);
-        buses.Remove(busTodelete);
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
+            public async Task CloseModal(string modalId)
+            {
+                await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+            }
 
 
-}
+
+            public async Task SaveBus(string modalId)
+            {
+                if (Model.BusId == 0)
+                {
+
+                    // id zero represents new item
+                    Model.CreatedDate = DateTime.Now;
+                    Model.Image = ImgUploaded;
+                    await busService.AddBusAsync(Model);
+                    buses = await busService.GetBusesAsync();
+
+                }
+                else
+                {
+                    Model.ModifiedDate = DateTime.Now;
+                    Model.Image = ImgUploaded;
+                    var busToUpdate = await busService.UpdateBusAsync(Model.BusId);
+                    buses.Where(_ => _.BusId == Model.BusId).FirstOrDefault();
+                    buses.Add(busToUpdate);
+                    buses = await busService.GetBusesAsync();
+                }
+                await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+
+            }
+
+            async Task HandleFileSelected(IFileListEntry[] files)
+            {
+                var file = files.FirstOrDefault();
+
+                if (file != null)
+                {
+                    var ms = new MemoryStream();
+                    await file.Data.CopyToAsync(ms);
+                    ImgUploaded = ms.ToArray();
+                }
+            }
+
+            public async Task OpenDeleteModal(string modalId, int busItemId)
+            {
+                busToDelete = busItemId;
+                await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+            }
+
+            public async Task ConfirmDelete(string modalId)
+            {
+                var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
+                await busService.DeleteBusAsync(busToDelete);
+                buses.Remove(busTodelete);
+                await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+            }
+
+
+            }
 
 
 
