@@ -8,6 +8,9 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@implements IDisposable
+@inject NavigationManager NavManager
+
 <link href="./styles/Buses/BusIndexStyling.css" rel="stylesheet" />
 
 
@@ -43,74 +46,141 @@ else
 
     <div class="row">
         <div class="col" id="filter-col">
-
-        </div>
-        <div class="col" id="listing-col">
-            @foreach (var bus in buses)
-            {
-                <div class="card">
-                    <div class="row no-gutters">
-                        <div class="col-md-5">
-                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" class="card-img">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-dropdown-tab" data-toggle="tab" href="#nav-dropdown" role="tab" aria-controls="nav-dropdown" aria-selected="true">Dropdown Search</a>
+                    <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Type Search</a>
+                </div>
+            </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
+                            <EditForm Model="@allBuses">
+                                <div class="row">
+                                    <div class="col">
+                                        <div>
+                                            <span id="filter-count">@allBuses.Count</span>
+                                            <span id="filter-results">Results</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Makes</label>
+                                            <select @onchange="@ReturnBusesByMake" class="form-control">
+                                                <option disabled>Select By Make</option>
+                                                @foreach (var busMake in allBuses)
+                                                {
+                                                    <option value="@busMake.Make">@busMake.Make</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Prices</label>
+                                            <select @onchange="@ReturnBusesByPrice" class="form-control">
+                                                <option disabled>Select By Price</option>
+                                                @foreach (var busPrice in allBuses)
+                                                {
+                                                    <option value="@busPrice.Price">@busPrice.Price</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Mileages</label>
+                                            <select @onchange="@ReturnBusesByMileage" class="form-control">
+                                                <option disabled>Select By Mileage</option>
+                                                @foreach (var busMileage in allBuses)
+                                                {
+                                                    <option value="@busMileage.Mileage">@busMileage.Mileage</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <a @onclick="@(e => FilterClick(e, busMake, busPrice, busMileage))" href="@($"buses?busMake={busMake}&busPrice={busPrice}&busMileage={busMileage}")" class="btn">Search</a>
+                                        <a @onclick="@(e => BackToFullList(e))" href="@($"buses")" class="btn">Back To Full List</a>
+                                    </div>
+                                </div>
+                            </EditForm>
                         </div>
-                        <div class="col-md-7">
-                            <div class="card-body">
-                                <div id="isNew">
-                                    @if (bus.New == true)
-                                    {
-                                        <p class="card-text">
-                                            NEW
-                                        </p>
-                                    }
-                                    else
-                                    {
-                                        <p class="card-text">
-                                            USED
-                                        </p>
-                                    }
-                                </div>
-                                <h5 class="card-title">@bus.Year @bus.Make</h5>
-                                <p class="card-text" id="mileage">@bus.Mileage mi.</p>
-                                <h1 id="price" class="card-title">$@bus.Price</h1>
-                                <div id="delivery">
-                                    @if (bus.VirtualAppointments == true)
-                                    {
-                                        <span class="card-text">Virtual Appointments</span>    
-                                    }
-                                    @if (bus.HomeDelivery == true)
-                                    { 
-                                        <span class="card-text">Home Delivery</span>
-                                    }
-                                </div>
-                                <div id="row-within-card" class="row">
-                                    <div class="col">
-                                        <p class="card-text"><strong>Ext. Color:</strong> @bus.ExteriorColor</p>
-                                        <p class="card-text"><strong>Int. Color:</strong> @bus.InteriorColor</p>
-                                    </div>
-                                    <div class="col">
-                                        <p class="card-text"><strong>Transmission:</strong> @bus.Transmission</p>
-                                        <p class="card-text"><strong>Drivetrain:</strong> @bus.DriveTrain</p>
-                                    </div>
-                                </div>
-                                <div id="more-details">
-                                    <p class="card-text">@bus.ApplicationUser.FirstName Of @bus.ApplicationUser.City, @bus.ApplicationUser.State</p>
-                                </div>
-                                <div id="details-btn">
-                                    <a href="@($"bus/details/{bus.BusId}")" class="btn btn-block">More Details</a>
-                                </div>
-                            </div>
+                        <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                            <input @bind-value="SearchTerm" @bind-value:event="oninput" />
+                            <a @onclick="@(e => SearchTextTab(e, SearchTerm, busPrice, busMileage))" href="@($"buses?busMake={SearchTerm}&busPrice={busPrice}&busMileage={busMileage}")" class="btn">Search</a>
+                            <a @onclick="@(e => BackToFullList(e))" href="@($"buses")" class="btn">Back To Full List</a>
+
+                            <span class="text-muted ml-5">
+                                Showing @FilteredBuses.Count out of @FilteredBuses.Count
+                            </span>
+                            <h4 class="mt-4">Bus Makes</h4>
+                            <ul>
+                                @foreach (var busMake in FilteredBuses)
+                                {
+                                    <li>@busMake.Make</li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>
-             }
+                <div class="col" id="listing-col">
+                    @foreach (var bus in buses)
+                    {
+                        <div class="card">
+                            <div class="row no-gutters">
+                                <div class="col-md-5">
+                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" class="card-img">
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="card-body">
+                                        <div id="isNew">
+                                            @if (bus.New == true)
+                                            {
+                                                <p class="card-text">
+                                                    NEW
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <p class="card-text">
+                                                    USED
+                                                </p>
+                                            }
+                                        </div>
+                                        <h5 class="card-title">@bus.Year @bus.Make</h5>
+                                        <p class="card-text" id="mileage">@bus.Mileage mi.</p>
+                                        <h1 id="price" class="card-title">$@bus.Price</h1>
+                                        <div id="delivery">
+                                            @if (bus.VirtualAppointments == true)
+                                            {
+                                                <span class="card-text">Virtual Appointments</span>
+                                            }
+                                            @if (bus.HomeDelivery == true)
+                                            {
+                                                <span class="card-text">Home Delivery</span>
+                                            }
+                                        </div>
+                                        <div id="row-within-card" class="row">
+                                            <div class="col">
+                                                <p class="card-text"><strong>Ext. Color:</strong> @bus.ExteriorColor</p>
+                                                <p class="card-text"><strong>Int. Color:</strong> @bus.InteriorColor</p>
+                                            </div>
+                                            <div class="col">
+                                                <p class="card-text"><strong>Transmission:</strong> @bus.Transmission</p>
+                                                <p class="card-text"><strong>Drivetrain:</strong> @bus.DriveTrain</p>
+                                            </div>
+                                        </div>
+                                        <div id="more-details">
+                                            <p class="card-text">@bus.ApplicationUser.FirstName Of @bus.ApplicationUser.City, @bus.ApplicationUser.State</p>
+                                        </div>
+                                        <div id="details-btn">
+                                            <a href="@($"bus/details/{bus.BusId}")" class="btn btn-block">More Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
         </div>
-    </div>
-}
-        @*@if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
+            }
+            @*@if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
         {
             <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("busModal", bus.BusId))'>Edit</button>
             <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
-            
+
         }
         else
         {
@@ -290,101 +360,180 @@ else
 
             @code
 {
-        public CarLot.Models.Bus Model = new CarLot.Models.Bus();
-            public List<Bus> buses;
-            public byte[] ImgUploaded { get; set; }
-            protected bool[] boolItems =
-                   {
+                public CarLot.Models.Bus Model = new CarLot.Models.Bus();
+                public List<Bus> buses { get; set; } = new List<Bus>();
+                public List<Bus> allBuses { get; set; } = new List<Bus>();
+                public byte[] ImgUploaded { get; set; }
+                protected bool[] boolItems =
+                       {
                 true,
                 false
             };
-            public int busToDelete;
+                public int busToDelete;
 
 
 
+                string busMake = "";
+                string busPrice = "";
+                string busMileage = "";
+                string SearchTerm { get; set; } = "";
 
-            protected override async Task OnInitializedAsync()
-            {
-                await load();
-            }
+                public List<Bus> SearchBusesItems { get; set; } = new List<Bus>();
+                public List<Bus> FilteredBuses => SearchBusesItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
 
-            protected async Task load()
-            {
-                buses = await busService.GetBusesAsync();
-            }
 
-            public async Task OpenModal(string modalId, int itemBusId)
-            {
-                if (itemBusId == 0)
+
+                protected override async Task OnInitializedAsync()
                 {
-                    Model = new CarLot.Models.Bus();
-
-                }
-                else
-                {
-                    Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
-                }
-
-                await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-            }
-
-            public async Task CloseModal(string modalId)
-            {
-                await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-            }
-
-
-
-            public async Task SaveBus(string modalId)
-            {
-                if (Model.BusId == 0)
-                {
-
-                    // id zero represents new item
-                    Model.CreatedDate = DateTime.Now;
-                    Model.Image = ImgUploaded;
-                    await busService.AddBusAsync(Model);
                     buses = await busService.GetBusesAsync();
+                    allBuses = await busService.GetBusesAsync();
+                    SearchBusesItems = await busService.GetBusesAsync();
+
+                    GetQueryStringValues();
+                    NavManager.LocationChanged += HandleLocationChanged;
+
+
+
+                    if (busMake != null || busPrice != null || busMileage != null)
+                    {
+                        buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
+                        allBuses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
+
+                    }
 
                 }
-                else
+
+                public async Task SearchTextTab(MouseEventArgs e, string busMake, string busPrice,
+                    string busMileage)
                 {
-                    Model.ModifiedDate = DateTime.Now;
-                    Model.Image = ImgUploaded;
-                    var busToUpdate = await busService.UpdateBusAsync(Model.BusId);
-                    buses.Where(_ => _.BusId == Model.BusId).FirstOrDefault();
-                    buses.Add(busToUpdate);
+
+                    buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
+                }
+
+                void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+                {
+                    GetQueryStringValues();
+                    StateHasChanged();
+                }
+
+                void GetQueryStringValues()
+                {
+                    NavManager.TryGetQueryString<string>("busMake", out busMake);
+                    NavManager.TryGetQueryString<string>("busPrice", out busPrice);
+                    NavManager.TryGetQueryString<string>("busMileage", out busMileage);
+                }
+
+
+                public void Dispose()
+                {
+                    NavManager.LocationChanged -= HandleLocationChanged;
+                }
+
+                void ReturnBusesByMake(ChangeEventArgs e)
+                {
+                    busMake = e.Value.ToString();
+                }
+
+                void ReturnBusesByPrice(ChangeEventArgs e)
+                {
+                    busPrice = e.Value.ToString();
+                }
+
+                void ReturnBusesByMileage(ChangeEventArgs e)
+                {
+                    busMileage = e.Value.ToString();
+                }
+
+             
+
+                public async Task FilterClick(MouseEventArgs e, string busMake,
+                        string busPrice, string busMileage)
+                {
+                    buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
+                    allBuses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
+                }
+
+                public async Task BackToFullList(MouseEventArgs e)
+                {
+
+                    SearchTerm = "";
+                    allBuses = await busService.GetBusesAsync();
                     buses = await busService.GetBusesAsync();
                 }
-                await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
 
-            }
 
-            async Task HandleFileSelected(IFileListEntry[] files)
-            {
-                var file = files.FirstOrDefault();
-
-                if (file != null)
+                public async Task OpenModal(string modalId, int itemBusId)
                 {
-                    var ms = new MemoryStream();
-                    await file.Data.CopyToAsync(ms);
-                    ImgUploaded = ms.ToArray();
+                    if (itemBusId == 0)
+                    {
+                        Model = new CarLot.Models.Bus();
+
+                    }
+                    else
+                    {
+                        Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
+                    }
+
+                    await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
                 }
-            }
 
-            public async Task OpenDeleteModal(string modalId, int busItemId)
-            {
-                busToDelete = busItemId;
-                await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-            }
+                public async Task CloseModal(string modalId)
+                {
+                    await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+                }
 
-            public async Task ConfirmDelete(string modalId)
-            {
-                var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
-                await busService.DeleteBusAsync(busToDelete);
-                buses.Remove(busTodelete);
-                await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-            }
+
+
+                public async Task SaveBus(string modalId)
+                {
+                    if (Model.BusId == 0)
+                    {
+
+                        // id zero represents new item
+                        Model.CreatedDate = DateTime.Now;
+                        Model.Image = ImgUploaded;
+                        await busService.AddBusAsync(Model);
+                        buses = await busService.GetBusesAsync();
+
+                    }
+                    else
+                    {
+                        Model.ModifiedDate = DateTime.Now;
+                        Model.Image = ImgUploaded;
+                        var busToUpdate = await busService.UpdateBusAsync(Model.BusId);
+                        buses.Where(_ => _.BusId == Model.BusId).FirstOrDefault();
+                        buses.Add(busToUpdate);
+                        buses = await busService.GetBusesAsync();
+                    }
+                    await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+
+                }
+
+                async Task HandleFileSelected(IFileListEntry[] files)
+                {
+                    var file = files.FirstOrDefault();
+
+                    if (file != null)
+                    {
+                        var ms = new MemoryStream();
+                        await file.Data.CopyToAsync(ms);
+                        ImgUploaded = ms.ToArray();
+                    }
+                }
+
+                public async Task OpenDeleteModal(string modalId, int busItemId)
+                {
+                    busToDelete = busItemId;
+                    await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+                }
+
+                public async Task ConfirmDelete(string modalId)
+                {
+                    var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
+                    await busService.DeleteBusAsync(busToDelete);
+                    buses.Remove(busTodelete);
+                    await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+                }
 
 
             }

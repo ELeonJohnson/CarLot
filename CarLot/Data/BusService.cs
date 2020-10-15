@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,16 +38,52 @@ namespace CarLot.Data
             return await _context.Buses.Include(r => r.ApplicationUser).OrderByDescending(b => b.BusId).Take(2).ToListAsync();
         }
 
-
-        public async Task<List<Bus>> GetBusByMakes(string makeOfBus)
+        public async Task<List<Bus>> GetFilteredBuses(string makeOfBus, string priceOfBus, 
+            string mileageOfBus)
         {
-  
-            return await _context.Buses.Where(bm => bm.Make == makeOfBus).OrderByDescending(b => b.CreatedDate).ToListAsync();
+            var buses = from b in _context.Buses
+                        select b;
+
+
+            if (!string.IsNullOrEmpty(makeOfBus))
+            {
+                buses = buses.Where(bm => bm.Make == makeOfBus);
+            }
+            else
+            {
+                makeOfBus = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(priceOfBus))
+            {
+                buses = buses.Where(bp => bp.Price == priceOfBus);
+            }
+            else
+            {
+                priceOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(mileageOfBus))
+            {
+                buses = buses.Where(bmi => bmi.Mileage == mileageOfBus);
+            }
+            else 
+            {
+                mileageOfBus = "";
+            }
+
+         
+
+
+            return await buses.OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
+
+    
 
         public async Task<List<Bus>> GetBusesAsync()
         {
-            return await _context.Buses.Include(r => r.ApplicationUser).ToListAsync();
+            return await _context.Buses.Include(r => r.ApplicationUser).OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<Bus> GetBusByIdAsync(int id)

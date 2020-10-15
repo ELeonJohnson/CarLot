@@ -2,6 +2,7 @@
 using CarLot.Models;
 using CarLot.Pages;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -35,20 +36,20 @@ namespace CarLot.Pages
         public List<Truck> FeaturedTrucks { get; set; } = new List<Truck>();
 
         public string MakeOfBus { get; set; }
+        public string PriceOfBus = "";
+        public string MileageOfBus = "";
+       
         public string MakeOfCar { get; set; }
         public string MakeOfMotorcycle { get; set; }
         public string MakeOfSUV { get; set; }
         public string MakeOfTruck { get; set; }
+
         public List<Bus> DisplayBusesByMake { get; set; } = new List<Bus>();
         public List<Car> DisplayCarsByMake { get; set; } = new List<Car>();
         public List<Motorcycle> DisplayMotorcyclesByMake { get; set; } = new List<Motorcycle>();
         public List<SUV> DisplaySUVsByMake { get; set; } = new List<SUV>();
         public List<Truck> DisplayTrucksByMake { get; set; } = new List<Truck>();
-        public List<Bus> BusResults { get; set; } = new List<Bus>();
-        public List<Car> CarResults { get; set; } = new List<Car>();
-        public List<Motorcycle> MotorcycleResults { get; set; } = new List<Motorcycle>();
-        public List<SUV> SUVResults { get; set; } = new List<SUV>();
-        public List<Truck> TruckResults { get; set; } = new List<Truck>();
+    
 
 
 
@@ -70,10 +71,11 @@ namespace CarLot.Pages
             DisplayTrucksByMake = await truckService.GetTrucksAsync();
         }
 
+
+       
         void ReturnBusesByMake(ChangeEventArgs e)
         {
-            MakeOfBus = e.Value.ToString();
-           
+            MakeOfBus = e.Value.ToString();      
         }
 
         void ReturnCarsByMake(ChangeEventArgs e)

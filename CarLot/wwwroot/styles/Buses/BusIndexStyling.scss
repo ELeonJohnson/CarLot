@@ -38,10 +38,61 @@ div#not-auth {
 div.row {
     div#filter-col.col {
         max-width: 30%;
+
+        nav {
+            margin-bottom: 10%;
+
+            div#nav-tab.nav.nav-tabs {
+                a {
+                    color: $black;
+                    font-family: $text-font;
+                }
+            }
+        }
+
+        div#nav-tabContent.tab-content {
+            div#nav-dropdown.tab-pane.fade.show.active {
+                form {
+                    div.row {
+                        div.col {
+                            div {
+                                display: block;
+                                margin-bottom: 5%;
+
+                                span#filter-count {
+                                    color: $black;
+                                    font-family: $text-font;
+                                    font-weight: 800;
+                                }
+
+                                span #filter-results {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+                            }
+
+                            div.form-group {
+                                border-top: 1px solid $lightest-gray;
+                                border-bottom: 1px solid $lightest-gray;
+                                padding: 5%;
+                                margin-bottom: 10%;
+
+                                label {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     div#listing-col.col {
         max-width: 70%;
+
+
 
         div.card {
             margin-bottom: 2.5%;
@@ -114,6 +165,7 @@ div.row {
                             }
                         }
                     }
+
                     div#more-details {
                         p.card-text {
                             color: $black;
@@ -126,6 +178,7 @@ div.row {
 
                     div#details-btn {
                         margin-top: 5%;
+
                         a.btn.btn-block {
                             font-family: $text-font;
                             color: $white;
