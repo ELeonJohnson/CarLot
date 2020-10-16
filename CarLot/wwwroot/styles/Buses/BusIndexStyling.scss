@@ -51,10 +51,52 @@ div.row {
         }
 
         div#nav-tabContent.tab-content {
-            div#nav-dropdown.tab-pane.fade.show.active {
+            div#nav-text.tab-pane.fade.active.show {
+                a#back-to.btn {
+                    color: $light-purple;
+                    border-color: $light-purple;
+                    margin-left: 20%;
+                    margin-bottom: 5%;
+                   
+
+                    &:hover {
+                        color: $white;
+                        background-color: $light-purple;
+                        border-color: $light-purple;
+                    }
+                }
+
+                div.form-group {
+                    a.btn {
+                        color: $light-purple;
+                        border-color: $light-purple;
+                        margin-left: 2.5%;
+
+
+                        &:hover {
+                            color: $white;
+                            background-color: $light-purple;
+                            border-color: $light-purple;
+                        }
+                    }
+                }
+            }
+
+            div#nav-dropdown.tab-pane.fade.active.show {
                 form {
                     div.row {
                         div.col {
+                            a.btn {
+                                color: $light-purple;
+                                border-color: $light-purple;
+
+                                &:hover {
+                                    color: $white;
+                                    background-color: $light-purple;
+                                    border-color: $light-purple;
+                                }
+                            }
+
                             div {
                                 display: block;
                                 margin-bottom: 5%;
@@ -65,7 +107,7 @@ div.row {
                                     font-weight: 800;
                                 }
 
-                                span #filter-results {
+                                span#filter-results {
                                     color: $black;
                                     font-family: $text-font;
                                 }

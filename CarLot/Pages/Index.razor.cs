@@ -38,6 +38,16 @@ namespace CarLot.Pages
         public string MakeOfBus { get; set; }
         public string PriceOfBus = "";
         public string MileageOfBus = "";
+        public int YearOfBus = 0;
+        public string BodyStyleOfBus = "";
+        public string ExtColor = "";
+        public string IntColor = "";
+        public string DriveTrain = "";
+        public string Transmission = "";
+        public string Cylinders = "";
+        public string Fuel = "";
+        public string DoorCount = "";
+        public string SearchString = "";
        
         public string MakeOfCar { get; set; }
         public string MakeOfMotorcycle { get; set; }

@@ -52,491 +52,660 @@ else
                     <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Type Search</a>
                 </div>
             </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
-                            <EditForm Model="@allBuses">
-                                <div class="row">
-                                    <div class="col">
-                                        <div>
-                                            <span id="filter-count">@allBuses.Count</span>
-                                            <span id="filter-results">Results</span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Makes</label>
-                                            <select @onchange="@ReturnBusesByMake" class="form-control">
-                                                <option disabled>Select By Make</option>
-                                                @foreach (var busMake in allBuses)
-                                                {
-                                                    <option value="@busMake.Make">@busMake.Make</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Prices</label>
-                                            <select @onchange="@ReturnBusesByPrice" class="form-control">
-                                                <option disabled>Select By Price</option>
-                                                @foreach (var busPrice in allBuses)
-                                                {
-                                                    <option value="@busPrice.Price">@busPrice.Price</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Mileages</label>
-                                            <select @onchange="@ReturnBusesByMileage" class="form-control">
-                                                <option disabled>Select By Mileage</option>
-                                                @foreach (var busMileage in allBuses)
-                                                {
-                                                    <option value="@busMileage.Mileage">@busMileage.Mileage</option>
-                                                }
-                                            </select>
-                                        </div>
-                                        <a @onclick="@(e => FilterClick(e, busMake, busPrice, busMileage))" href="@($"buses?busMake={busMake}&busPrice={busPrice}&busMileage={busMileage}")" class="btn">Search</a>
-                                        <a @onclick="@(e => BackToFullList(e))" href="@($"buses")" class="btn">Back To Full List</a>
-                                    </div>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
+                    <EditForm Model="@allBuses">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <span id="filter-count">@allBuses.Count</span>
+                                    <span id="filter-results">Results</span>
                                 </div>
-                            </EditForm>
+                                <div class="form-group">
+                                    <label>Makes</label>
+                                    <select @onchange="@ReturnBusesByMake" class="form-control">
+                                        <option disabled>Select By Makes</option>
+                                        @foreach (var busMake in allBuses)
+                                        {
+                                            <option value="@busMake.Make">@busMake.Make</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prices</label>
+                                    <select @onchange="@ReturnBusesByPrice" class="form-control">
+                                        <option disabled>Select By Prices</option>
+                                        @foreach (var busPrice in allBuses)
+                                        {
+                                            <option value="@busPrice.Price">@busPrice.Price</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mileages</label>
+                                    <select @onchange="@ReturnBusesByMileage" class="form-control">
+                                        <option disabled>Select By Mileage</option>
+                                        @foreach (var busMileage in allBuses)
+                                        {
+                                            <option value="@busMileage.Mileage">@busMileage.Mileage</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Years</label>
+                                    <select @onchange="@ReturnBusesByYear" class="form-control">
+                                        <option disabled>Select By Years</option>
+                                        @foreach (var busYear in allBuses)
+                                        {
+                                            <option value="@busYear.Year">@busYear.Year</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Body Styles</label>
+                                    <select @onchange="@ReturnBusesByBodyStyle" class="form-control">
+                                        <option disabled>Select By Body Styles</option>
+                                        @foreach (var busBodyStyle in allBuses)
+                                        {
+                                            <option value="@busBodyStyle.BodyStyle">@busBodyStyle.BodyStyle</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ext. Colors</label>
+                                    <select @onchange="@ReturnBusesByExColor" class="form-control">
+                                        <option disabled>Select By Exterior Color</option>
+                                        @foreach (var busExtColor in allBuses)
+                                        {
+                                            <option value="@busExtColor.ExteriorColor">@busExtColor.ExteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Int. Colors</label>
+                                    <select @onchange="@ReturnBusesByIntColor" class="form-control">
+                                        <option disabled>Select By Interior Colors</option>
+                                        @foreach (var busIntColor in allBuses)
+                                        {
+                                            <option value="@busIntColor.InteriorColor">@busIntColor.InteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Drivetrains</label>
+                                    <select @onchange="@ReturnBusesByDrivetrain" class="form-control">
+                                        <option disabled>Select By Drivetrains</option>
+                                        @foreach (var busDrivetrain in allBuses)
+                                        {
+                                            <option value="@busDrivetrain.DriveTrain">@busDrivetrain.DriveTrain</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Transmissions</label>
+                                    <select @onchange="@ReturnBusesByTransmission" class="form-control">
+                                        <option disabled>Select By Transmissions</option>
+                                        @foreach (var busTransmission in allBuses)
+                                        {
+                                            <option value="@busTransmission.Transmission">@busTransmission.Transmission</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cylinders</label>
+                                    <select @onchange="@ReturnBusesByCylinder" class="form-control">
+                                        <option disabled>Select By Cylinders</option>
+                                        @foreach (var busCylinder in allBuses)
+                                        {
+                                            <option value="@busCylinder.Cylinders">@busCylinder.Cylinders</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuels</label>
+                                    <select @onchange="@ReturnBusesByFuel" class="form-control">
+                                        <option disabled>Select By Fuels</option>
+                                        @foreach (var busFuel in allBuses)
+                                        {
+                                            <option value="@busFuel.Fuel">@busFuel.Fuel</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Door Counts</label>
+                                    <select @onchange="@ReturnBusesByDoorCount" class="form-control">
+                                        <option disabled>Select By Door Counts</option>
+                                        @foreach (var busDoorCount in allBuses)
+                                        {
+                                            <option value="@busDoorCount.DoorCount">@busDoorCount.DoorCount</option>
+                                        }
+                                    </select>
+                                </div>
+                                <a @onclick="@(e => FilterClick(e, busMake, busPrice, busMileage, busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission, busCylinder, busFuel, busDoorCount, busSearchString))" href="@($"buses?busMake={busMake}&busPrice={busPrice}&busMileage={busMileage}&busYear={busYear}&busBodyStyle={busBodyStyle}&busExColor={busExColor}&busIntColor={busIntColor}&busDrivetrain={busDrivetrain}&busTransmission={busTransmission}&busCylinder={busCylinder}&busFuel={busFuel}&busDoorCount={busDoorCount}&busSearchString={busSearchString}")" class="btn">Search</a>
+                                <a @onclick="@(e => BackToFullList(e))" href="@($"buses")" class="btn">Back To Full List</a>
+                            </div>
                         </div>
-                        <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
-                            <input @bind-value="SearchTerm" @bind-value:event="oninput" />
-                            <a @onclick="@(e => SearchTextTab(e, SearchTerm, busPrice, busMileage))" href="@($"buses?busMake={SearchTerm}&busPrice={busPrice}&busMileage={busMileage}")" class="btn">Search</a>
-                            <a @onclick="@(e => BackToFullList(e))" href="@($"buses")" class="btn">Back To Full List</a>
-
-                            <span class="text-muted ml-5">
-                                Showing @FilteredBuses.Count out of @FilteredBuses.Count
-                            </span>
-                            <h4 class="mt-4">Bus Makes</h4>
-                            <ul>
-                                @foreach (var busMake in FilteredBuses)
-                                {
-                                    <li>@busMake.Make</li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
+                    </EditForm>
                 </div>
-                <div class="col" id="listing-col">
-                    @foreach (var bus in buses)
-                    {
-                        <div class="card">
-                            <div class="row no-gutters">
-                                <div class="col-md-5">
-                                    <img src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" class="card-img">
+                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                    <div class="form-group">
+                        <input placeholder="Search By Makes" @bind-value="SearchTerm" @bind-value:event="oninput" />
+                        <a @onclick="@(e => SearchTextTab(e, SearchTerm, busPrice, busMileage, busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission, busCylinder, busFuel, busDoorCount, busSearchString))" href="@($"buses?busMake={SearchTerm}&busPrice={busPrice}&busMileage={busMileage}&busYear={busYear}&busBodyStyle={busBodyStyle}&busExColor={busExColor}&busIntColor={busIntColor}&busDrivetrain={busDrivetrain}&busTransmission={busTransmission}&busCylinder={busCylinder}&busFuel={busFuel}&busDoorCount={busDoorCount}&busSearchString={busSearchString}")" class="btn">Search</a>
+                    </div>
+                    <br />
+                    <span class="text-muted ml-5">
+                        Showing @FilteredBuses.Count out of @FilteredBuses.Count
+                    </span>
+                    <br />
+                    <h4 class="mt-4">List Of Bus Makes</h4>
+                    <ul>
+                        @foreach (var busMake in FilteredBuses)
+                        {
+                            <li>@busMake.Make</li>
+                        }
+                    </ul>
+                    <a id="back-to" @onclick="@(e => BackToFullList(e))" href="@($"buses")" class="btn">Back To Full List</a>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="listing-col">
+            @foreach (var bus in buses)
+            {
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(bus.Image)" class="card-img">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div id="isNew">
+                                    @if (bus.New == true)
+                                    {
+                                        <p class="card-text">
+                                            NEW
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">
+                                            USED
+                                        </p>
+                                    }
                                 </div>
-                                <div class="col-md-7">
-                                    <div class="card-body">
-                                        <div id="isNew">
-                                            @if (bus.New == true)
-                                            {
-                                                <p class="card-text">
-                                                    NEW
-                                                </p>
-                                            }
-                                            else
-                                            {
-                                                <p class="card-text">
-                                                    USED
-                                                </p>
-                                            }
-                                        </div>
-                                        <h5 class="card-title">@bus.Year @bus.Make</h5>
-                                        <p class="card-text" id="mileage">@bus.Mileage mi.</p>
-                                        <h1 id="price" class="card-title">$@bus.Price</h1>
-                                        <div id="delivery">
-                                            @if (bus.VirtualAppointments == true)
-                                            {
-                                                <span class="card-text">Virtual Appointments</span>
-                                            }
-                                            @if (bus.HomeDelivery == true)
-                                            {
-                                                <span class="card-text">Home Delivery</span>
-                                            }
-                                        </div>
-                                        <div id="row-within-card" class="row">
-                                            <div class="col">
-                                                <p class="card-text"><strong>Ext. Color:</strong> @bus.ExteriorColor</p>
-                                                <p class="card-text"><strong>Int. Color:</strong> @bus.InteriorColor</p>
-                                            </div>
-                                            <div class="col">
-                                                <p class="card-text"><strong>Transmission:</strong> @bus.Transmission</p>
-                                                <p class="card-text"><strong>Drivetrain:</strong> @bus.DriveTrain</p>
-                                            </div>
-                                        </div>
-                                        <div id="more-details">
-                                            <p class="card-text">@bus.ApplicationUser.FirstName Of @bus.ApplicationUser.City, @bus.ApplicationUser.State</p>
-                                        </div>
-                                        <div id="details-btn">
-                                            <a href="@($"bus/details/{bus.BusId}")" class="btn btn-block">More Details</a>
-                                        </div>
+                                <h5 class="card-title">@bus.Year @bus.Make</h5>
+                                <p class="card-text" id="mileage">@bus.Mileage mi.</p>
+                                <h1 id="price" class="card-title">$@bus.Price</h1>
+                                <div id="delivery">
+                                    @if (bus.VirtualAppointments == true)
+                                    {
+                                        <span class="card-text">Virtual Appointments</span>
+                                    }
+                                    @if (bus.HomeDelivery == true)
+                                    {
+                                        <span class="card-text">Home Delivery</span>
+                                    }
+                                </div>
+                                <div id="row-within-card" class="row">
+                                    <div class="col">
+                                        <p class="card-text"><strong>Ext. Color:</strong> @bus.ExteriorColor</p>
+                                        <p class="card-text"><strong>Int. Color:</strong> @bus.InteriorColor</p>
                                     </div>
+                                    <div class="col">
+                                        <p class="card-text"><strong>Transmission:</strong> @bus.Transmission</p>
+                                        <p class="card-text"><strong>Drivetrain:</strong> @bus.DriveTrain</p>
+                                    </div>
+                                </div>
+                                <div id="more-details">
+                                    <p class="card-text">@bus.ApplicationUser.FirstName Of @bus.ApplicationUser.City, @bus.ApplicationUser.State</p>
+                                </div>
+                                <div id="details-btn">
+                                    <a href="@($"bus/details/{bus.BusId}")" class="btn btn-block">More Details</a>
                                 </div>
                             </div>
                         </div>
-                    }
+                    </div>
                 </div>
-        </div>
             }
-            @*@if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
+        </div>
+    </div>
+}
+@*@if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
+    {
+        <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("busModal", bus.BusId))'>Edit</button>
+        <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
+
+    }
+    else
+    {
+        <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
+    }*@
+
+
+
+<div>
+    <div class="modal fade" id="busModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Bus's Information</h5>
+                    <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">X</MatButton>
+                </div>
+                <div class="modal-body">
+                    <form enctype="multipart/form-data">
+                        <input type="hidden" @bind="Model.BusId" id="busId">
+                        <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
+                        <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.Make" Label="Make"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Price" Label="Price" Icon="attach_money"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Mileage" Label="Mileage"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.DriveTrain" Label="Drivetrain"></MatTextField>
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.Transmission" Label="Transmission"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Cylinders" Label="Cylinders"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Fuel" Label="Fuel"></MatTextField>
+                                </p>
+                                <p>
+                                    <MatTextField @bind-Value="Model.DoorCount" Label="Door Count"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.Features" Label="Features" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.BodyStyle" Label="Body Style" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.ExteriorColor" Label="Exterior Color" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.InteriorColor" Label="Interior Color" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p>
+                                    <MatTextField @bind-Value="Model.SellerNotes" Label="Seller Notes" TextArea="true" FullWidth="true"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <h2>Tell Us More About Your Bus</h2>
+                        <p id="p-apply-check">Please Check All That Applies To Your Bus.</p>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Bus Available For Home Delivery?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.HomeDelivery" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Bus Available For a Virtual Appointments?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.VirtualAppointments" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Bus New?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.New" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
+                                <MatH5>Is Your Bus Used?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.Used" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Is Your Bus Certified Preowned?</MatH5>
+                                <MatRadioGroup @bind-Value="Model.CertifiedPreOwned" Items="boolItems">
+
+                                </MatRadioGroup>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+
+                                <h5>Bus's Year?</h5>
+                                <p>
+                                    <MatTextField @bind-Value="Model.Year" Label="Year"></MatTextField>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <MatH5>Bus's Image</MatH5>
+                                <InputFile multiple OnChange="HandleFileSelected" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">Close</MatButton>
+                    <MatButton Raised="true" Type="button" @onclick='@(e => SaveBus("busModal"))'>Save</MatButton>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Bus?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" @onclick='@(e => ConfirmDelete("deleteConfirmation"))'>Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@code
+{
+    public CarLot.Models.Bus Model = new CarLot.Models.Bus();
+    public List<Bus> buses { get; set; } = new List<Bus>();
+    public List<Bus> allBuses { get; set; } = new List<Bus>();
+    public byte[] ImgUploaded { get; set; }
+    protected bool[] boolItems =
+           {
+                true,
+                false
+            };
+    public int busToDelete;
+
+
+
+    string busMake = "";
+    string busPrice = "";
+    string busMileage = "";
+    int? busYear = 0;
+    string busBodyStyle = "";
+    string busExColor = "";
+    string busIntColor = "";
+    string busDrivetrain = "";
+    string busTransmission = "";
+    string busCylinder = "";
+    string busFuel = "";
+    string busDoorCount = "";
+    string busSearchString = "";
+
+    string SearchTerm { get; set; } = "";
+
+    public List<Bus> SearchBusesItems { get; set; } = new List<Bus>();
+    public List<Bus> FilteredBuses => SearchBusesItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        buses = await busService.GetBusesAsync();
+        allBuses = await busService.GetBusesAsync();
+        SearchBusesItems = await busService.GetBusesAsync();
+
+        GetQueryStringValues();
+        NavManager.LocationChanged += HandleLocationChanged;
+
+        if (busMake != null || busPrice != null || busMileage != null
+        || busYear != null || busBodyStyle != null || busExColor != null
+        || busIntColor != null || busDrivetrain != null || busTransmission != null
+        || busCylinder != null || busFuel != null || busDoorCount != null || busSearchString != null)
         {
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("busModal", bus.BusId))'>Edit</button>
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
+            buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage, busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission, busCylinder, busFuel, busDoorCount, busSearchString);
+            allBuses = await busService.GetFilteredBuses(busMake, busPrice, busMileage, busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission, busCylinder, busFuel, busDoorCount, busSearchString);
+
+        }
+
+    }
+
+    public async Task SearchTextTab(MouseEventArgs e, string busMake, string busPrice,
+        string busMileage, int? busYear, string busBodyStyle, string busExColor,
+        string busIntColor, string busDrivetrain, string busTransmission, string busCylinder,
+        string busFuel, string busDoorCount, string busSearchString)
+    {
+
+
+        buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage,
+            busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission,
+            busCylinder, busFuel, busDoorCount, busSearchString);
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        GetQueryStringValues();
+        StateHasChanged();
+    }
+
+    void GetQueryStringValues()
+    {
+        NavManager.TryGetQueryString<string>("busMake", out busMake);
+        NavManager.TryGetQueryString<string>("busPrice", out busPrice);
+        NavManager.TryGetQueryString<string>("busMileage", out busMileage);
+        NavManager.TryGetQueryString<int?>("busYear", out busYear);
+        NavManager.TryGetQueryString<string>("busBodyStyle", out busBodyStyle);
+        NavManager.TryGetQueryString<string>("busExColor", out busExColor);
+        NavManager.TryGetQueryString<string>("busIntColor", out busIntColor);
+        NavManager.TryGetQueryString<string>("busDrivetrain", out busDrivetrain);
+        NavManager.TryGetQueryString<string>("busTransmission", out busTransmission);
+        NavManager.TryGetQueryString<string>("busCylinder", out busCylinder);
+        NavManager.TryGetQueryString<string>("busFuel", out busFuel);
+        NavManager.TryGetQueryString<string>("busDoorCount", out busDoorCount);
+        NavManager.TryGetQueryString<string>("busSearchString", out busSearchString);
+    }
+
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void ReturnBusesByMake(ChangeEventArgs e)
+    {
+        busMake = e.Value.ToString();
+    }
+
+    void ReturnBusesByPrice(ChangeEventArgs e)
+    {
+        busPrice = e.Value.ToString();
+    }
+
+    void ReturnBusesByMileage(ChangeEventArgs e)
+    {
+        busMileage = e.Value.ToString();
+    }
+
+    void ReturnBusesByYear(ChangeEventArgs e)
+    {
+        busYear = int.Parse(e.Value.ToString());
+    }
+
+    void ReturnBusesByBodyStyle(ChangeEventArgs e)
+    {
+        busBodyStyle = e.Value.ToString();
+    }
+
+    void ReturnBusesByExColor(ChangeEventArgs e)
+    {
+        busExColor = e.Value.ToString();
+    }
+
+    void ReturnBusesByIntColor(ChangeEventArgs e)
+    {
+        busIntColor = e.Value.ToString();
+    }
+
+    void ReturnBusesByDrivetrain(ChangeEventArgs e)
+    {
+        busDrivetrain = e.Value.ToString();
+    }
+
+    void ReturnBusesByTransmission(ChangeEventArgs e)
+    {
+        busTransmission = e.Value.ToString();
+    }
+
+    void ReturnBusesByCylinder(ChangeEventArgs e)
+    {
+        busCylinder = e.Value.ToString();
+    }
+
+    void ReturnBusesByFuel(ChangeEventArgs e)
+    {
+        busFuel = e.Value.ToString();
+    }
+
+    void ReturnBusesByDoorCount(ChangeEventArgs e)
+    {
+        busDoorCount = e.Value.ToString();
+    }
+
+   
+
+    public async Task FilterClick(MouseEventArgs e, string busMake,
+                                         string busPrice, string busMileage, int? busYear,
+                                         string busBodyStyle, string busExColor, string busIntColor,
+                                         string busDrivetrain, string busTransmission, string busCylinder,
+                                         string busFuel, string busDoorCount, string busSearchString)
+    {
+
+        buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage, busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission, busCylinder, busFuel, busDoorCount, busSearchString);
+        allBuses = await busService.GetFilteredBuses(busMake, busPrice, busMileage, busYear, busBodyStyle, busExColor, busIntColor, busDrivetrain, busTransmission, busCylinder, busFuel, busDoorCount, busSearchString);
+    }
+
+    public async Task BackToFullList(MouseEventArgs e)
+    {
+
+        SearchTerm = "";
+        allBuses = await busService.GetBusesAsync();
+        buses = await busService.GetBusesAsync();
+    }
+
+
+    public async Task OpenModal(string modalId, int itemBusId)
+    {
+        if (itemBusId == 0)
+        {
+            Model = new CarLot.Models.Bus();
 
         }
         else
         {
-            <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
-        }*@
+            Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
+        }
+
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+    public async Task CloseModal(string modalId)
+    {
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+    }
 
 
 
-            <div>
-                <div class="modal fade" id="busModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Bus's Information</h5>
-                                <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">X</MatButton>
-                            </div>
-                            <div class="modal-body">
-                                <form enctype="multipart/form-data">
-                                    <input type="hidden" @bind="Model.BusId" id="busId">
-                                    <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
-                                    <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Make" Label="Make"></MatTextField>
-                                            </p>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Price" Label="Price" Icon="attach_money"></MatTextField>
-                                            </p>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Mileage" Label="Mileage"></MatTextField>
-                                            </p>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.DriveTrain" Label="Drivetrain"></MatTextField>
-                                            </p>
-                                        </div>
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Transmission" Label="Transmission"></MatTextField>
-                                            </p>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Cylinders" Label="Cylinders"></MatTextField>
-                                            </p>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Fuel" Label="Fuel"></MatTextField>
-                                            </p>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.DoorCount" Label="Door Count"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Features" Label="Features" TextArea="true" FullWidth="true"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.BodyStyle" Label="Body Style" TextArea="true" FullWidth="true"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.ExteriorColor" Label="Exterior Color" TextArea="true" FullWidth="true"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.InteriorColor" Label="Interior Color" TextArea="true" FullWidth="true"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <p>
-                                                <MatTextField @bind-Value="Model.SellerNotes" Label="Seller Notes" TextArea="true" FullWidth="true"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <h2>Tell Us More About Your Bus</h2>
-                                    <p id="p-apply-check">Please Check All That Applies To Your Bus.</p>
-                                    <div class="row">
-                                        <div class="col">
-                                            <MatH5>Is Your Bus Available For Home Delivery?</MatH5>
-                                            <MatRadioGroup @bind-Value="Model.HomeDelivery" Items="boolItems">
+    public async Task SaveBus(string modalId)
+    {
+        if (Model.BusId == 0)
+        {
 
-                                            </MatRadioGroup>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <MatH5>Is Your Bus Available For a Virtual Appointments?</MatH5>
-                                            <MatRadioGroup @bind-Value="Model.VirtualAppointments" Items="boolItems">
+            // id zero represents new item
+            Model.CreatedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            await busService.AddBusAsync(Model);
+            buses = await busService.GetBusesAsync();
 
-                                            </MatRadioGroup>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <MatH5>Is Your Bus New?</MatH5>
-                                            <MatRadioGroup @bind-Value="Model.New" Items="boolItems">
+        }
+        else
+        {
+            Model.ModifiedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            var busToUpdate = await busService.UpdateBusAsync(Model.BusId);
+            buses.Where(_ => _.BusId == Model.BusId).FirstOrDefault();
+            buses.Add(busToUpdate);
+            buses = await busService.GetBusesAsync();
+        }
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
 
-                                            </MatRadioGroup>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
+    }
 
-                                            <MatH5>Is Your Bus Used?</MatH5>
-                                            <MatRadioGroup @bind-Value="Model.Used" Items="boolItems">
+    async Task HandleFileSelected(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
 
-                                            </MatRadioGroup>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <MatH5>Is Your Bus Certified Preowned?</MatH5>
-                                            <MatRadioGroup @bind-Value="Model.CertifiedPreOwned" Items="boolItems">
+        if (file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
+        }
+    }
 
-                                            </MatRadioGroup>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
+    public async Task OpenDeleteModal(string modalId, int busItemId)
+    {
+        busToDelete = busItemId;
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
 
-                                            <h5>Bus's Year?</h5>
-                                            <p>
-                                                <MatTextField @bind-Value="Model.Year" Label="Year"></MatTextField>
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <MatH5>Bus's Image</MatH5>
-                                            <InputFile multiple OnChange="HandleFileSelected" />
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <MatButton Raised="true" Type="button" data-dismiss="modal" aria-label="Close">Close</MatButton>
-                                <MatButton Raised="true" Type="button" @onclick='@(e => SaveBus("busModal"))'>Save</MatButton>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="deleteConfirmation" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Bus?</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" @onclick='@(e => ConfirmDelete("deleteConfirmation"))'>Ok</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    public async Task ConfirmDelete(string modalId)
+    {
+        var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
+        await busService.DeleteBusAsync(busToDelete);
+        buses.Remove(busTodelete);
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+    }
 
 
-
-
-
-            @code
-{
-                public CarLot.Models.Bus Model = new CarLot.Models.Bus();
-                public List<Bus> buses { get; set; } = new List<Bus>();
-                public List<Bus> allBuses { get; set; } = new List<Bus>();
-                public byte[] ImgUploaded { get; set; }
-                protected bool[] boolItems =
-                       {
-                true,
-                false
-            };
-                public int busToDelete;
-
-
-
-                string busMake = "";
-                string busPrice = "";
-                string busMileage = "";
-                string SearchTerm { get; set; } = "";
-
-                public List<Bus> SearchBusesItems { get; set; } = new List<Bus>();
-                public List<Bus> FilteredBuses => SearchBusesItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
-
-
-
-                protected override async Task OnInitializedAsync()
-                {
-                    buses = await busService.GetBusesAsync();
-                    allBuses = await busService.GetBusesAsync();
-                    SearchBusesItems = await busService.GetBusesAsync();
-
-                    GetQueryStringValues();
-                    NavManager.LocationChanged += HandleLocationChanged;
-
-
-
-                    if (busMake != null || busPrice != null || busMileage != null)
-                    {
-                        buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
-                        allBuses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
-
-                    }
-
-                }
-
-                public async Task SearchTextTab(MouseEventArgs e, string busMake, string busPrice,
-                    string busMileage)
-                {
-
-                    buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
-                }
-
-                void HandleLocationChanged(object sender, LocationChangedEventArgs e)
-                {
-                    GetQueryStringValues();
-                    StateHasChanged();
-                }
-
-                void GetQueryStringValues()
-                {
-                    NavManager.TryGetQueryString<string>("busMake", out busMake);
-                    NavManager.TryGetQueryString<string>("busPrice", out busPrice);
-                    NavManager.TryGetQueryString<string>("busMileage", out busMileage);
-                }
-
-
-                public void Dispose()
-                {
-                    NavManager.LocationChanged -= HandleLocationChanged;
-                }
-
-                void ReturnBusesByMake(ChangeEventArgs e)
-                {
-                    busMake = e.Value.ToString();
-                }
-
-                void ReturnBusesByPrice(ChangeEventArgs e)
-                {
-                    busPrice = e.Value.ToString();
-                }
-
-                void ReturnBusesByMileage(ChangeEventArgs e)
-                {
-                    busMileage = e.Value.ToString();
-                }
-
-             
-
-                public async Task FilterClick(MouseEventArgs e, string busMake,
-                        string busPrice, string busMileage)
-                {
-                    buses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
-                    allBuses = await busService.GetFilteredBuses(busMake, busPrice, busMileage);
-                }
-
-                public async Task BackToFullList(MouseEventArgs e)
-                {
-
-                    SearchTerm = "";
-                    allBuses = await busService.GetBusesAsync();
-                    buses = await busService.GetBusesAsync();
-                }
-
-
-                public async Task OpenModal(string modalId, int itemBusId)
-                {
-                    if (itemBusId == 0)
-                    {
-                        Model = new CarLot.Models.Bus();
-
-                    }
-                    else
-                    {
-                        Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
-                    }
-
-                    await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-                }
-
-                public async Task CloseModal(string modalId)
-                {
-                    await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-                }
-
-
-
-                public async Task SaveBus(string modalId)
-                {
-                    if (Model.BusId == 0)
-                    {
-
-                        // id zero represents new item
-                        Model.CreatedDate = DateTime.Now;
-                        Model.Image = ImgUploaded;
-                        await busService.AddBusAsync(Model);
-                        buses = await busService.GetBusesAsync();
-
-                    }
-                    else
-                    {
-                        Model.ModifiedDate = DateTime.Now;
-                        Model.Image = ImgUploaded;
-                        var busToUpdate = await busService.UpdateBusAsync(Model.BusId);
-                        buses.Where(_ => _.BusId == Model.BusId).FirstOrDefault();
-                        buses.Add(busToUpdate);
-                        buses = await busService.GetBusesAsync();
-                    }
-                    await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-
-                }
-
-                async Task HandleFileSelected(IFileListEntry[] files)
-                {
-                    var file = files.FirstOrDefault();
-
-                    if (file != null)
-                    {
-                        var ms = new MemoryStream();
-                        await file.Data.CopyToAsync(ms);
-                        ImgUploaded = ms.ToArray();
-                    }
-                }
-
-                public async Task OpenDeleteModal(string modalId, int busItemId)
-                {
-                    busToDelete = busItemId;
-                    await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-                }
-
-                public async Task ConfirmDelete(string modalId)
-                {
-                    var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
-                    await busService.DeleteBusAsync(busToDelete);
-                    buses.Remove(busTodelete);
-                    await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-                }
-
-
-            }
+}
 
 
 

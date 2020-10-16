@@ -30,7 +30,7 @@ namespace CarLot.Models
         public string ExteriorColor { get; set; }
         [Display(Name = "Interior Color")]
         public string InteriorColor { get; set; }
-        [Display(Name ="Drive Train")]
+        [Display(Name ="Drivetrain")]
         public string DriveTrain { get; set; }
         public string Transmission { get; set; }
         public string Cylinders { get; set; }

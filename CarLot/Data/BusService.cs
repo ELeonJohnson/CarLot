@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using static CarLot.Data.BusService;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -39,7 +40,9 @@ namespace CarLot.Data
         }
 
         public async Task<List<Bus>> GetFilteredBuses(string makeOfBus, string priceOfBus, 
-            string mileageOfBus)
+            string mileageOfBus, int? yearOfBus, string bodyStyleOfBus, string extColorOfBus,
+            string intColorOfBus, string driveTrainOfBus, string transmissionOfBus,
+            string cylindersOfBus, string fuelOfBus, string doorCountOfBus, string searchString)
         {
             var buses = from b in _context.Buses
                         select b;
@@ -73,7 +76,96 @@ namespace CarLot.Data
                 mileageOfBus = "";
             }
 
-         
+            if (!string.IsNullOrEmpty(Convert.ToString(yearOfBus)))
+            {
+                buses = buses.Where(by => by.Year == yearOfBus);
+            }
+            else
+            {
+                yearOfBus = 0;
+            }
+
+            if (!string.IsNullOrEmpty(bodyStyleOfBus))
+            {
+                buses = buses.Where(bs => bs.BodyStyle == bodyStyleOfBus);
+            }
+            else
+            {
+                bodyStyleOfBus = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(extColorOfBus))
+            {
+                buses = buses.Where(bec => bec.ExteriorColor == extColorOfBus);
+            }
+            else
+            {
+                extColorOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(intColorOfBus))
+            {
+                buses = buses.Where(bit => bit.InteriorColor == intColorOfBus);
+            }
+            else
+            {
+                intColorOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(driveTrainOfBus))
+            {
+                buses = buses.Where(dt => dt.DriveTrain == driveTrainOfBus);
+            }
+            else
+            {
+                driveTrainOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(transmissionOfBus))
+            {
+                buses = buses.Where(t => t.Transmission == transmissionOfBus);
+            }
+            else
+            {
+                transmissionOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(cylindersOfBus))
+            {
+                buses = buses.Where(c => c.Cylinders == cylindersOfBus);
+            }
+            else
+            {
+                cylindersOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(fuelOfBus))
+            {
+                buses = buses.Where(f => f.Fuel == fuelOfBus);
+            }
+            else
+            {
+                fuelOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(doorCountOfBus))
+            {
+                buses = buses.Where(dc => dc.DoorCount == doorCountOfBus);
+            }
+            else
+            {
+                doorCountOfBus = "";
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                buses = buses.Where(bm => bm.Make.Contains(searchString));
+
+            }
+
+
+
 
 
             return await buses.OrderByDescending(b => b.CreatedDate).ToListAsync();

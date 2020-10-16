@@ -29,22 +29,46 @@ div.row div#filter-col.col {
     div.row div#filter-col.col nav div#nav-tab.nav.nav-tabs a {
       color: #000;
       font-family: "Open Sans", sans-serif; }
-  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.show.active form div.row div.col div {
+  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-text.tab-pane.fade.active.show a#back-to.btn {
+    color: #A416B4;
+    border-color: #A416B4;
+    margin-left: 20%;
+    margin-bottom: 5%; }
+    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-text.tab-pane.fade.active.show a#back-to.btn:hover {
+      color: #fff;
+      background-color: #A416B4;
+      border-color: #A416B4; }
+  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-text.tab-pane.fade.active.show div.form-group a.btn {
+    color: #A416B4;
+    border-color: #A416B4;
+    margin-left: 2.5%; }
+    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-text.tab-pane.fade.active.show div.form-group a.btn:hover {
+      color: #fff;
+      background-color: #A416B4;
+      border-color: #A416B4; }
+  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col a.btn {
+    color: #A416B4;
+    border-color: #A416B4; }
+    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col a.btn:hover {
+      color: #fff;
+      background-color: #A416B4;
+      border-color: #A416B4; }
+  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col div {
     display: block;
     margin-bottom: 5%; }
-    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.show.active form div.row div.col div span#filter-count {
+    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col div span#filter-count {
       color: #000;
       font-family: "Open Sans", sans-serif;
       font-weight: 800; }
-    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.show.active form div.row div.col div span #filter-results {
+    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col div span#filter-results {
       color: #000;
       font-family: "Open Sans", sans-serif; }
-  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.show.active form div.row div.col div.form-group {
+  div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col div.form-group {
     border-top: 1px solid #e8e8e8;
     border-bottom: 1px solid #e8e8e8;
     padding: 5%;
     margin-bottom: 10%; }
-    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.show.active form div.row div.col div.form-group label {
+    div.row div#filter-col.col div#nav-tabContent.tab-content div#nav-dropdown.tab-pane.fade.active.show form div.row div.col div.form-group label {
       color: #000;
       font-family: "Open Sans", sans-serif; }
 
