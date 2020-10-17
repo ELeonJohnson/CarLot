@@ -18,5 +18,9 @@
   {
     "outputFile": "wwwroot/styles/Buses/BusIndexStyling.css",
     "inputFile": "wwwroot/styles/Buses/BusIndexStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Buses/BusDetailsStyling.css",
+    "inputFile": "wwwroot/styles/Buses/BusDetailsStyling.scss"
   }
 ]
