@@ -29,15 +29,120 @@ namespace CarLot.Data
             return await _context.Motorcycles.Include(r => r.ApplicationUser).OrderByDescending(c => c.MotorcycleId).Take(2).ToListAsync();
         }
 
-        public async Task<List<Motorcycle>> GetMotorcycleByMakes(string makeOfMotorcycle)
+        public async Task<List<Motorcycle>> GetFilteredMotorcycles(string makeOfMotorcycle, string priceOfMotorcycle,
+          string mileageOfMotorcycle, int? yearOfMotorcycle, string bodyStyleOfMotorcycle, string extMotorcycle,
+          string driveTrainOfMotorcycle, string transmissionOfMotorcycle,string cylindersOfMotorcycle, string fuelOfMotorcycle,string searchString)
         {
-            return await _context.Motorcycles.Where(mm => mm.Make == makeOfMotorcycle).OrderByDescending(m => m.CreatedDate).ToListAsync();
+            var motorcycles = from m in _context.Motorcycles
+                              select m;
+
+
+            if (!string.IsNullOrEmpty(makeOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(mm => mm.Make == makeOfMotorcycle);
+            }
+            else
+            {
+                makeOfMotorcycle = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(priceOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(mp => mp.Price == priceOfMotorcycle);
+            }
+            else
+            {
+                priceOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(mileageOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(mmi => mmi.Mileage == mileageOfMotorcycle);
+            }
+            else
+            {
+                mileageOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(Convert.ToString(yearOfMotorcycle)))
+            {
+                motorcycles = motorcycles.Where(my => my.Year == yearOfMotorcycle);
+            }
+            else
+            {
+                yearOfMotorcycle = 0;
+            }
+
+            if (!string.IsNullOrEmpty(bodyStyleOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(ms => ms.BodyStyle == bodyStyleOfMotorcycle);
+            }
+            else
+            {
+                bodyStyleOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(driveTrainOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(mt => mt.DriveTrain == driveTrainOfMotorcycle);
+            }
+            else
+            {
+                driveTrainOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(transmissionOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(t => t.Transmission == transmissionOfMotorcycle);
+            }
+            else
+            {
+                transmissionOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(cylindersOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(c => c.Cylinders == cylindersOfMotorcycle);
+            }
+            else
+            {
+                cylindersOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(fuelOfMotorcycle))
+            {
+                motorcycles = motorcycles.Where(f => f.Fuel == fuelOfMotorcycle);
+            }
+            else
+            {
+                fuelOfMotorcycle = "";
+            }
+
+            if (!string.IsNullOrEmpty(extMotorcycle))
+            {
+                motorcycles = motorcycles.Where(f => f.ExteriorColor == extMotorcycle);
+            }
+            else
+            {
+                extMotorcycle = "";
+            }
+
+
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                motorcycles = motorcycles.Where(mm => mm.Make.Contains(searchString));
+
+            }
+
+            return await motorcycles.OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<List<Motorcycle>> GetMotorcyclesAsync()
             {
-                return await _context.Motorcycles.ToListAsync();
-            }
+                return await _context.Motorcycles.Include(r => r.ApplicationUser).OrderByDescending(b => b.CreatedDate).ToListAsync();
+        }
 
             
 

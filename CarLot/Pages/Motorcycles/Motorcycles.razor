@@ -1,6 +1,6 @@
 ﻿@page "/motorcycles"
 @using CarLot.Data
-@using CarLot.Models;
+@using CarLot.Models
 @inject CarLot.Data.MotorcycleService motorcycleService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<MotorcycleService>
@@ -8,12 +8,17 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@implements IDisposable
+@inject NavigationManager NavManager
+
+<link href="./styles/Motorcycles/MotorcycleIndexStyling.css" rel="stylesheet" />
 
 
+<div id="ad-1">
+    <img src="/images/bus-index-ad.jpg" />
+</div>
 
-
-
-<h1 id="motorcycles-for-sale">Our Motorcycle For Sale</h1>
+<h1 id="motorcycles-for-sale">New & Used Motorcycles For Sale</h1>
 
 @if (motorcycles == null)
 {
@@ -21,29 +26,223 @@
 }
 else
 {
-    <div>
-        <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("motorcycleModal",0))'>Add</MatButton>
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <MatButton Id="add-motorcycle-btn" Raised="true" TrailingIcon="directions_bike" Type="button" @onclick='@(e => OpenModal("motorcycleModal",0))'>Add</MatButton>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div id="not-auth">
+                <p>
+                    <NavLink class="nav-link" href="Identity/Account/Register">Sign Up</NavLink>
+                    Or
+                    <NavLink class="nav-link" href="Identity/Account/Login">Login</NavLink>
+                    To Add A Motorcycle
+                </p>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="row">
+        <div class="col" id="filter-col">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-dropdown-tab" data-toggle="tab" href="#nav-dropdown" role="tab" aria-controls="nav-dropdown" aria-selected="true">Dropdown Search</a>
+                    <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Type Search</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
+                    <EditForm Model="@allMotorcycles">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <span id="filter-count">@allMotorcycles.Count</span>
+                                    <span id="filter-results">Results</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Makes</label>
+                                    <select @onchange="@ReturnMotorcyclesByMake" class="form-control">
+                                        <option disabled>Select By Makes</option>
+                                        @foreach (var motorcycleMake in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleMake.Make">@motorcycleMake.Make</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prices</label>
+                                    <select @onchange="@ReturnMotorcyclesByPrice" class="form-control">
+                                        <option disabled>Select By Prices</option>
+                                        @foreach (var motorcyclePrice in allMotorcycles)
+                                        {
+                                            <option value="@motorcyclePrice.Price">@motorcyclePrice.Price</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mileages</label>
+                                    <select @onchange="@ReturnMotorcyclesByMileage" class="form-control">
+                                        <option disabled>Select By Mileage</option>
+                                        @foreach (var motorcycleMileage in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleMileage.Mileage">@motorcycleMileage.Mileage</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Years</label>
+                                    <select @onchange="@ReturnMotorcyclesByYear" class="form-control">
+                                        <option disabled>Select By Years</option>
+                                        @foreach (var motorcycleYear in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleYear.Year">@motorcycleYear.Year</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Body Styles</label>
+                                    <select @onchange="@ReturnMotorcyclesByBodyStyle" class="form-control">
+                                        <option disabled>Select By Body Styles</option>
+                                        @foreach (var motorcycleBodyStyle in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleBodyStyle.BodyStyle">@motorcycleBodyStyle.BodyStyle</option>
+                                        }
+                                    </select>
+                                </div>
+                              
+                     
+                                <div class="form-group">
+                                    <label>Drivetrains</label>
+                                    <select @onchange="@ReturnMotorcyclesByDrivetrain" class="form-control">
+                                        <option disabled>Select By Drivetrains</option>
+                                        @foreach (var motorcycleDrivetrain in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleDrivetrain.DriveTrain">@motorcycleDrivetrain.DriveTrain</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Transmissions</label>
+                                    <select @onchange="@ReturnMotorcyclesByTransmission" class="form-control">
+                                        <option disabled>Select By Transmissions</option>
+                                        @foreach (var motorcycleTransmission in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleTransmission.Transmission">@motorcycleTransmission.Transmission</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cylinders</label>
+                                    <select @onchange="@ReturnMotorcyclesByCylinder" class="form-control">
+                                        <option disabled>Select By Cylinders</option>
+                                        @foreach (var motorcycleCylinder in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleCylinder.Cylinders">@motorcycleCylinder.Cylinders</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuels</label>
+                                    <select @onchange="@ReturnMotorcyclesByFuel" class="form-control">
+                                        <option disabled>Select By Fuels</option>
+                                        @foreach (var motorcycleFuel in allMotorcycles)
+                                        {
+                                            <option value="@motorcycleFuel.Fuel">@motorcycleFuel.Fuel</option>
+                                        }
+                                    </select>
+                                </div>
+                   
+                                <a @onclick="@(e => FilterClick(e, motorcycleMake, motorcyclePrice, motorcycleMileage, motorcycleYear,motorcycleBodyStyle, motorcycleExtColor, motorcycleDrivetrain, motorcycleTransmission, motorcycleCylinder, motorcycleFuel, motorcycleSearchString))" href="@($"motorcycles?motorcycleMake={motorcycleMake}&motorcyclePrice={motorcyclePrice}&motorcycleMileage={motorcycleMileage}&motorcycleYear={motorcycleYear}&motorcycleExt={motorcycleExtColor}&motorcycleBodyStyle={motorcycleBodyStyle}&motorcycleDrivetrain={motorcycleDrivetrain}&motorcycleTransmission={motorcycleTransmission}&motorcycleCylinder={motorcycleCylinder}&motorcycleFuel={motorcycleFuel}&motorcycleSearchString={motorcycleSearchString}")" class="btn">Search</a>
+                                <a @onclick="@(e => BackToFullList(e))" href="@($"motorcycles")" class="btn">Back To Full List</a>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                    <div class="form-group">
+                        <input placeholder="Search By Makes" @bind-value="SearchTerm" @bind-value:event="oninput" />
+                        <a @onclick="@(e => SearchTextTab(e, SearchTerm, motorcyclePrice, motorcycleMileage, motorcycleYear, motorcycleBodyStyle, motorcycleDrivetrain, motorcycleTransmission, motorcycleCylinder, motorcycleFuel, motorcycleSearchString))" href="@($"motorcycles?motorcycleMake={SearchTerm}&motorcyclePrice={motorcyclePrice}&motorcycleMileage={motorcycleMileage}&motorcycleYear={motorcycleYear}&motorcycleBodyStyle={motorcycleBodyStyle}&motorcycleDrivetrain={motorcycleDrivetrain}&motorcycleTransmission={motorcycleTransmission}&motorcycleCylinder={motorcycleCylinder}&motorcycleFuel={motorcycleFuel}&motorcycleSearchString={motorcycleSearchString}")" class="btn">Search</a>
+                    </div>
+                    <br />
+                    <span class="text-muted ml-5">
+                        Showing @FilteredMotorcycles.Count out of @FilteredMotorcycles.Count
+                    </span>
+                    <br />
+                    <h4 class="mt-4">List Of Motorcycle Makes</h4>
+                    <ul>
+                        @foreach (var motorcycleMake in FilteredMotorcycles)
+                        {
+                            <li>@motorcycleMake.Make</li>
+                        }
+                    </ul>
+                    <a id="back-to" @onclick="@(e => BackToFullList(e))" href="@($"motorcycles")" class="btn">Back To Full List</a>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="listing-col">
+            @foreach (var motorcycle in motorcycles)
+            {
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(motorcycle.Image)" class="card-img">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div id="isNew">
+                                    @if (motorcycle.New == true)
+                                    {
+                                        <p class="card-text">
+                                            NEW
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">
+                                            USED
+                                        </p>
+                                    }
+                                </div>
+                                <h5 class="card-title">@motorcycle.Year @motorcycle.Make</h5>
+                                <p class="card-text" id="mileage">@motorcycle.Mileage mi.</p>
+                                <h1 id="price" class="card-title">$@motorcycle.Price</h1>
+                                <div id="delivery">
+                                    @if (motorcycle.VirtualAppointments == true)
+                                    {
+                                        <span class="card-text">Virtual Appointments</span>
+                                    }
+                                    @if (motorcycle.HomeDelivery == true)
+                                    {
+                                        <span class="card-text">Home Delivery</span>
+                                    }
+                                </div>
+                                <div id="row-within-card" class="row">
+                                    <div class="col">
+                                        <p class="card-text"><strong>Ext. Color:</strong> @motorcycle.ExteriorColor</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text"><strong>Transmission:</strong> @motorcycle.Transmission</p>
+                                        <p class="card-text"><strong>Drivetrain:</strong> @motorcycle.DriveTrain</p>
+                                    </div>
+                                </div>
+                                <div id="more-details">
+                                    <p class="card-text">@motorcycle.ApplicationUser.FirstName Of @motorcycle.ApplicationUser.City, @motorcycle.ApplicationUser.State</p>
+                                </div>
+                                <div id="details-btn">
+                                    <a href="@($"motorcycle/details/{motorcycle.MotorcycleId}")" class="btn btn-block">More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-    @foreach (var motorcycle in motorcycles)
-    {
-        <h1>ID: @motorcycle.MotorcycleId</h1>
-        <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(motorcycle.Image)" />
-        <h1>@motorcycle.Make</h1>
-        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == motorcycle.ApplicationUserId)
-        {
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("motorcycleModal", motorcycle.MotorcycleId))'>Edit</button>
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", motorcycle.MotorcycleId))'>Delete</button>
-            <a href="@($"motorcycle/details/{motorcycle.MotorcycleId}")" class="btn btn-primary">Details</a>
-        }
-        else
-        {
-            <a href="@($"motorcycle/details/{motorcycle.MotorcycleId}")" class="btn btn-primary">Details</a>
-        }
-
-    }
-
-
 }
+
+
 
 
 <div>
@@ -84,9 +283,7 @@ else
                                 <p>
                                     <MatTextField @bind-Value="Model.Fuel" Label="Fuel"></MatTextField>
                                 </p>
-                                <p>
-                                    <MatTextField @bind-Value="Model.SeatCount" Label="Door Count"></MatTextField>
-                                </p>
+                 
                             </div>
                         </div>
                         <div class="row">
@@ -110,6 +307,7 @@ else
                                 </p>
                             </div>
                         </div>
+                       
                         <div class="row">
                             <div class="col">
                                 <p>
@@ -171,7 +369,7 @@ else
                         </div>
                         <div class="row">
                             <div class="col">
-                                <MatH5>Motorcycle's Image</MatH5>
+                                <MatH5>Motrocycle's Image</MatH5>
                                 <InputFile multiple OnChange="HandleFileSelected" />
                             </div>
                         </div>
@@ -190,7 +388,7 @@ else
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Car?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Motorcycle?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -206,10 +404,13 @@ else
 
 
 
+
+
 @code
 {
+    public List<Motorcycle> motorcycles { get; set; } = new List<Motorcycle>();
+    public List<Motorcycle> allMotorcycles { get; set; } = new List<Motorcycle>();
     public CarLot.Models.Motorcycle Model = new CarLot.Models.Motorcycle();
-    List<Motorcycle> motorcycles;
     public byte[] ImgUploaded { get; set; }
     protected bool[] boolItems =
            {
@@ -219,37 +420,171 @@ else
     public int motorcycleToDelete;
 
 
+
+
+
+    string motorcycleMake = "";
+    string motorcyclePrice = "";
+    string motorcycleMileage = "";
+    int? motorcycleYear = 0;
+    string motorcycleBodyStyle = "";
+    string motorcycleExtColor = "";
+    string motorcycleDrivetrain = "";
+    string motorcycleTransmission = "";
+    string motorcycleCylinder = "";
+    string motorcycleFuel = "";
+    string motorcycleSearchString = "";
+
+    string SearchTerm { get; set; } = "";
+
+    public List<Motorcycle> SearchMotorcyclesItems { get; set; } = new List<Motorcycle>();
+    public List<Motorcycle> FilteredMotorcycles => SearchMotorcyclesItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+
+
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        motorcycles = await motorcycleService.GetMotorcyclesAsync();
+        allMotorcycles = await motorcycleService.GetMotorcyclesAsync();
+        SearchMotorcyclesItems = await motorcycleService.GetMotorcyclesAsync();
+
+        GetQueryStringValues();
+        NavManager.LocationChanged += HandleLocationChanged;
+
+        if (motorcycleMake != null || motorcyclePrice != null || motorcycleMileage != null
+        || motorcycleYear != null || motorcycleBodyStyle != null || motorcycleExtColor != null || motorcycleDrivetrain != null || motorcycleTransmission != null
+        || motorcycleCylinder != null || motorcycleFuel != null || motorcycleSearchString != null)
+        {
+            motorcycles = await motorcycleService.GetFilteredMotorcycles(motorcycleMake, motorcyclePrice, motorcycleMileage, motorcycleYear, motorcycleBodyStyle, motorcycleExtColor, motorcycleDrivetrain, motorcycleTransmission, motorcycleCylinder, motorcycleFuel, motorcycleSearchString);
+            allMotorcycles = await motorcycleService.GetFilteredMotorcycles(motorcycleMake, motorcyclePrice, motorcycleMileage, motorcycleYear, motorcycleBodyStyle, motorcycleExtColor, motorcycleDrivetrain, motorcycleTransmission, motorcycleCylinder, motorcycleFuel, motorcycleSearchString);
+
+        }
+
     }
 
-    protected async Task load()
+    public async Task SearchTextTab(MouseEventArgs e, string motorcycleMake, string motorcyclePrice,
+        string motorcycleMileage, int? motorcycleYear, string motorcycleBodyStyle,
+        string motorcycleDrivetrain, string motorcycleTransmission, string motorcycleCylinder,
+        string motorcycleFuel, string motorcycleSearchString)
     {
+
+
+        motorcycles = await motorcycleService.GetFilteredMotorcycles(motorcycleMake, motorcyclePrice, motorcycleMileage,
+        motorcycleYear, motorcycleBodyStyle,motorcycleExtColor , motorcycleDrivetrain, motorcycleTransmission,
+        motorcycleCylinder, motorcycleFuel, motorcycleSearchString);
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        GetQueryStringValues();
+        StateHasChanged();
+    }
+
+    void GetQueryStringValues()
+    {
+        NavManager.TryGetQueryString<string>("motorcycleMake", out motorcycleMake);
+        NavManager.TryGetQueryString<string>("motorcyclePrice", out motorcyclePrice);
+        NavManager.TryGetQueryString<string>("motorcycleMileage", out motorcycleMileage);
+        NavManager.TryGetQueryString<int?>("motorcycleYear", out motorcycleYear);
+        NavManager.TryGetQueryString<string>("motorcycleBodyStyle", out motorcycleBodyStyle);
+        NavManager.TryGetQueryString<string>("motorcycleExtColor", out motorcycleExtColor);
+        NavManager.TryGetQueryString<string>("motorcycleDrivetrain", out motorcycleDrivetrain);
+        NavManager.TryGetQueryString<string>("motorcycleTransmission", out motorcycleTransmission);
+        NavManager.TryGetQueryString<string>("motorcycleCylinder", out motorcycleCylinder);
+        NavManager.TryGetQueryString<string>("motorcycleFuel", out motorcycleFuel);
+        NavManager.TryGetQueryString<string>("motorcycleSearchString", out motorcycleSearchString);
+    }
+
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void ReturnMotorcyclesByMake(ChangeEventArgs e)
+    {
+        motorcycleMake = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByPrice(ChangeEventArgs e)
+    {
+        motorcyclePrice = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByMileage(ChangeEventArgs e)
+    {
+        motorcycleMileage = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByYear(ChangeEventArgs e)
+    {
+        motorcycleYear = int.Parse(e.Value.ToString());
+    }
+
+    void ReturnMotorcyclesByBodyStyle(ChangeEventArgs e)
+    {
+        motorcycleBodyStyle = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByExtColor(ChangeEventArgs e)
+    {
+        motorcycleExtColor = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByDrivetrain(ChangeEventArgs e)
+    {
+        motorcycleDrivetrain = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByTransmission(ChangeEventArgs e)
+    {
+        motorcycleTransmission = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByCylinder(ChangeEventArgs e)
+    {
+        motorcycleCylinder = e.Value.ToString();
+    }
+
+    void ReturnMotorcyclesByFuel(ChangeEventArgs e)
+    {
+        motorcycleFuel = e.Value.ToString();
+    }
+
+
+
+
+    public async Task FilterClick(MouseEventArgs e, string motorcycleMake,
+                                         string motorcyclePrice, string motorcycleMileage, int? carYear,
+                                         string motorcycleBodyStyle, string motorcycleExColor,
+                                         string motorcycleDrivetrain, string carTransmission, string carCylinder,
+                                         string motorcycleFuel, string motorcycleSearchString)
+    {
+
+        motorcycles = await motorcycleService.GetFilteredMotorcycles(motorcycleMake, motorcyclePrice, motorcycleMileage, motorcycleYear, motorcycleBodyStyle, motorcycleExColor, motorcycleDrivetrain, motorcycleTransmission, motorcycleCylinder, motorcycleFuel, motorcycleSearchString);
+        allMotorcycles = await motorcycleService.GetFilteredMotorcycles(motorcycleMake, motorcyclePrice, motorcycleMileage, motorcycleYear, motorcycleBodyStyle, motorcycleExColor, motorcycleDrivetrain, motorcycleTransmission, motorcycleCylinder, motorcycleFuel, motorcycleSearchString);
+    }
+
+    public async Task BackToFullList(MouseEventArgs e)
+    {
+
+        SearchTerm = "";
+        allMotorcycles = await motorcycleService.GetMotorcyclesAsync();
         motorcycles = await motorcycleService.GetMotorcyclesAsync();
     }
 
-    public async Task OpenModal(string modalId, int itemMotorcycleId)
+
+    async Task HandleFileSelected(IFileListEntry[] files)
     {
-        if (itemMotorcycleId == 0)
+        var file = files.FirstOrDefault();
+
+        if (file != null)
         {
-            Model = new CarLot.Models.Motorcycle();
-
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
         }
-        else
-        {
-            Model = motorcycles.Where(_ => _.MotorcycleId == itemMotorcycleId).FirstOrDefault();
-        }
-
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
     }
-
-    public async Task CloseModal(string modalId)
-    {
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
-
-
 
     public async Task SaveMotorcycle(string modalId)
     {
@@ -273,24 +608,7 @@ else
             motorcycles = await motorcycleService.GetMotorcyclesAsync();
         }
         await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
 
-    async Task HandleFileSelected(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-
-        if (file != null)
-        {
-            var ms = new MemoryStream();
-            await file.Data.CopyToAsync(ms);
-            ImgUploaded = ms.ToArray();
-        }
-    }
-
-    public async Task OpenDeleteModal(string modalId, int motorcycleItemId)
-    {
-        motorcycleToDelete = motorcycleItemId;
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
     }
 
     public async Task ConfirmDelete(string modalId)
@@ -300,6 +618,23 @@ else
         motorcycles.Remove(motorcycleTodelete);
         await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
     }
+
+    public async Task OpenModal(string modalId, int itemMotorcycleId)
+    {
+        if (itemMotorcycleId == 0)
+        {
+            Model = new CarLot.Models.Motorcycle();
+
+        }
+        else
+        {
+            Model = motorcycles.Where(_ => _.MotorcycleId == itemMotorcycleId).FirstOrDefault();
+        }
+
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+
 
 
 }

@@ -1,4 +1,7 @@
-﻿div#ad-1 img {
+﻿div button#add-bus-btn {
+  margin-bottom: 5%; }
+
+div#ad-1 img {
   width: 50%;
   display: block;
   margin: 0 auto; }

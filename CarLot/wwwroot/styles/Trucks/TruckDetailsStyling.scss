@@ -1,0 +1,215 @@
+﻿@import '../Global.scss';
+
+body {
+    app {
+        div.main {
+            div.content.px-4 {
+                img {
+                    margin-right: 30%;
+                    margin-left: 32%;
+                }
+
+                div.row {
+                    div.col {
+                        margin-top: 5%;
+
+                        a {
+                            i.material-icons {
+                                color: $gray;
+                            }
+                        }
+                    }
+
+                    div#truckList.col {
+                        justify-content: space-evenly;
+                        display: flex;
+                        margin-right: 42%;
+                        margin-top: 5%;
+                        margin-left: 15%;
+                        margin-bottom: 10%;
+
+
+                        div {
+                            a {
+                                img {
+                                    width: 100px;
+                                    height: 100px;
+                                }
+                            }
+                        }
+                    }
+
+                    div.col-7 {
+                        img {
+                            width: 500px;
+                            height: 425px;
+                            margin-left: 5%;
+                        }
+
+                        span#price {
+                            font-weight: bold;
+                            color: $black;
+                            font-size: 30px;
+                        }
+
+                        span.card-text {
+                            margin: 0px 0.8rem 0.4rem 0px;
+                            background-color: $blue;
+                            font-size: 0.8rem;
+                            color: $white;
+                            padding: 0px 6px;
+                        }
+
+                        div.card-body {
+
+                            a {
+                                color: $blue;
+
+                                i.material-icons {
+                                    margin-top: 2.5%;
+                                    color: $blue;
+                                }
+                            }
+
+                            i.material-icons {
+                                margin-top: 2.5%;
+                                color: $blue;
+
+                                a {
+                                    color: $blue;
+                                }
+                            }
+
+                            h2 {
+                                color: $black;
+                                font-weight: bold;
+                                margin-top: 2.5%;
+                                margin-bottom: 2.5%;
+                            }
+
+                            a {
+                                color: $blue;
+                            }
+                        }
+
+                        h5 {
+                            font-family: $heading-font;
+                            color: $black;
+                            margin-top: 2.5%;
+                        }
+
+                        div.sellers-notes {
+                            h4 {
+                                color: $black;
+                                font-family: $heading-font;
+                            }
+
+                            p {
+                                color: $black;
+                                font-family: $text-font;
+                            }
+
+                            a {
+                                color: $blue;
+                                font-family: $text-font;
+                            }
+
+                            h2 {
+                                color: $black;
+                                font-family: $heading-font;
+                            }
+
+                            div.row {
+                                div.col {
+                                    margin-top: 5%;
+
+                                    p#interest {
+                                        margin-top: 20%;
+                                    }
+
+                                    a.btn.btn-block {
+                                        background-color: $light-purple;
+                                        border-color: $light-purple;
+                                        color: $white;
+                                        font-family: $text-font;
+                                        margin-top: 5%;
+
+                                        &:hover {
+                                            color: $white;
+                                            border-color: $purple;
+                                            background-color: $purple;
+                                            font-family: $text-font;
+                                        }
+                                    }
+
+                                    ul {
+                                        color: $black;
+                                        font-family: $text-font;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    div.col-5 {
+                        button#edit-btn {
+                            margin-bottom: 5% !important;
+                        }
+
+                        button#delete-btn {
+                            margin-bottom: 5% !important;
+                        }
+
+                        div.card {
+                            div.card-header {
+                                h3 {
+                                    color: $black;
+                                    font-weight: bold;
+                                    font-family: $heading-font;
+                                }
+
+                                h5.card-text {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+                            }
+
+                            div.card-body {
+                                background-color: $lightest-gray;
+
+                                form {
+                                    a.btn.btn-block {
+                                        background-color: $light-purple;
+                                        border-color: $light-purple;
+                                        color: $white;
+                                        font-family: $text-font;
+                                        margin-bottom: 5%;
+                                    }
+                                }
+
+                                p.card-text {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+
+                                div {
+                                    font-size: 12px;
+
+                                    p.card-text {
+                                        color: $black;
+                                        font-family: $text-font;
+                                    }
+
+                                    a.card-text {
+                                        color: $gray;
+                                        font-family: $text-font;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

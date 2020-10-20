@@ -1,6 +1,6 @@
 ﻿@page "/trucks"
 @using CarLot.Data
-@using CarLot.Models;
+@using CarLot.Models
 @inject CarLot.Data.TruckService truckService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<TruckService>
@@ -8,12 +8,17 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@implements IDisposable
+@inject NavigationManager NavManager
+
+<link href="./styles/Trucks/TruckIndexStyling.css" rel="stylesheet" />
 
 
+<div id="ad-1">
+    <img src="/images/bus-index-ad.jpg" />
+</div>
 
-
-
-<h1 id="trucks-for-sale">Our Truck For Sale</h1>
+<h1 id="trucks-for-sale">New & Used Trucks For Sale</h1>
 
 @if (trucks == null)
 {
@@ -21,28 +26,251 @@
 }
 else
 {
-    <div>
-        <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("truckModal",0))'>Add</MatButton>
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <MatButton Id="add-bus-btn" Raised="true" TrailingIcon="local_shipping" Type="button" @onclick='@(e => OpenModal("busModal",0))'>Add</MatButton>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div id="not-auth">
+                <p>
+                    <NavLink class="nav-link" href="Identity/Account/Register">Sign Up</NavLink>
+                    Or
+                    <NavLink class="nav-link" href="Identity/Account/Login">Login</NavLink>
+                    To Add A Truck
+                </p>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="row">
+        <div class="col" id="filter-col">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-dropdown-tab" data-toggle="tab" href="#nav-dropdown" role="tab" aria-controls="nav-dropdown" aria-selected="true">Dropdown Search</a>
+                    <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Type Search</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
+                    <EditForm Model="@allTrucks">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <span id="filter-count">@allTrucks.Count</span>
+                                    <span id="filter-results">Results</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Makes</label>
+                                    <select @onchange="@ReturnTrucksByMake" class="form-control">
+                                        <option disabled>Select By Makes</option>
+                                        @foreach (var truckMake in allTrucks)
+                                        {
+                                            <option value="@truckMake.Make">@truckMake.Make</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prices</label>
+                                    <select @onchange="@ReturnTrucksByPrice" class="form-control">
+                                        <option disabled>Select By Prices</option>
+                                        @foreach (var truckPrice in allTrucks)
+                                        {
+                                            <option value="@truckPrice.Price">@truckPrice.Price</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mileages</label>
+                                    <select @onchange="@ReturnTrucksByMileage" class="form-control">
+                                        <option disabled>Select By Mileage</option>
+                                        @foreach (var truckMileage in allTrucks)
+                                        {
+                                            <option value="@truckMileage.Mileage">@truckMileage.Mileage</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Years</label>
+                                    <select @onchange="@ReturnTrucksByYear" class="form-control">
+                                        <option disabled>Select By Years</option>
+                                        @foreach (var truckYear in allTrucks)
+                                        {
+                                            <option value="@truckYear.Year">@truckYear.Year</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Body Styles</label>
+                                    <select @onchange="@ReturnTrucksByBodyStyle" class="form-control">
+                                        <option disabled>Select By Body Styles</option>
+                                        @foreach (var truckBodyStyle in allTrucks)
+                                        {
+                                            <option value="@truckBodyStyle.BodyStyle">@truckBodyStyle.BodyStyle</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ext. Colors</label>
+                                    <select @onchange="@ReturnTrucksByExColor" class="form-control">
+                                        <option disabled>Select By Exterior Color</option>
+                                        @foreach (var truckExtColor in allTrucks)
+                                        {
+                                            <option value="@truckExtColor.ExteriorColor">@truckExtColor.ExteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Int. Colors</label>
+                                    <select @onchange="@ReturnTrucksByIntColor" class="form-control">
+                                        <option disabled>Select By Interior Colors</option>
+                                        @foreach (var truckIntColor in allTrucks)
+                                        {
+                                            <option value="@truckIntColor.InteriorColor">@truckIntColor.InteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Drivetrains</label>
+                                    <select @onchange="@ReturnTrucksByDrivetrain" class="form-control">
+                                        <option disabled>Select By Drivetrains</option>
+                                        @foreach (var truckDrivetrain in allTrucks)
+                                        {
+                                            <option value="@truckDrivetrain.DriveTrain">@truckDrivetrain.DriveTrain</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Transmissions</label>
+                                    <select @onchange="@ReturnTrucksByTransmission" class="form-control">
+                                        <option disabled>Select By Transmissions</option>
+                                        @foreach (var truckTransmission in allTrucks)
+                                        {
+                                            <option value="@truckTransmission.Transmission">@truckTransmission.Transmission</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cylinders</label>
+                                    <select @onchange="@ReturnTrucksByCylinder" class="form-control">
+                                        <option disabled>Select By Cylinders</option>
+                                        @foreach (var truckCylinder in allTrucks)
+                                        {
+                                            <option value="@truckCylinder.Cylinders">@truckCylinder.Cylinders</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuels</label>
+                                    <select @onchange="@ReturnTrucksByFuel" class="form-control">
+                                        <option disabled>Select By Fuels</option>
+                                        @foreach (var truckFuel in allTrucks)
+                                        {
+                                            <option value="@truckFuel.Fuel">@truckFuel.Fuel</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Door Counts</label>
+                                    <select @onchange="@ReturnTrucksByDoorCount" class="form-control">
+                                        <option disabled>Select By Door Counts</option>
+                                        @foreach (var truckDoorCount in allTrucks)
+                                        {
+                                            <option value="@truckDoorCount.DoorCount">@truckDoorCount.DoorCount</option>
+                                        }
+                                    </select>
+                                </div>
+                                <a @onclick="@(e => FilterClick(e, truckMake, truckPrice, truckMileage, truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission, truckCylinder, truckFuel, truckDoorCount, truckSearchString))" href="@($"trucks?truckMake={truckMake}&truckPrice={truckPrice}&truckMileage={truckMileage}&truckYear={truckYear}&truckBodyStyle={truckBodyStyle}&truckExColor={truckExColor}&truckIntColor={truckIntColor}&truckDrivetrain={truckDrivetrain}&truckTransmission={truckTransmission}&truckCylinder={truckCylinder}&truckFuel={truckFuel}&truckDoorCount={truckDoorCount}&truckSearchString={truckSearchString}")" class="btn">Search</a>
+                                <a @onclick="@(e => BackToFullList(e))" href="@($"trucks")" class="btn">Back To Full List</a>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                    <div class="form-group">
+                        <input placeholder="Search By Makes" @bind-value="SearchTerm" @bind-value:event="oninput" />
+                        <a @onclick="@(e => SearchTextTab(e, SearchTerm, truckPrice, truckMileage, truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission, truckCylinder, truckFuel, truckDoorCount, truckSearchString))" href="@($"trucks?truckMake={SearchTerm}&truckPrice={truckPrice}&truckMileage={truckMileage}&truckYear={truckYear}&truckBodyStyle={truckBodyStyle}&truckExColor={truckExColor}&truckIntColor={truckIntColor}&truckDrivetrain={truckDrivetrain}&truckTransmission={truckTransmission}&truckCylinder={truckCylinder}&truckFuel={truckFuel}&truckDoorCount={truckDoorCount}&truckSearchString={truckSearchString}")" class="btn">Search</a>
+                    </div>
+                    <br />
+                    <span class="text-muted ml-5">
+                        Showing @FilteredTrucks.Count out of @FilteredTrucks.Count
+                    </span>
+                    <br />
+                    <h4 class="mt-4">List Of Truck Makes</h4>
+                    <ul>
+                        @foreach (var truckMake in FilteredTrucks)
+                        {
+                            <li>@truckMake.Make</li>
+                        }
+                    </ul>
+                    <a id="back-to" @onclick="@(e => BackToFullList(e))" href="@($"trucks")" class="btn">Back To Full List</a>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="listing-col">
+            @foreach (var truck in trucks)
+            {
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(truck.Image)" class="card-img">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div id="isNew">
+                                    @if (truck.New == true)
+                                    {
+                                        <p class="card-text">
+                                            NEW
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">
+                                            USED
+                                        </p>
+                                    }
+                                </div>
+                                <h5 class="card-title">@truck.Year @truck.Make</h5>
+                                <p class="card-text" id="mileage">@truck.Mileage mi.</p>
+                                <h1 id="price" class="card-title">$@truck.Price</h1>
+                                <div id="delivery">
+                                    @if (truck.VirtualAppointments == true)
+                                    {
+                                        <span class="card-text">Virtual Appointments</span>
+                                    }
+                                    @if (truck.HomeDelivery == true)
+                                    {
+                                        <span class="card-text">Home Delivery</span>
+                                    }
+                                </div>
+                                <div id="row-within-card" class="row">
+                                    <div class="col">
+                                        <p class="card-text"><strong>Ext. Color:</strong> @truck.ExteriorColor</p>
+                                        <p class="card-text"><strong>Int. Color:</strong> @truck.InteriorColor</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text"><strong>Transmission:</strong> @truck.Transmission</p>
+                                        <p class="card-text"><strong>Drivetrain:</strong> @truck.DriveTrain</p>
+                                    </div>
+                                </div>
+                                <div id="more-details">
+                                    <p class="card-text">@truck.ApplicationUser.FirstName Of @truck.ApplicationUser.City, @truck.ApplicationUser.State</p>
+                                </div>
+                                <div id="details-btn">
+                                    <a href="@($"truck/details/{truck.TruckId}")" class="btn btn-block">More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-    @foreach (var truck in trucks)
-    {
-        <h1>ID: @truck.TruckId</h1>
-        <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(truck.Image)" />
-        <h1>@truck.Make</h1>
-        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == truck.ApplicationUserId)
-        {
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("truckModal", truck.TruckId))'>Edit</button>
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", truck.TruckId))'>Delete</button>
-            <a href="@($"truck/details/{truck.TruckId}")" class="btn btn-primary">Details</a>
-        }
-        else
-        {
-            <a href="@($"truck/details/{truck.TruckId}")" class="btn btn-primary">Details</a>
-        }
-
-    }
-
 }
+
+
 
 
 <div>
@@ -55,7 +283,7 @@ else
                 </div>
                 <div class="modal-body">
                     <form enctype="multipart/form-data">
-                        <input type="hidden" @bind="Model.TruckId" id="truckId">
+                        <input type="hidden" @bind="Model.TruckId" id="busId">
                         <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
                         <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
                         <div class="row">
@@ -196,7 +424,7 @@ else
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Car?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Are You Sure You Want To Remove This Truck?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -212,10 +440,13 @@ else
 
 
 
+
+
 @code
 {
+    public List<Truck> trucks { get; set; } = new List<Truck>();
+    public List<Truck> allTrucks { get; set; } = new List<Truck>();
     public CarLot.Models.Truck Model = new CarLot.Models.Truck();
-    List<Truck> trucks;
     public byte[] ImgUploaded { get; set; }
     protected bool[] boolItems =
            {
@@ -225,14 +456,217 @@ else
     public int truckToDelete;
 
 
+
+
+
+    string truckMake = "";
+    string truckPrice = "";
+    string truckMileage = "";
+    int? truckYear = 0;
+    string truckBodyStyle = "";
+    string truckExColor = "";
+    string truckIntColor = "";
+    string truckDrivetrain = "";
+    string truckTransmission = "";
+    string truckCylinder = "";
+    string truckFuel = "";
+    string truckDoorCount = "";
+    string truckSearchString = "";
+
+    string SearchTerm { get; set; } = "";
+
+    public List<Truck> SearchTrucksItems { get; set; } = new List<Truck>();
+    public List<Truck> FilteredTrucks => SearchTrucksItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+
+
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        trucks = await truckService.GetTrucksAsync();
+        allTrucks = await truckService.GetTrucksAsync();
+        SearchTrucksItems = await truckService.GetTrucksAsync();
+
+        GetQueryStringValues();
+        NavManager.LocationChanged += HandleLocationChanged;
+
+        if (truckMake != null || truckPrice != null || truckMileage != null
+        || truckYear != null || truckBodyStyle != null || truckExColor != null
+        || truckIntColor != null || truckDrivetrain != null || truckTransmission != null
+        || truckCylinder != null || truckFuel != null || truckDoorCount != null || truckSearchString != null)
+        {
+            trucks = await truckService.GetFilteredTrucks(truckMake, truckPrice, truckMileage, truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission, truckCylinder, truckFuel, truckDoorCount, truckSearchString);
+            allTrucks = await truckService.GetFilteredTrucks(truckMake, truckPrice, truckMileage, truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission, truckCylinder, truckFuel, truckDoorCount, truckSearchString);
+
+        }
+
     }
 
-    protected async Task load()
+    public async Task SearchTextTab(MouseEventArgs e, string truckMake, string truckPrice,
+        string truckMileage, int? truckYear, string truckBodyStyle, string truckExColor,
+        string truckIntColor, string truckDrivetrain, string truckTransmission, string truckCylinder,
+        string truckFuel, string truckDoorCount, string truckSearchString)
     {
+
+
+        trucks = await truckService.GetFilteredTrucks(truckMake, truckPrice, truckMileage,
+            truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission,
+            truckCylinder, truckFuel, truckDoorCount, truckSearchString);
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        GetQueryStringValues();
+        StateHasChanged();
+    }
+
+    void GetQueryStringValues()
+    {
+        NavManager.TryGetQueryString<string>("truckMake", out truckMake);
+        NavManager.TryGetQueryString<string>("truckPrice", out truckPrice);
+        NavManager.TryGetQueryString<string>("truckMileage", out truckMileage);
+        NavManager.TryGetQueryString<int?>("truckYear", out truckYear);
+        NavManager.TryGetQueryString<string>("truckBodyStyle", out truckBodyStyle);
+        NavManager.TryGetQueryString<string>("truckExColor", out truckExColor);
+        NavManager.TryGetQueryString<string>("truckIntColor", out truckIntColor);
+        NavManager.TryGetQueryString<string>("truckDrivetrain", out truckDrivetrain);
+        NavManager.TryGetQueryString<string>("truckTransmission", out truckTransmission);
+        NavManager.TryGetQueryString<string>("truckCylinder", out truckCylinder);
+        NavManager.TryGetQueryString<string>("truckFuel", out truckFuel);
+        NavManager.TryGetQueryString<string>("truckDoorCount", out truckDoorCount);
+        NavManager.TryGetQueryString<string>("truckSearchString", out truckSearchString);
+    }
+
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void ReturnTrucksByMake(ChangeEventArgs e)
+    {
+        truckMake = e.Value.ToString();
+    }
+
+    void ReturnTrucksByPrice(ChangeEventArgs e)
+    {
+        truckPrice = e.Value.ToString();
+    }
+
+    void ReturnTrucksByMileage(ChangeEventArgs e)
+    {
+        truckMileage = e.Value.ToString();
+    }
+
+    void ReturnTrucksByYear(ChangeEventArgs e)
+    {
+        truckYear = int.Parse(e.Value.ToString());
+    }
+
+    void ReturnTrucksByBodyStyle(ChangeEventArgs e)
+    {
+        truckBodyStyle = e.Value.ToString();
+    }
+
+    void ReturnTrucksByExColor(ChangeEventArgs e)
+    {
+        truckExColor = e.Value.ToString();
+    }
+
+    void ReturnTrucksByIntColor(ChangeEventArgs e)
+    {
+        truckIntColor = e.Value.ToString();
+    }
+
+    void ReturnTrucksByDrivetrain(ChangeEventArgs e)
+    {
+        truckDrivetrain = e.Value.ToString();
+    }
+
+    void ReturnTrucksByTransmission(ChangeEventArgs e)
+    {
+        truckTransmission = e.Value.ToString();
+    }
+
+    void ReturnTrucksByCylinder(ChangeEventArgs e)
+    {
+        truckCylinder = e.Value.ToString();
+    }
+
+    void ReturnTrucksByFuel(ChangeEventArgs e)
+    {
+        truckFuel = e.Value.ToString();
+    }
+
+    void ReturnTrucksByDoorCount(ChangeEventArgs e)
+    {
+        truckDoorCount = e.Value.ToString();
+    }
+
+
+
+    public async Task FilterClick(MouseEventArgs e, string truckMake,
+                                         string truckPrice, string truckMileage, int? truckYear,
+                                         string truckBodyStyle, string truckExColor, string truckIntColor,
+                                         string truckDrivetrain, string truckTransmission, string truckCylinder,
+                                         string truckFuel, string truckDoorCount, string truckSearchString)
+    {
+
+        trucks = await truckService.GetFilteredTrucks(truckMake, truckPrice, truckMileage, truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission, truckCylinder, truckFuel, truckDoorCount, truckSearchString);
+        allTrucks = await truckService.GetFilteredTrucks(truckMake, truckPrice, truckMileage, truckYear, truckBodyStyle, truckExColor, truckIntColor, truckDrivetrain, truckTransmission, truckCylinder, truckFuel, truckDoorCount, truckSearchString);
+    }
+
+    public async Task BackToFullList(MouseEventArgs e)
+    {
+
+        SearchTerm = "";
+        allTrucks = await truckService.GetTrucksAsync();
         trucks = await truckService.GetTrucksAsync();
+    }
+
+
+    async Task HandleFileSelected(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+
+        if (file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
+        }
+    }
+
+    public async Task SaveTruck(string modalId)
+    {
+        if (Model.TruckId == 0)
+        {
+
+            // id zero represents new item
+            Model.CreatedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            await truckService.AddTruckAsync(Model);
+            trucks = await truckService.GetTrucksAsync();
+
+        }
+        else
+        {
+            Model.ModifiedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            var truckToUpdate = await truckService.UpdateTruckAsync(Model.TruckId);
+            trucks.Where(_ => _.TruckId == Model.TruckId).FirstOrDefault();
+            trucks.Add(truckToUpdate);
+            trucks = await truckService.GetTrucksAsync();
+        }
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+
+    }
+
+    public async Task ConfirmDelete(string modalId)
+    {
+        var truckTodelete = trucks.Where(_ => _.TruckId == truckToDelete).FirstOrDefault();
+        await truckService.DeleteTruckAsync(truckToDelete);
+        trucks.Remove(truckTodelete);
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
     }
 
     public async Task OpenModal(string modalId, int itemTruckId)
@@ -250,62 +684,7 @@ else
         await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
     }
 
-    public async Task CloseModal(string modalId)
-    {
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
 
-
-
-    public async Task SaveTruck(string modalId)
-    {
-        if (Model.TruckId == 0)
-        {
-
-            // id zero represents new item
-            Model.CreatedDate = DateTime.Now;
-            Model.Image = ImgUploaded;
-            await truckService.AddTruckAsync(Model);
-            trucks = await truckService.GetTrucksAsync();
-        }
-        else
-        {
-            Model.ModifiedDate = DateTime.Now;
-            Model.Image = ImgUploaded;
-            var truckToUpdate = await truckService.UpdateTruckAsync(Model.TruckId);
-            trucks.Where(_ => _.TruckId == Model.TruckId).FirstOrDefault();
-            trucks.Add(truckToUpdate);
-            trucks = await truckService.GetTrucksAsync();
-        }
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-
-    }
-
-    async Task HandleFileSelected(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-
-        if (file != null)
-        {
-            var ms = new MemoryStream();
-            await file.Data.CopyToAsync(ms);
-            ImgUploaded = ms.ToArray();
-        }
-    }
-
-    public async Task OpenDeleteModal(string modalId, int truckItemId)
-    {
-        truckToDelete = truckItemId;
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
-
-    public async Task ConfirmDelete(string modalId)
-    {
-        var truckTodelete = trucks.Where(_ => _.TruckId == truckToDelete).FirstOrDefault();
-        await truckService.DeleteTruckAsync(truckToDelete);
-        trucks.Remove(truckTodelete);
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
 
 
 }

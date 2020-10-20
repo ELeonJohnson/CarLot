@@ -1,6 +1,6 @@
 ﻿@page "/suvs"
 @using CarLot.Data
-@using CarLot.Models;
+@using CarLot.Models
 @inject CarLot.Data.SUVService suvService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<SUVService>
@@ -8,12 +8,17 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@implements IDisposable
+@inject NavigationManager NavManager
+
+<link href="./styles/SUV/SUVIndexStyling.css" rel="stylesheet" />
 
 
+<div id="ad-1">
+    <img src="/images/bus-index-ad.jpg" />
+</div>
 
-
-
-<h1 id="suvs-for-sale">Our SUVs For Sale</h1>
+<h1 id="suvs-for-sale">New & Used SUVs For Sale</h1>
 
 @if (suvs == null)
 {
@@ -21,28 +26,252 @@
 }
 else
 {
-    <div>
-        <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("suvModal",0))'>Add</MatButton>
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <MatButton Id="add-car-btn" Raised="true" TrailingIcon="airport_shuttle" Type="button" @onclick='@(e => OpenModal("suvModal",0))'>Add</MatButton>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div id="not-auth">
+                <p>
+                    <NavLink class="nav-link" href="Identity/Account/Register">Sign Up</NavLink>
+                    Or
+                    <NavLink class="nav-link" href="Identity/Account/Login">Login</NavLink>
+                    To Add A SUV
+                </p>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="row">
+        <div class="col" id="filter-col">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-dropdown-tab" data-toggle="tab" href="#nav-dropdown" role="tab" aria-controls="nav-dropdown" aria-selected="true">Dropdown Search</a>
+                    <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Type Search</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
+                    <EditForm Model="@allSUVs">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <span id="filter-count">@allSUVs.Count</span>
+                                    <span id="filter-results">Results</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Makes</label>
+                                    <select @onchange="@ReturnSUVsByMake" class="form-control">
+                                        <option disabled>Select By Makes</option>
+                                        @foreach (var suvMake in allSUVs)
+                                        {
+                                            <option value="@suvMake.Make">@suvMake.Make</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prices</label>
+                                    <select @onchange="@ReturnSUVsByPrice" class="form-control">
+                                        <option disabled>Select By Prices</option>
+                                        @foreach (var suvPrice in allSUVs)
+                                        {
+                                            <option value="@suvPrice.Price">@suvPrice.Price</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mileages</label>
+                                    <select @onchange="@ReturnSUVsByMileage" class="form-control">
+                                        <option disabled>Select By Mileage</option>
+                                        @foreach (var suvMileage in allSUVs)
+                                        {
+                                            <option value="@suvMileage.Mileage">@suvMileage.Mileage</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Years</label>
+                                    <select @onchange="@ReturnSUVsByYear" class="form-control">
+                                        <option disabled>Select By Years</option>
+                                        @foreach (var suvYear in allSUVs)
+                                        {
+                                            <option value="@suvYear.Year">@suvYear.Year</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Body Styles</label>
+                                    <select @onchange="@ReturnSUVsByBodyStyle" class="form-control">
+                                        <option disabled>Select By Body Styles</option>
+                                        @foreach (var suvBodyStyle in allSUVs)
+                                        {
+                                            <option value="@suvBodyStyle.BodyStyle">@suvBodyStyle.BodyStyle</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ext. Colors</label>
+                                    <select @onchange="@ReturnSUVsByExColor" class="form-control">
+                                        <option disabled>Select By Exterior Color</option>
+                                        @foreach (var suvExtColor in allSUVs)
+                                        {
+                                            <option value="@suvExtColor.ExteriorColor">@suvExtColor.ExteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Int. Colors</label>
+                                    <select @onchange="@ReturnSUVsByIntColor" class="form-control">
+                                        <option disabled>Select By Interior Colors</option>
+                                        @foreach (var suvIntColor in allSUVs)
+                                        {
+                                            <option value="@suvIntColor.InteriorColor">@suvIntColor.InteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Drivetrains</label>
+                                    <select @onchange="@ReturnSUVsByDrivetrain" class="form-control">
+                                        <option disabled>Select By Drivetrains</option>
+                                        @foreach (var suvDrivetrain in allSUVs)
+                                        {
+                                            <option value="@suvDrivetrain.DriveTrain">@suvDrivetrain.DriveTrain</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Transmissions</label>
+                                    <select @onchange="@ReturnSUVsByTransmission" class="form-control">
+                                        <option disabled>Select By Transmissions</option>
+                                        @foreach (var suvTransmission in allSUVs)
+                                        {
+                                            <option value="@suvTransmission.Transmission">@suvTransmission.Transmission</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cylinders</label>
+                                    <select @onchange="@ReturnSUVsByCylinder" class="form-control">
+                                        <option disabled>Select By Cylinders</option>
+                                        @foreach (var suvCylinder in allSUVs)
+                                        {
+                                            <option value="@suvCylinder.Cylinders">@suvCylinder.Cylinders</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuels</label>
+                                    <select @onchange="@ReturnSUVsByFuel" class="form-control">
+                                        <option disabled>Select By Fuels</option>
+                                        @foreach (var suvFuel in allSUVs)
+                                        {
+                                            <option value="@suvFuel.Fuel">@suvFuel.Fuel</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Door Counts</label>
+                                    <select @onchange="@ReturnSUVsByDoorCount" class="form-control">
+                                        <option disabled>Select By Door Counts</option>
+                                        @foreach (var suvDoorCount in allSUVs)
+                                        {
+                                            <option value="@suvDoorCount.DoorCount">@suvDoorCount.DoorCount</option>
+                                        }
+                                    </select>
+                                </div>
+                                <a @onclick="@(e => FilterClick(e, suvMake, suvPrice, suvMileage, suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission, 
+                                               suvCylinder, suvFuel, suvDoorCount, suvSearchString))" href="@($"suvs?suvMake={suvMake}&suvPrice={suvPrice}&suvMileage={suvMileage}&suvYear={suvYear}&suvBodyStyle={suvBodyStyle}&suvExColor={suvExColor}&suvIntColor={suvIntColor}&suvDrivetrain={suvDrivetrain}&suvTransmission={suvTransmission}&suvCylinder={suvCylinder}&suvFuel={suvFuel}&suvDoorCount={suvDoorCount}&suvSearchString={suvSearchString}")" class="btn">Search</a>
+                                <a @onclick="@(e => BackToFullList(e))" href="@($"suvs")" class="btn">Back To Full List</a>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                    <div class="form-group">
+                        <input placeholder="Search By Makes" @bind-value="SearchTerm" @bind-value:event="oninput" />
+                        <a @onclick="@(e => SearchTextTab(e, SearchTerm, suvPrice, suvMileage, suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission, suvCylinder, suvFuel, suvDoorCount, suvSearchString))" href="@($"suvs?suvMake={SearchTerm}&suvPrice={suvPrice}&suvMileage={suvMileage}&suvYear={suvYear}&suvBodyStyle={suvBodyStyle}&suvExColor={suvExColor}&suvIntColor={suvIntColor}&suvDrivetrain={suvDrivetrain}&suvTransmission={suvTransmission}&suvCylinder={suvCylinder}&suvFuel={suvFuel}&suvDoorCount={suvDoorCount}&suvSearchString={suvSearchString}")" class="btn">Search</a>
+                    </div>
+                    <br />
+                    <span class="text-muted ml-5">
+                        Showing @FilteredSUVs.Count out of @FilteredSUVs.Count
+                    </span>
+                    <br />
+                    <h4 class="mt-4">List Of SUV Makes</h4>
+                    <ul>
+                        @foreach (var suvMake in FilteredSUVs)
+                        {
+                            <li>@suvMake.Make</li>
+                        }
+                    </ul>
+                    <a id="back-to" @onclick="@(e => BackToFullList(e))" href="@($"suvs")" class="btn">Back To Full List</a>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="listing-col">
+            @foreach (var suv in suvs)
+            {
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(suv.Image)" class="card-img">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div id="isNew">
+                                    @if (suv.New == true)
+                                    {
+                                        <p class="card-text">
+                                            NEW
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">
+                                            USED
+                                        </p>
+                                    }
+                                </div>
+                                <h5 class="card-title">@suv.Year @suv.Make</h5>
+                                <p class="card-text" id="mileage">@suv.Mileage mi.</p>
+                                <h1 id="price" class="card-title">$@suv.Price</h1>
+                                <div id="delivery">
+                                    @if (suv.VirtualAppointments == true)
+                                    {
+                                        <span class="card-text">Virtual Appointments</span>
+                                    }
+                                    @if (suv.HomeDelivery == true)
+                                    {
+                                        <span class="card-text">Home Delivery</span>
+                                    }
+                                </div>
+                                <div id="row-within-card" class="row">
+                                    <div class="col">
+                                        <p class="card-text"><strong>Ext. Color:</strong> @suv.ExteriorColor</p>
+                                        <p class="card-text"><strong>Int. Color:</strong> @suv.InteriorColor</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text"><strong>Transmission:</strong> @suv.Transmission</p>
+                                        <p class="card-text"><strong>Drivetrain:</strong> @suv.DriveTrain</p>
+                                    </div>
+                                </div>
+                                <div id="more-details">
+                                    <p class="card-text">@suv.ApplicationUser.FirstName Of @suv.ApplicationUser.City, @suv.ApplicationUser.State</p>
+                                </div>
+                                <div id="details-btn">
+                                    <a href="@($"suv/details/{suv.SUVId}")" class="btn btn-block">More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-    @foreach (var suv in suvs)
-    {
-        <h1>ID: @suv.SUVId</h1>
-        <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(suv.Image)" />
-        <h1>@suv.Make</h1>
-        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == suv.ApplicationUserId)
-        {
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("suvModal", suv.SUVId))'>Edit</button>
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", suv.SUVId))'>Delete</button>
-            <a href="@($"suv/details/{suv.SUVId}")" class="btn btn-primary">Details</a>
-        }
-        else
-        {
-            <a href="@($"suv/details/{suv.SUVId}")" class="btn btn-primary">Details</a>
-        }
-
-    }
-
 }
+
+
 
 
 <div>
@@ -55,7 +284,7 @@ else
                 </div>
                 <div class="modal-body">
                     <form enctype="multipart/form-data">
-                        <input type="hidden" @bind="Model.SUVId" id="suvId">
+                        <input type="hidden" @bind="Model.SUVId" id="carId">
                         <input type="hidden" @bind="Model.ApplicationUserId" id="applicationUserId">
                         <input type="hidden" @bind="Model.CreatedDate" id="createdDate">
                         <div class="row">
@@ -212,10 +441,13 @@ else
 
 
 
+
+
 @code
 {
+    public List<SUV> suvs { get; set; } = new List<SUV>();
+    public List<SUV> allSUVs { get; set; } = new List<SUV>();
     public CarLot.Models.SUV Model = new CarLot.Models.SUV();
-    List<SUV> suvs;
     public byte[] ImgUploaded { get; set; }
     protected bool[] boolItems =
            {
@@ -225,14 +457,217 @@ else
     public int suvToDelete;
 
 
+
+
+
+    string suvMake = "";
+    string suvPrice = "";
+    string suvMileage = "";
+    int? suvYear = 0;
+    string suvBodyStyle = "";
+    string suvExColor = "";
+    string suvIntColor = "";
+    string suvDrivetrain = "";
+    string suvTransmission = "";
+    string suvCylinder = "";
+    string suvFuel = "";
+    string suvDoorCount = "";
+    string suvSearchString = "";
+
+    string SearchTerm { get; set; } = "";
+
+    public List<SUV> SearchSUVsItems { get; set; } = new List<SUV>();
+    public List<SUV> FilteredSUVs => SearchSUVsItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+
+
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        suvs = await suvService.GetSUVsAsync();
+        allSUVs = await suvService.GetSUVsAsync();
+        SearchSUVsItems = await suvService.GetSUVsAsync();
+
+        GetQueryStringValues();
+        NavManager.LocationChanged += HandleLocationChanged;
+
+        if (suvMake != null || suvPrice != null || suvMileage != null
+        || suvYear != null || suvBodyStyle != null || suvExColor != null
+        || suvIntColor != null || suvDrivetrain != null || suvTransmission != null
+        || suvCylinder != null || suvFuel != null || suvDoorCount != null || suvSearchString != null)
+        {
+            suvs = await suvService.GetFilteredSUVs(suvMake, suvPrice, suvMileage, suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission, suvCylinder, suvFuel, suvDoorCount, suvSearchString);
+            allSUVs = await suvService.GetFilteredSUVs(suvMake, suvPrice, suvMileage, suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission, suvCylinder, suvFuel, suvDoorCount, suvSearchString);
+
+        }
+
     }
 
-    protected async Task load()
+    public async Task SearchTextTab(MouseEventArgs e, string suvMake, string suvPrice,
+        string suvMileage, int? suvYear, string suvBodyStyle, string suvExColor,
+        string suvIntColor, string suvDrivetrain, string suvTransmission, string suvCylinder,
+        string suvFuel, string suvDoorCount, string suvSearchString)
     {
+
+
+        suvs = await suvService.GetFilteredSUVs(suvMake, suvPrice, suvMileage,
+        suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission,
+        suvCylinder, suvFuel, suvDoorCount, suvSearchString);
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        GetQueryStringValues();
+        StateHasChanged();
+    }
+
+    void GetQueryStringValues()
+    {
+        NavManager.TryGetQueryString<string>("suvMake", out suvMake);
+        NavManager.TryGetQueryString<string>("suvPrice", out suvPrice);
+        NavManager.TryGetQueryString<string>("suvMileage", out suvMileage);
+        NavManager.TryGetQueryString<int?>("suvYear", out suvYear);
+        NavManager.TryGetQueryString<string>("suvBodyStyle", out suvBodyStyle);
+        NavManager.TryGetQueryString<string>("suvExColor", out suvExColor);
+        NavManager.TryGetQueryString<string>("suvIntColor", out suvIntColor);
+        NavManager.TryGetQueryString<string>("suvDrivetrain", out suvDrivetrain);
+        NavManager.TryGetQueryString<string>("suvTransmission", out suvTransmission);
+        NavManager.TryGetQueryString<string>("suvCylinder", out suvCylinder);
+        NavManager.TryGetQueryString<string>("suvFuel", out suvFuel);
+        NavManager.TryGetQueryString<string>("suvDoorCount", out suvDoorCount);
+        NavManager.TryGetQueryString<string>("suvSearchString", out suvSearchString);
+    }
+
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void ReturnSUVsByMake(ChangeEventArgs e)
+    {
+        suvMake = e.Value.ToString();
+    }
+
+    void ReturnSUVsByPrice(ChangeEventArgs e)
+    {
+        suvPrice = e.Value.ToString();
+    }
+
+    void ReturnSUVsByMileage(ChangeEventArgs e)
+    {
+        suvMileage = e.Value.ToString();
+    }
+
+    void ReturnSUVsByYear(ChangeEventArgs e)
+    {
+        suvYear = int.Parse(e.Value.ToString());
+    }
+
+    void ReturnSUVsByBodyStyle(ChangeEventArgs e)
+    {
+        suvBodyStyle = e.Value.ToString();
+    }
+
+    void ReturnSUVsByExColor(ChangeEventArgs e)
+    {
+        suvExColor = e.Value.ToString();
+    }
+
+    void ReturnSUVsByIntColor(ChangeEventArgs e)
+    {
+        suvIntColor = e.Value.ToString();
+    }
+
+    void ReturnSUVsByDrivetrain(ChangeEventArgs e)
+    {
+        suvDrivetrain = e.Value.ToString();
+    }
+
+    void ReturnSUVsByTransmission(ChangeEventArgs e)
+    {
+        suvTransmission = e.Value.ToString();
+    }
+
+    void ReturnSUVsByCylinder(ChangeEventArgs e)
+    {
+        suvCylinder = e.Value.ToString();
+    }
+
+    void ReturnSUVsByFuel(ChangeEventArgs e)
+    {
+        suvFuel = e.Value.ToString();
+    }
+
+    void ReturnSUVsByDoorCount(ChangeEventArgs e)
+    {
+        suvDoorCount = e.Value.ToString();
+    }
+
+
+
+    public async Task FilterClick(MouseEventArgs e, string suvMake,
+                                         string suvPrice, string suvMileage, int? suvYear,
+                                         string suvBodyStyle, string suvExColor, string suvIntColor,
+                                         string suvDrivetrain, string suvTransmission, string suvCylinder,
+                                         string suvFuel, string suvDoorCount, string suvSearchString)
+    {
+
+        suvs = await suvService.GetFilteredSUVs(suvMake, suvPrice, suvMileage, suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission, suvCylinder, suvFuel, suvDoorCount, suvSearchString);
+        allSUVs = await suvService.GetFilteredSUVs(suvMake, suvPrice, suvMileage, suvYear, suvBodyStyle, suvExColor, suvIntColor, suvDrivetrain, suvTransmission, suvCylinder, suvFuel, suvDoorCount, suvSearchString);
+    }
+
+    public async Task BackToFullList(MouseEventArgs e)
+    {
+
+        SearchTerm = "";
+        allSUVs = await suvService.GetSUVsAsync();
         suvs = await suvService.GetSUVsAsync();
+    }
+
+
+    async Task HandleFileSelected(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+
+        if (file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
+        }
+    }
+
+    public async Task SaveSUV(string modalId)
+    {
+        if (Model.SUVId == 0)
+        {
+
+            // id zero represents new item
+            Model.CreatedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            await suvService.AddSUVAsync(Model);
+            suvs = await suvService.GetSUVsAsync();
+
+        }
+        else
+        {
+            Model.ModifiedDate = DateTime.Now;
+            Model.Image = ImgUploaded;
+            var suvToUpdate = await suvService.UpdateSUVAsync(Model.SUVId);
+            suvs.Where(_ => _.SUVId == Model.SUVId).FirstOrDefault();
+            suvs.Add(suvToUpdate);
+            suvs = await suvService.GetSUVsAsync();
+        }
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
+
+    }
+
+    public async Task ConfirmDelete(string modalId)
+    {
+        var suvTodelete = suvs.Where(_ => _.SUVId == suvToDelete).FirstOrDefault();
+        await suvService.DeleteSUVAsync(suvToDelete);
+        suvs.Remove(suvTodelete);
+        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
     }
 
     public async Task OpenModal(string modalId, int itemSUVId)
@@ -250,62 +685,7 @@ else
         await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
     }
 
-    public async Task CloseModal(string modalId)
-    {
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
 
-
-
-    public async Task SaveSUV(string modalId)
-    {
-        if (Model.SUVId == 0)
-        {
-
-            // id zero represents new item
-            Model.CreatedDate = DateTime.Now;
-            Model.Image = ImgUploaded;
-            await suvService.AddSUVAsync(Model);
-            suvs = await suvService.GetSUVsAsync();
-        }
-        else
-        {
-            Model.ModifiedDate = DateTime.Now;
-            Model.Image = ImgUploaded;
-            var suvToUpdate = await suvService.UpdateSUVAsync(Model.SUVId);
-            suvs.Where(_ => _.SUVId == Model.SUVId).FirstOrDefault();
-            suvs.Add(suvToUpdate);
-            suvs = await suvService.GetSUVsAsync();
-        }
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-
-    }
-
-    async Task HandleFileSelected(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-
-        if (file != null)
-        {
-            var ms = new MemoryStream();
-            await file.Data.CopyToAsync(ms);
-            ImgUploaded = ms.ToArray();
-        }
-    }
-
-    public async Task OpenDeleteModal(string modalId, int suvItemId)
-    {
-        suvToDelete = suvItemId;
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
-
-    public async Task ConfirmDelete(string modalId)
-    {
-        var suvTodelete = suvs.Where(_ => _.SUVId == suvToDelete).FirstOrDefault();
-        await suvService.DeleteSUVAsync(suvToDelete);
-        suvs.Remove(suvTodelete);
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
 
 
 }

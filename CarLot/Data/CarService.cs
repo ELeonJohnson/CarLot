@@ -27,14 +27,137 @@ namespace CarLot.Data
             return await _context.Cars.Include(r => r.ApplicationUser).OrderByDescending(c => c.CarId).Take(2).ToListAsync();
         }
 
-        public async Task<List<Car>> GetCarByMakes(string makeOfCar)
+        public async Task<List<Car>> GetFilteredCars(string makeOfCar, string priceOfCar,
+           string mileageOfCar, int? yearOfCar, string bodyStyleOfCar, string extColorOfCar,
+           string intColorOfCar, string driveTrainOfCar, string transmissionOfCar,
+           string cylindersOfCar, string fuelOfCar, string doorCountOfCar, string searchString)
         {
-            return await _context.Cars.Where(cm => cm.Make == makeOfCar).OrderByDescending(c => c.CreatedDate).ToListAsync();
+            var cars = from c in _context.Cars
+                        select c;
+
+
+            if (!string.IsNullOrEmpty(makeOfCar))
+            {
+                cars = cars.Where(cm => cm.Make == makeOfCar);
+            }
+            else
+            {
+                makeOfCar = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(priceOfCar))
+            {
+                cars = cars.Where(cp => cp.Price == priceOfCar);
+            }
+            else
+            {
+                priceOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(mileageOfCar))
+            {
+                cars = cars.Where(cmi => cmi.Mileage == mileageOfCar);
+            }
+            else
+            {
+                mileageOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(Convert.ToString(yearOfCar)))
+            {
+                cars = cars.Where(cy => cy.Year == yearOfCar);
+            }
+            else
+            {
+                yearOfCar = 0;
+            }
+
+            if (!string.IsNullOrEmpty(bodyStyleOfCar))
+            {
+                cars = cars.Where(cs => cs.BodyStyle == bodyStyleOfCar);
+            }
+            else
+            {
+                bodyStyleOfCar = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(extColorOfCar))
+            {
+                cars = cars.Where(cec => cec.ExteriorColor == extColorOfCar);
+            }
+            else
+            {
+                extColorOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(intColorOfCar))
+            {
+                cars = cars.Where(cit => cit.InteriorColor == intColorOfCar);
+            }
+            else
+            {
+                intColorOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(driveTrainOfCar))
+            {
+                cars = cars.Where(ct => ct.DriveTrain == driveTrainOfCar);
+            }
+            else
+            {
+                driveTrainOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(transmissionOfCar))
+            {
+                cars = cars.Where(t => t.Transmission == transmissionOfCar);
+            }
+            else
+            {
+                transmissionOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(cylindersOfCar))
+            {
+                cars = cars.Where(c => c.Cylinders == cylindersOfCar);
+            }
+            else
+            {
+                cylindersOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(fuelOfCar))
+            {
+                cars = cars.Where(f => f.Fuel == fuelOfCar);
+            }
+            else
+            {
+                fuelOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(doorCountOfCar))
+            {
+                cars = cars.Where(dc => dc.DoorCount == doorCountOfCar);
+            }
+            else
+            {
+                doorCountOfCar = "";
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                cars = cars.Where(bm => bm.Make.Contains(searchString));
+
+            }
+
+            return await cars.OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<List<Car>> GetCarsAsync()
         {
-            return await _context.Cars.ToListAsync();
+            return await _context.Cars.Include(r => r.ApplicationUser).OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<Car> GetCarByIdAsync(int id)

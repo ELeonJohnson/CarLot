@@ -29,7 +29,7 @@ else
     <AuthorizeView>
         <Authorized>
             <div>
-                <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("busModal",0))'>Add</MatButton>
+                <MatButton Id="add-bus-btn" Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("busModal",0))'>Add</MatButton>
             </div>
         </Authorized>
         <NotAuthorized>
@@ -269,16 +269,7 @@ else
         </div>
     </div>
 }
-@*@if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == bus.ApplicationUserId)
-    {
-        <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("busModal", bus.BusId))'>Edit</button>
-        <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", bus.BusId))'>Delete</button>
 
-    }
-    else
-    {
-        <a href="@($"bus/details/{bus.BusId}")" class="btn btn-primary">Details</a>
-    }*@
 
 
 
@@ -453,9 +444,9 @@ else
 
 @code
 {
-    public CarLot.Models.Bus Model = new CarLot.Models.Bus();
     public List<Bus> buses { get; set; } = new List<Bus>();
     public List<Bus> allBuses { get; set; } = new List<Bus>();
+    public CarLot.Models.Bus Model = new CarLot.Models.Bus();
     public byte[] ImgUploaded { get; set; }
     protected bool[] boolItems =
            {
@@ -463,7 +454,9 @@ else
                 false
             };
     public int busToDelete;
-   
+
+
+
 
 
     string busMake = "";
@@ -631,27 +624,17 @@ else
     }
 
 
-    public async Task OpenModal(string modalId, int itemBusId)
+    async Task HandleFileSelected(IFileListEntry[] files)
     {
-        if (itemBusId == 0)
+        var file = files.FirstOrDefault();
+
+        if (file != null)
         {
-            Model = new CarLot.Models.Bus();
-
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
         }
-        else
-        {
-            Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
-        }
-
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
     }
-
-    public async Task CloseModal(string modalId)
-    {
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
-
-
 
     public async Task SaveBus(string modalId)
     {
@@ -678,24 +661,6 @@ else
 
     }
 
-    async Task HandleFileSelected(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-
-        if (file != null)
-        {
-            var ms = new MemoryStream();
-            await file.Data.CopyToAsync(ms);
-            ImgUploaded = ms.ToArray();
-        }
-    }
-
-    public async Task OpenDeleteModal(string modalId, int busItemId)
-    {
-        busToDelete = busItemId;
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
-
     public async Task ConfirmDelete(string modalId)
     {
         var busTodelete = buses.Where(_ => _.BusId == busToDelete).FirstOrDefault();
@@ -703,6 +668,23 @@ else
         buses.Remove(busTodelete);
         await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
     }
+
+    public async Task OpenModal(string modalId, int itemBusId)
+    {
+        if (itemBusId == 0)
+        {
+            Model = new CarLot.Models.Bus();
+
+        }
+        else
+        {
+            Model = buses.Where(_ => _.BusId == itemBusId).FirstOrDefault();
+        }
+
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+
 
 
 }

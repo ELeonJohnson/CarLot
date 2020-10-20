@@ -1,0 +1,243 @@
+﻿@import '../Global.scss';
+
+
+div {
+    button#add-motorcycle-btn {
+        margin-bottom: 5%;
+    }
+}
+
+
+div#ad-1 {
+    img {
+        width: 50%;
+        display: block;
+        margin: 0 auto;
+    }
+}
+
+h1#motorcycles-for-sale {
+    font-family: $heading-font;
+    border-top: 1px solid $lightest-gray;
+    border-bottom: 1px solid $lightest-gray;
+    margin-top: 2.5%;
+    margin-bottom: 2.5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+div#not-auth {
+    p {
+        display: flex;
+        color: $black;
+        font-style: $text-font;
+
+        a.nav-link {
+            padding: 0 0.2rem;
+            color: $link-blue;
+
+            &:hover {
+                color: $black;
+            }
+        }
+    }
+}
+
+div.row {
+    div#filter-col.col {
+        max-width: 30%;
+
+        nav {
+            margin-bottom: 10%;
+
+            div#nav-tab.nav.nav-tabs {
+                a {
+                    color: $black;
+                    font-family: $text-font;
+                }
+            }
+        }
+
+        div#nav-tabContent.tab-content {
+            div#nav-text.tab-pane.fade.active.show {
+                a#back-to.btn {
+                    color: $light-purple;
+                    border-color: $light-purple;
+                    margin-left: 20%;
+                    margin-bottom: 5%;
+
+
+                    &:hover {
+                        color: $white;
+                        background-color: $light-purple;
+                        border-color: $light-purple;
+                    }
+                }
+
+                div.form-group {
+                    a.btn {
+                        color: $light-purple;
+                        border-color: $light-purple;
+                        margin-left: 2.5%;
+
+
+                        &:hover {
+                            color: $white;
+                            background-color: $light-purple;
+                            border-color: $light-purple;
+                        }
+                    }
+                }
+            }
+
+            div#nav-dropdown.tab-pane.fade.active.show {
+                form {
+                    div.row {
+                        div.col {
+                            a.btn {
+                                color: $light-purple;
+                                border-color: $light-purple;
+
+                                &:hover {
+                                    color: $white;
+                                    background-color: $light-purple;
+                                    border-color: $light-purple;
+                                }
+                            }
+
+                            div {
+                                display: block;
+                                margin-bottom: 5%;
+
+                                span#filter-count {
+                                    color: $black;
+                                    font-family: $text-font;
+                                    font-weight: 800;
+                                }
+
+                                span#filter-results {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+                            }
+
+                            div.form-group {
+                                border-top: 1px solid $lightest-gray;
+                                border-bottom: 1px solid $lightest-gray;
+                                padding: 5%;
+                                margin-bottom: 10%;
+
+                                label {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    div#listing-col.col {
+        max-width: 70%;
+
+
+
+        div.card {
+            margin-bottom: 2.5%;
+
+            &:hover {
+                box-shadow: 3px 3px 3px 0 $gray;
+            }
+
+            div.col-md-5 {
+                height: inherit;
+
+                img.card-img {
+                    border-bottom-right-radius: 0;
+                    border-top-right-radius: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            div.col-md-7 {
+                div.card-body {
+                    div#isNew {
+                        p.card-text {
+                            color: $gray;
+                            font-family: $text-font;
+                            margin-bottom: 1.5%;
+                            font-size: .8rem;
+                        }
+                    }
+
+                    h5.card-title {
+                        color: $black;
+                        font-family: $heading-font;
+                        font-weight: bold;
+                        margin-bottom: 5%;
+                    }
+
+                    p#mileage.card-text {
+                        color: $gray;
+                        font-family: $text-font;
+                        font-size: .8rem;
+                    }
+
+                    h1#price.card-title {
+                        color: $black;
+                        font-size: 2rem !important;
+                        font-family: $heading-font;
+                        font-weight: bold;
+                    }
+
+                    div#delivery {
+                        display: flex;
+                        margin-bottom: 3%;
+
+                        span.card-text {
+                            margin: 0 .8rem .4rem 0;
+                            background-color: $background-purple;
+                            font-size: .8rem;
+                            color: $white;
+                            padding: 0 6px;
+                        }
+                    }
+
+                    div#row-within-card.row {
+                        div.col {
+                            p.card-text {
+                                color: $black;
+                                font-family: $text-font;
+                                font-size: .8rem;
+                            }
+                        }
+                    }
+
+                    div#more-details {
+                        p.card-text {
+                            color: $black;
+                            font-family: $text-font;
+                            font-size: 1rem;
+                            font-weight: bold;
+                            margin-top: 2.5%;
+                        }
+                    }
+
+                    div#details-btn {
+                        margin-top: 5%;
+
+                        a.btn.btn-block {
+                            font-family: $text-font;
+                            color: $white;
+                            background-color: $purple-btn;
+                            border-color: $purple-btn;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

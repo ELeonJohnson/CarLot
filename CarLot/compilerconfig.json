@@ -22,5 +22,37 @@
   {
     "outputFile": "wwwroot/styles/Buses/BusDetailsStyling.css",
     "inputFile": "wwwroot/styles/Buses/BusDetailsStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Cars/CarIndexStyling.css",
+    "inputFile": "wwwroot/styles/Cars/CarIndexStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Cars/CarDetailsStyling.css",
+    "inputFile": "wwwroot/styles/Cars/CarDetailsStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Motorcycles/MotorcycleIndexStyling.css",
+    "inputFile": "wwwroot/styles/Motorcycles/MotorcycleIndexStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Motorcycles/MotorcycleDetailsStyling.css",
+    "inputFile": "wwwroot/styles/Motorcycles/MotorcycleDetailsStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/SUV/SUVDetailsStyling.css",
+    "inputFile": "wwwroot/styles/SUV/SUVDetailsStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/SUV/SUVIndexStyling.css",
+    "inputFile": "wwwroot/styles/SUV/SUVIndexStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Trucks/TruckDetailsStyling.css",
+    "inputFile": "wwwroot/styles/Trucks/TruckDetailsStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Trucks/TruckIndexStyling.css",
+    "inputFile": "wwwroot/styles/Trucks/TruckIndexStyling.scss"
   }
 ]

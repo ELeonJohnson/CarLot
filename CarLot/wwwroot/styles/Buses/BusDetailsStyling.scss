@@ -11,7 +11,7 @@ body {
 
                 div.row {
                     div.col {
-                        margin-top: 18%;
+                        margin-top: 5%;
 
                         a {
                             i.material-icons {
@@ -39,7 +39,7 @@ body {
                         }
                     }
 
-                    div.col-8 {
+                    div.col-7 {
                         img {
                             width: 500px;
                             height: 425px;
@@ -61,6 +61,7 @@ body {
                         }
 
                         div.card-body {
+
                             a {
                                 color: $blue;
 
@@ -120,7 +121,7 @@ body {
 
                             div.row {
                                 div.col {
-                                    margin-top: 18%;
+                                    margin-top: 5%;
 
                                     p#interest {
                                         margin-top: 20%;
@@ -131,7 +132,7 @@ body {
                                         border-color: $light-purple;
                                         color: $white;
                                         font-family: $text-font;
-                                        margin-top:5%;
+                                        margin-top: 5%;
 
                                         &:hover {
                                             color: $white;
@@ -140,8 +141,6 @@ body {
                                             font-family: $text-font;
                                         }
                                     }
-
-
 
                                     ul {
                                         color: $black;
@@ -152,18 +151,26 @@ body {
                         }
                     }
 
-                    div.col-4 {
-                        div.card {
-                            h3.card-header {
-                                color: $black;
-                                font-family: $heading-font;
-                                text-align: center;
+                    div.col-5 {
+                        button#edit-btn {
+                            margin-bottom: 5% !important;
+                        }
 
-                                span.card-title {
+                        button#delete-btn {
+                            margin-bottom: 5% !important;
+                        }
+
+                        div.card {
+                            div.card-header {
+                                h3 {
+                                    color: $black;
+                                    font-weight: bold;
+                                    font-family: $heading-font;
+                                }
+
+                                h5.card-text {
                                     color: $black;
                                     font-family: $text-font;
-                                    color: $gray;
-                                    font-size: 18px;
                                 }
                             }
 
@@ -171,48 +178,31 @@ body {
                                 background-color: $lightest-gray;
 
                                 form {
-                                    div.row {
-                                        margin-top: -15%;
-
-                                        div#formPost.col {
-                                            margin-top: 10%;
-
-                                            div.form-group {
-                                                margin-top: 19%;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                a.btn.btn-block {
-                                    background-color: $light-purple;
-                                    border-color: $light-purple;
-                                    color: $white;
-                                    font-family: $text-font;
-
-                                    &:hover {
-                                        color: $white;
-                                        border-color: $light-purple;
+                                    a.btn.btn-block {
                                         background-color: $light-purple;
+                                        border-color: $light-purple;
+                                        color: $white;
                                         font-family: $text-font;
+                                        margin-bottom: 5%;
                                     }
                                 }
 
                                 p.card-text {
+                                    color: $black;
+                                    font-family: $text-font;
+                                }
+
+                                div {
                                     font-size: 12px;
-                                    line-height: 1.5;
-                                    padding-top: 16px;
-                                }
 
-                                p#privacy.card-text {
-                                    font-size: 10px;
-                                }
-
-                                div#isNew {
                                     p.card-text {
                                         color: $black;
                                         font-family: $text-font;
-                                        font-size: 10px !important;
+                                    }
+
+                                    a.card-text {
+                                        color: $gray;
+                                        font-family: $text-font;
                                     }
                                 }
                             }
@@ -223,4 +213,3 @@ body {
         }
     }
 }
-

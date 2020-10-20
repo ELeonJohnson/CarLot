@@ -27,14 +27,137 @@ namespace CarLot.Data
             return await _context.SUVs.Include(r => r.ApplicationUser).OrderByDescending(c => c.SUVId).Take(2).ToListAsync();
         }
 
-        public async Task<List<SUV>> GetSUVByMakes(string makeOfSUV)
+        public async Task<List<SUV>> GetFilteredSUVs(string makeOfSUV, string priceOfSUV,
+           string mileageOfSUV, int? yearOfSUV, string bodyStyleOfSUV, string extColorOfSUV,
+           string intColorOfSUV, string driveTrainOfSUV, string transmissionOfSUV,
+           string cylindersOfSUV, string fuelOfSUV, string doorCountOfSUV, string searchString)
         {
-            return await _context.SUVs.Where(sm => sm.Make == makeOfSUV).OrderByDescending(s => s.CreatedDate).ToListAsync();
+            var suvs = from s in _context.SUVs
+                       select s;
+
+
+            if (!string.IsNullOrEmpty(makeOfSUV))
+            {
+                suvs = suvs.Where(cm => cm.Make == makeOfSUV);
+            }
+            else
+            {
+                makeOfSUV = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(priceOfSUV))
+            {
+                suvs = suvs.Where(cp => cp.Price == priceOfSUV);
+            }
+            else
+            {
+                priceOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(mileageOfSUV))
+            {
+                suvs = suvs.Where(cmi => cmi.Mileage == mileageOfSUV);
+            }
+            else
+            {
+                mileageOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(Convert.ToString(yearOfSUV)))
+            {
+                suvs = suvs.Where(cy => cy.Year == yearOfSUV);
+            }
+            else
+            {
+                yearOfSUV = 0;
+            }
+
+            if (!string.IsNullOrEmpty(bodyStyleOfSUV))
+            {
+                suvs = suvs.Where(cs => cs.BodyStyle == bodyStyleOfSUV);
+            }
+            else
+            {
+                bodyStyleOfSUV = "";
+            }
+
+
+            if (!string.IsNullOrEmpty(extColorOfSUV))
+            {
+                suvs = suvs.Where(cec => cec.ExteriorColor == extColorOfSUV);
+            }
+            else
+            {
+                extColorOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(intColorOfSUV))
+            {
+                suvs = suvs.Where(cit => cit.InteriorColor == intColorOfSUV);
+            }
+            else
+            {
+                intColorOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(driveTrainOfSUV))
+            {
+                suvs = suvs.Where(ct => ct.DriveTrain == driveTrainOfSUV);
+            }
+            else
+            {
+                driveTrainOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(transmissionOfSUV))
+            {
+                suvs = suvs.Where(t => t.Transmission == transmissionOfSUV);
+            }
+            else
+            {
+                transmissionOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(cylindersOfSUV))
+            {
+                suvs = suvs.Where(c => c.Cylinders == cylindersOfSUV);
+            }
+            else
+            {
+                cylindersOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(fuelOfSUV))
+            {
+                suvs = suvs.Where(f => f.Fuel == fuelOfSUV);
+            }
+            else
+            {
+                fuelOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(doorCountOfSUV))
+            {
+                suvs = suvs.Where(dc => dc.DoorCount == doorCountOfSUV);
+            }
+            else
+            {
+                doorCountOfSUV = "";
+            }
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                suvs = suvs.Where(bm => bm.Make.Contains(searchString));
+
+            }
+
+            return await suvs.OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<List<SUV>> GetSUVsAsync()
         {
-            return await _context.SUVs.ToListAsync();
+            return await _context.SUVs.Include(r => r.ApplicationUser).OrderByDescending(b => b.CreatedDate).ToListAsync();
         }
 
         public async Task<SUV> GetSUVByIdAsync(int id)

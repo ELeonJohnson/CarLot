@@ -1,6 +1,6 @@
 ﻿@page "/cars"
 @using CarLot.Data
-@using CarLot.Models;
+@using CarLot.Models
 @inject CarLot.Data.CarService carService
 @inject IJSRuntime _jsRuntime
 @inherits OwningComponentBase<CarService>
@@ -8,11 +8,17 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@implements IDisposable
+@inject NavigationManager NavManager
+
+<link href="./styles/Cars/CarIndexStyling.css" rel="stylesheet" />
 
 
+<div id="ad-1">
+    <img src="/images/bus-index-ad.jpg" />
+</div>
 
-
-<h1 id="cars-for-sale">Our Cars For Sale</h1>
+<h1 id="cars-for-sale">New & Used Cars For Sale</h1>
 
 @if (cars == null)
 {
@@ -20,28 +26,252 @@
 }
 else
 {
-    <div>
-        <MatButton Raised="true" TrailingIcon="directions_bus" Type="button" @onclick='@(e => OpenModal("carModal",0))'>Add</MatButton>
+    <AuthorizeView>
+        <Authorized>
+            <div>
+                <MatButton Id="add-car-btn" Raised="true" TrailingIcon="directions_car" Type="button" @onclick='@(e => OpenModal("carModal",0))'>Add</MatButton>
+            </div>
+        </Authorized>
+        <NotAuthorized>
+            <div id="not-auth">
+                <p>
+                    <NavLink class="nav-link" href="Identity/Account/Register">Sign Up</NavLink>
+                    Or
+                    <NavLink class="nav-link" href="Identity/Account/Login">Login</NavLink>
+                    To Add A Car
+                </p>
+            </div>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <div class="row">
+        <div class="col" id="filter-col">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-dropdown-tab" data-toggle="tab" href="#nav-dropdown" role="tab" aria-controls="nav-dropdown" aria-selected="true">Dropdown Search</a>
+                    <a class="nav-item nav-link" id="nav-text-tab" data-toggle="tab" href="#nav-text" role="tab" aria-controls="nav-text" aria-selected="false">Type Search</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-dropdown" role="tabpanel" aria-labelledby="nav-dropdown-tab">
+                    <EditForm Model="@allCars">
+                        <div class="row">
+                            <div class="col">
+                                <div>
+                                    <span id="filter-count">@allCars.Count</span>
+                                    <span id="filter-results">Results</span>
+                                </div>
+                                <div class="form-group">
+                                    <label>Makes</label>
+                                    <select @onchange="@ReturnCarsByMake" class="form-control">
+                                        <option disabled>Select By Makes</option>
+                                        @foreach (var carMake in allCars)
+                                        {
+                                            <option value="@carMake.Make">@carMake.Make</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prices</label>
+                                    <select @onchange="@ReturnCarsByPrice" class="form-control">
+                                        <option disabled>Select By Prices</option>
+                                        @foreach (var carPrice in allCars)
+                                        {
+                                            <option value="@carPrice.Price">@carPrice.Price</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Mileages</label>
+                                    <select @onchange="@ReturnCarsByMileage" class="form-control">
+                                        <option disabled>Select By Mileage</option>
+                                        @foreach (var carMileage in allCars)
+                                        {
+                                            <option value="@carMileage.Mileage">@carMileage.Mileage</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Years</label>
+                                    <select @onchange="@ReturnCarsByYear" class="form-control">
+                                        <option disabled>Select By Years</option>
+                                        @foreach (var carYear in allCars)
+                                        {
+                                            <option value="@carYear.Year">@carYear.Year</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Body Styles</label>
+                                    <select @onchange="@ReturnCarsByBodyStyle" class="form-control">
+                                        <option disabled>Select By Body Styles</option>
+                                        @foreach (var carBodyStyle in allCars)
+                                        {
+                                            <option value="@carBodyStyle.BodyStyle">@carBodyStyle.BodyStyle</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Ext. Colors</label>
+                                    <select @onchange="@ReturnCarsByExColor" class="form-control">
+                                        <option disabled>Select By Exterior Color</option>
+                                        @foreach (var carExtColor in allCars)
+                                        {
+                                            <option value="@carExtColor.ExteriorColor">@carExtColor.ExteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Int. Colors</label>
+                                    <select @onchange="@ReturnCarsByIntColor" class="form-control">
+                                        <option disabled>Select By Interior Colors</option>
+                                        @foreach (var carIntColor in allCars)
+                                        {
+                                            <option value="@carIntColor.InteriorColor">@carIntColor.InteriorColor</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Drivetrains</label>
+                                    <select @onchange="@ReturnCarsByDrivetrain" class="form-control">
+                                        <option disabled>Select By Drivetrains</option>
+                                        @foreach (var carDrivetrain in allCars)
+                                        {
+                                            <option value="@carDrivetrain.DriveTrain">@carDrivetrain.DriveTrain</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Transmissions</label>
+                                    <select @onchange="@ReturnCarsByTransmission" class="form-control">
+                                        <option disabled>Select By Transmissions</option>
+                                        @foreach (var carTransmission in allCars)
+                                        {
+                                            <option value="@carTransmission.Transmission">@carTransmission.Transmission</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cylinders</label>
+                                    <select @onchange="@ReturnCarsByCylinder" class="form-control">
+                                        <option disabled>Select By Cylinders</option>
+                                        @foreach (var carCylinder in allCars)
+                                        {
+                                            <option value="@carCylinder.Cylinders">@carCylinder.Cylinders</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Fuels</label>
+                                    <select @onchange="@ReturnCarsByFuel" class="form-control">
+                                        <option disabled>Select By Fuels</option>
+                                        @foreach (var carFuel in allCars)
+                                        {
+                                            <option value="@carFuel.Fuel">@carFuel.Fuel</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Door Counts</label>
+                                    <select @onchange="@ReturnCarsByDoorCount" class="form-control">
+                                        <option disabled>Select By Door Counts</option>
+                                        @foreach (var carDoorCount in allCars)
+                                        {
+                                            <option value="@carDoorCount.DoorCount">@carDoorCount.DoorCount</option>
+                                        }
+                                    </select>
+                                </div>
+                                <a @onclick="@(e => FilterClick(e, carMake, carPrice, carMileage, carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission, carCylinder, carFuel, carDoorCount, carSearchString))" href="@($"cars?carMake={carMake}&carPrice={carPrice}&carMileage={carMileage}&carYear={carYear}&carBodyStyle={carBodyStyle}&carExColor={carExColor}&carIntColor={carIntColor}&carDrivetrain={carDrivetrain}&carTransmission={carTransmission}&carCylinder={carCylinder}&carFuel={carFuel}&carDoorCount={carDoorCount}&carSearchString={carSearchString}")" class="btn">Search</a>
+                                <a @onclick="@(e => BackToFullList(e))" href="@($"cars")" class="btn">Back To Full List</a>
+                            </div>
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="tab-pane fade" id="nav-text" role="tabpanel" aria-labelledby="nav-text-tab">
+                    <div class="form-group">
+                        <input placeholder="Search By Makes" @bind-value="SearchTerm" @bind-value:event="oninput" />
+                        <a @onclick="@(e => SearchTextTab(e, SearchTerm, carPrice, carMileage, carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission, carCylinder, carFuel, carDoorCount, carSearchString))" href="@($"cars?carMake={SearchTerm}&carPrice={carPrice}&carMileage={carMileage}&carYear={carYear}&carBodyStyle={carBodyStyle}&carExColor={carExColor}&carIntColor={carIntColor}&carDrivetrain={carDrivetrain}&carTransmission={carTransmission}&carCylinder={carCylinder}&carFuel={carFuel}&carDoorCount={carDoorCount}&carSearchString={carSearchString}")" class="btn">Search</a>
+                    </div>
+                    <br />
+                    <span class="text-muted ml-5">
+                        Showing @FilteredCars.Count out of @FilteredCars.Count
+                    </span>
+                    <br />
+                    <h4 class="mt-4">List Of Car Makes</h4>
+                    <ul>
+                        @foreach (var carMake in FilteredCars)
+                        {
+                            <li>@carMake.Make</li>
+                        }
+                    </ul>
+                    <a id="back-to" @onclick="@(e => BackToFullList(e))" href="@($"cars")" class="btn">Back To Full List</a>
+                </div>
+            </div>
+        </div>
+        <div class="col" id="listing-col">
+            @foreach (var car in cars)
+            {
+                <div class="card">
+                    <div class="row no-gutters">
+                        <div class="col-md-5">
+                            <img src="data:image/jpeg;base64,@Convert.ToBase64String(car.Image)" class="card-img">
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <div id="isNew">
+                                    @if (car.New == true)
+                                    {
+                                        <p class="card-text">
+                                            NEW
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">
+                                            USED
+                                        </p>
+                                    }
+                                </div>
+                                <h5 class="card-title">@car.Year @car.Make</h5>
+                                <p class="card-text" id="mileage">@car.Mileage mi.</p>
+                                <h1 id="price" class="card-title">$@car.Price</h1>
+                                <div id="delivery">
+                                    @if (car.VirtualAppointments == true)
+                                    {
+                                        <span class="card-text">Virtual Appointments</span>
+                                    }
+                                    @if (car.HomeDelivery == true)
+                                    {
+                                        <span class="card-text">Home Delivery</span>
+                                    }                                   
+                                </div>
+                                <div id="row-within-card" class="row">
+                                    <div class="col">
+                                        <p class="card-text"><strong>Ext. Color:</strong> @car.ExteriorColor</p>
+                                        <p class="card-text"><strong>Int. Color:</strong> @car.InteriorColor</p>
+                                    </div>
+                                    <div class="col">
+                                        <p class="card-text"><strong>Transmission:</strong> @car.Transmission</p>
+                                        <p class="card-text"><strong>Drivetrain:</strong> @car.DriveTrain</p>
+                                    </div>
+                                </div>
+                                <div id="more-details">
+                                    <p class="card-text">@car.ApplicationUser.FirstName Of @car.ApplicationUser.City, @car.ApplicationUser.State</p>
+                                </div>
+                                <div id="details-btn">
+                                    <a href="@($"car/details/{car.CarId}")" class="btn btn-block">More Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
-    @foreach (var car in cars)
-    {
-        <h1>ID: @car.CarId</h1>
-        <img style="width:5%; height:5%" class="card-img" src="data:image/jpeg;base64,@Convert.ToBase64String(car.Image)" />
-        <h1>@car.Make</h1>
-        @if (SignInManager.IsSignedIn(httpContextAccessor.HttpContext.User) && Int32.Parse(UserManager.GetUserId(httpContextAccessor.HttpContext.User)) == car.ApplicationUserId)
-        {
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenModal("carModal", car.CarId))'>Edit</button>
-            <button type="button" class="btn btn-primary" @onclick='@(e => OpenDeleteModal("deleteConfirmation", car.CarId))'>Delete</button>
-            <a href="@($"car/details/{car.CarId}")" class="btn btn-primary">Details</a>
-        }
-        else
-        {
-            <a href="@($"car/details/{car.CarId}")" class="btn btn-primary">Details</a>
-        }
-
-    }
-
 }
+
+
+
 
 <div>
     <div class="modal fade" id="carModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -176,7 +406,7 @@ else
                         <div class="row">
                             <div class="col">
                                 <MatH5>Car's Image</MatH5>
-                                <InputFile OnChange="HandleFileSelected" />
+                                <InputFile multiple OnChange="HandleFileSelected" />
                             </div>
                         </div>
                     </form>
@@ -210,10 +440,13 @@ else
 
 
 
+
+
 @code
 {
+    public List<Car> cars { get; set; } = new List<Car>();
+    public List<Car> allCars { get; set; } = new List<Car>();
     public CarLot.Models.Car Model = new CarLot.Models.Car();
-    List<Car> cars;
     public byte[] ImgUploaded { get; set; }
     protected bool[] boolItems =
            {
@@ -223,37 +456,185 @@ else
     public int carToDelete;
 
 
+
+
+
+    string carMake = "";
+    string carPrice = "";
+    string carMileage = "";
+    int? carYear = 0;
+    string carBodyStyle = "";
+    string carExColor = "";
+    string carIntColor = "";
+    string carDrivetrain = "";
+    string carTransmission = "";
+    string carCylinder = "";
+    string carFuel = "";
+    string carDoorCount = "";
+    string carSearchString = "";
+
+    string SearchTerm { get; set; } = "";
+
+    public List<Car> SearchCarsItems { get; set; } = new List<Car>();
+    public List<Car> FilteredCars => SearchCarsItems.Where(i => i.Make.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+
+
     protected override async Task OnInitializedAsync()
     {
-        await load();
+        cars = await carService.GetCarsAsync();
+        allCars = await carService.GetCarsAsync();
+        SearchCarsItems = await carService.GetCarsAsync();
+
+        GetQueryStringValues();
+        NavManager.LocationChanged += HandleLocationChanged;
+
+        if (carMake != null || carPrice != null || carMileage != null
+        || carYear != null || carBodyStyle != null || carExColor != null
+        || carIntColor != null || carDrivetrain != null || carTransmission != null
+        || carCylinder != null || carFuel != null || carDoorCount != null || carSearchString != null)
+        {
+            cars = await carService.GetFilteredCars(carMake, carPrice, carMileage, carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission, carCylinder, carFuel, carDoorCount, carSearchString);
+            allCars = await carService.GetFilteredCars(carMake, carPrice, carMileage, carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission, carCylinder, carFuel, carDoorCount, carSearchString);
+
+        }
+
     }
 
-    protected async Task load()
+    public async Task SearchTextTab(MouseEventArgs e, string carMake, string carPrice,
+        string carMileage, int? carYear, string carBodyStyle, string carExColor,
+        string carIntColor, string carDrivetrain, string carTransmission, string carCylinder,
+        string carFuel, string carDoorCount, string carSearchString)
     {
+
+
+        cars = await carService.GetFilteredCars(carMake, carPrice, carMileage,
+            carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission,
+            carCylinder, carFuel, carDoorCount, carSearchString);
+    }
+
+    void HandleLocationChanged(object sender, LocationChangedEventArgs e)
+    {
+        GetQueryStringValues();
+        StateHasChanged();
+    }
+
+    void GetQueryStringValues()
+    {
+        NavManager.TryGetQueryString<string>("carMake", out carMake);
+        NavManager.TryGetQueryString<string>("carPrice", out carPrice);
+        NavManager.TryGetQueryString<string>("carMileage", out carMileage);
+        NavManager.TryGetQueryString<int?>("carYear", out carYear);
+        NavManager.TryGetQueryString<string>("carBodyStyle", out carBodyStyle);
+        NavManager.TryGetQueryString<string>("carExColor", out carExColor);
+        NavManager.TryGetQueryString<string>("carIntColor", out carIntColor);
+        NavManager.TryGetQueryString<string>("carDrivetrain", out carDrivetrain);
+        NavManager.TryGetQueryString<string>("carTransmission", out carTransmission);
+        NavManager.TryGetQueryString<string>("carCylinder", out carCylinder);
+        NavManager.TryGetQueryString<string>("carFuel", out carFuel);
+        NavManager.TryGetQueryString<string>("carDoorCount", out carDoorCount);
+        NavManager.TryGetQueryString<string>("carSearchString", out carSearchString);
+    }
+
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= HandleLocationChanged;
+    }
+
+    void ReturnCarsByMake(ChangeEventArgs e)
+    {
+        carMake = e.Value.ToString();
+    }
+
+    void ReturnCarsByPrice(ChangeEventArgs e)
+    {
+        carPrice = e.Value.ToString();
+    }
+
+    void ReturnCarsByMileage(ChangeEventArgs e)
+    {
+        carMileage = e.Value.ToString();
+    }
+
+    void ReturnCarsByYear(ChangeEventArgs e)
+    {
+        carYear = int.Parse(e.Value.ToString());
+    }
+
+    void ReturnCarsByBodyStyle(ChangeEventArgs e)
+    {
+        carBodyStyle = e.Value.ToString();
+    }
+
+    void ReturnCarsByExColor(ChangeEventArgs e)
+    {
+        carExColor = e.Value.ToString();
+    }
+
+    void ReturnCarsByIntColor(ChangeEventArgs e)
+    {
+        carIntColor = e.Value.ToString();
+    }
+
+    void ReturnCarsByDrivetrain(ChangeEventArgs e)
+    {
+        carDrivetrain = e.Value.ToString();
+    }
+
+    void ReturnCarsByTransmission(ChangeEventArgs e)
+    {
+        carTransmission = e.Value.ToString();
+    }
+
+    void ReturnCarsByCylinder(ChangeEventArgs e)
+    {
+        carCylinder = e.Value.ToString();
+    }
+
+    void ReturnCarsByFuel(ChangeEventArgs e)
+    {
+        carFuel = e.Value.ToString();
+    }
+
+    void ReturnCarsByDoorCount(ChangeEventArgs e)
+    {
+        carDoorCount = e.Value.ToString();
+    }
+
+
+
+    public async Task FilterClick(MouseEventArgs e, string carMake,
+                                         string carPrice, string carMileage, int? carYear,
+                                         string carBodyStyle, string carExColor, string carIntColor,
+                                         string carDrivetrain, string carTransmission, string carCylinder,
+                                         string carFuel, string carDoorCount, string carSearchString)
+    {
+
+        cars = await carService.GetFilteredCars(carMake, carPrice, carMileage, carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission, carCylinder, carFuel, carDoorCount, carSearchString);
+        allCars = await carService.GetFilteredCars(carMake, carPrice, carMileage, carYear, carBodyStyle, carExColor, carIntColor, carDrivetrain, carTransmission, carCylinder, carFuel, carDoorCount, carSearchString);
+    }
+
+    public async Task BackToFullList(MouseEventArgs e)
+    {
+
+        SearchTerm = "";
+        allCars = await carService.GetCarsAsync();
         cars = await carService.GetCarsAsync();
     }
 
-    public async Task OpenModal(string modalId, int itemCarId)
+
+    async Task HandleFileSelected(IFileListEntry[] files)
     {
-        if (itemCarId == 0)
+        var file = files.FirstOrDefault();
+
+        if (file != null)
         {
-            Model = new CarLot.Models.Car();
-
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+            ImgUploaded = ms.ToArray();
         }
-        else
-        {
-            Model = cars.Where(_ => _.CarId == itemCarId).FirstOrDefault();
-        }
-
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
     }
-
-    public async Task CloseModal(string modalId)
-    {
-        await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
-    }
-
-
 
     public async Task SaveCar(string modalId)
     {
@@ -280,26 +661,6 @@ else
 
     }
 
-    async Task HandleFileSelected(IFileListEntry[] files)
-    {
-        var file = files.FirstOrDefault();
-
-        if (file != null)
-        {
-            var ms = new MemoryStream();
-            await file.Data.CopyToAsync(ms);
-            ImgUploaded = ms.ToArray();
-        }
-
-
-    }
-
-    public async Task OpenDeleteModal(string modalId, int carItemId)
-    {
-        carToDelete = carItemId;
-        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
-    }
-
     public async Task ConfirmDelete(string modalId)
     {
         var carTodelete = cars.Where(_ => _.CarId == carToDelete).FirstOrDefault();
@@ -307,6 +668,23 @@ else
         cars.Remove(carTodelete);
         await _jsRuntime.InvokeAsync<object>("global.closeModal", modalId);
     }
+
+    public async Task OpenModal(string modalId, int itemCarId)
+    {
+        if (itemCarId == 0)
+        {
+            Model = new CarLot.Models.Car();
+
+        }
+        else
+        {
+            Model = cars.Where(_ => _.CarId == itemCarId).FirstOrDefault();
+        }
+
+        await _jsRuntime.InvokeVoidAsync("global.openModal", modalId);
+    }
+
+
 
 
 }
