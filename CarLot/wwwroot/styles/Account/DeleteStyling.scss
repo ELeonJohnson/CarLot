@@ -1,0 +1,57 @@
+﻿@import '../Global.scss';
+
+div.container {
+    main.pb-3 {
+        div {
+            div.row {
+                div.col-md-9 {
+                    margin-top: 5%;
+
+                    h1 {
+                        color: $black;
+                        font-family: $heading-font;
+                    }
+
+                    div.row {
+                        div.col-md-6 {
+                            p {
+                                color: $light-black;
+                                font-family: $text-font;
+                            }
+
+                            form#download-data.form-group {
+                                button.btn {
+                                    font-family: $text-font;
+                                    border-color: $gray;
+                                    color: $blue !important;
+                                    background-color: $gray;
+
+                                    &:hover {
+                                        border-color: $lightest-gray;
+                                        background-color: $lightest-gray;
+                                        color: $blue;
+                                    }
+                                }
+                            }
+
+                            p {
+                                a#delete.btn {
+                                    font-family: $text-font;
+                                    border-color: $gray;
+                                    color: $blue !important;
+                                    background-color: $gray;
+
+                                    &:hover {
+                                        border-color: $lightest-gray;
+                                        background-color: $lightest-gray;
+                                        color: $blue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

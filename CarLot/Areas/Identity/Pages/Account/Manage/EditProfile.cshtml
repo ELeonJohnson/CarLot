@@ -1,0 +1,74 @@
+﻿@page "{id:int}"
+@model EditIndexModel
+
+@{
+    ViewData["Title"] = "Edit Profile";
+    ViewData["ActivePage"] = ManageNavPages.EditProfile;
+    <link href="~/css/styles/Account/EditProfileStyling.css" rel="stylesheet" />
+}
+
+<h1>@ViewData["Title"]</h1>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-9">
+        <form id="profile-form" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        <input asp-for="Input.Email" placeholder="Email" class="form-control" />
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.UserName"></label>
+                        <input asp-for="Input.UserName" placeholder="Username" class="form-control">
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.FirstName"></label>
+                        <input asp-for="Input.FirstName" placeholder="First Name" class="form-control">
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Number"></label>
+                        <input asp-for="Input.Number" placeholder="Phone Number" class="form-control">
+                        <span asp-validation-for="Input.Number" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Input.LastName"></label>
+                        <input asp-for="Input.LastName" placeholder="Last Name" class="form-control">
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.City"></label>
+                        <input asp-for="Input.City" placeholder="City" class="form-control">
+                        <span asp-validation-for="Input.City" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Input.State"></label>
+                        <input asp-for="Input.State" placeholder="State" class="form-control">
+                        <span asp-validation-for="Input.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check">
+                        <p>Current User's Image</p>
+                        <img src="data:image/jpeg;base64,@Convert.ToBase64String(Model.Input.Image)" />
+                        <input asp-for="Input.Image" type="file" name="Image" id="imageInput">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <button id="update-profile-button" type="submit" value="Upload" class="btn">Save</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

@@ -1,0 +1,106 @@
+﻿body div.container main.pb-3 div div.row div.col-md-9 {
+  margin-top: 5%; }
+  body div.container main.pb-3 div div.row div.col-md-9 div#user-section.row {
+    margin-left: 5%; }
+    body div.container main.pb-3 div div.row div.col-md-9 div#user-section.row div#dealer-info {
+      display: flex; }
+      body div.container main.pb-3 div div.row div.col-md-9 div#user-section.row div#dealer-info img#users-img {
+        width: 150px !important;
+        height: 120px !important;
+        margin-right: 5%; }
+      body div.container main.pb-3 div div.row div.col-md-9 div#user-section.row div#dealer-info h1#first-name-h1 {
+        margin-right: 5%;
+        margin-top: 10%; }
+      body div.container main.pb-3 div div.row div.col-md-9 div#user-section.row div#dealer-info h1 {
+        color: #000;
+        font-family: "Proza Libre", sans-serif;
+        margin-top: 10%; }
+  body div.container main.pb-3 div div.row div.col-md-9 div.row div#user-section-two {
+    margin-left: 3rem !important;
+    margin-top: 5% !important; }
+    body div.container main.pb-3 div div.row div.col-md-9 div.row div#user-section-two div#dealer-info-second {
+      font-size: 16px;
+      font-family: "Open Sans", sans-serif; }
+      body div.container main.pb-3 div div.row div.col-md-9 div.row div#user-section-two div#dealer-info-second div {
+        margin-bottom: 5%; }
+  body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row {
+    margin-top: 10%;
+    display: flex;
+    justify-content: space-evenly;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    margin-left: 3rem !important; }
+    body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row ul#pills-tab.nav.nav-pills.mb-3 {
+      margin-left: 3rem;
+      margin-top: 2.5%; }
+      body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row ul#pills-tab.nav.nav-pills.mb-3 li.nav-item {
+        color: #000;
+        font-family: "Proza Libre", sans-serif; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row ul#pills-tab.nav.nav-pills.mb-3 li.nav-item a#pills-inventory-tab.nav-link {
+          color: #000; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row ul#pills-tab.nav.nav-pills.mb-3 li.nav-item a#pills-about-tab.nav-link {
+          color: #000; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row ul#pills-tab.nav.nav-pills.mb-3 li.nav-item a#pills-inventory-tab.nav-link.active {
+          background-color: #A400B4;
+          border-color: #A400B4;
+          color: #fff; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-row.row ul#pills-tab.nav.nav-pills.mb-3 li.nav-item a#pills-about-tab.nav-link.active {
+          background-color: #A400B4;
+          border-color: #A400B4;
+          color: #fff; }
+  body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row {
+    margin-left: 3rem;
+    margin-top: 5%;
+    margin-bottom: 5%; }
+    body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content {
+      background-color: #e8e8e8;
+      width: 100%;
+      padding: 5%; }
+      body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active {
+        width: 100%; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active h2 {
+          color: #000;
+          font-family: "Proza Libre", sans-serif;
+          text-align: center; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active h4 {
+          margin-bottom: 5%;
+          color: #000;
+          font-family: "Proza Libre", sans-serif;
+          border-bottom: 2.5px solid #000;
+          width: 15% !important; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active h4#moto-heading {
+          width: 25% !important; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 {
+          margin-bottom: 5% !important; }
+          body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body span.text-muted {
+            font-family: "Open Sans", sans-serif;
+            font-size: .8em; }
+          body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body h5.card-title {
+            font-family: "Proza Libre", sans-serif;
+            color: #000;
+            font-weight: bold; }
+          body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body span.card-text {
+            font-family: "Open Sans", sans-serif;
+            color: #000;
+            font-weight: bold; }
+          body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body p.card-text {
+            margin-top: 5%; }
+            body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body p.card-text svg {
+              font-size: 5px; }
+          body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body div#details-btn {
+            margin-top: 5%; }
+            body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-inventory.tab-pane.fade.show.active div.row div.col-md-6 div.card div.card-body div#details-btn a.btn.btn-block {
+              font-family: "Open Sans", sans-serif;
+              color: #fff;
+              background-color: #A400B4;
+              border-color: #A400B4; }
+      body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-about.tab-pane.fade.show.active {
+        width: 100%; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-about.tab-pane.fade.show.active h2 {
+          color: #000;
+          font-family: "Proza Libre", sans-serif;
+          text-align: center; }
+        body div.container main.pb-3 div div.row div.col-md-9 div#nav-info-row.row div#pills-tabContent.tab-content div#pills-about.tab-pane.fade.show.active p {
+          color: #000;
+          font-family: "Open Sans", sans-serif;
+          line-height: 2em; }

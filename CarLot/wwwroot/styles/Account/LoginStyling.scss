@@ -1,0 +1,65 @@
+﻿@import '../Global.scss';
+
+
+div.container {
+    main.pb-3 {
+        h1 {
+            color: $black;
+            text-transform: capitalize;
+            font-family: $heading-font;
+            margin-top: 5%;
+            margin-bottom: 2.5%;
+        }
+
+        div.row {
+            div.col-md-4 {
+                section {
+                    form#account {
+                        h4 {
+                            color: $black;
+                            text-transform: capitalize;
+                            font-family: $heading-font;
+                            margin-bottom: 5%;
+                        }
+
+                        div.form-group {
+                            button.btn.btn-primary {
+                                background: $white;
+                                color: $light-blue;
+                                border-color: $link-blue;
+                                font-family: $text-font;
+
+                                &:hover {
+                                    background-color: $link-blue;
+                                    color: $white;
+                                    border-color: $link-blue;
+                                }
+                            }
+
+                            p {
+                                a {
+                                    color: $black;
+                                    font-family: $text-font;
+                                    text-transform: capitalize;
+
+                                    &:hover {
+                                        color: $link-blue;
+                                        text-decoration: none;
+                                    }
+                                }
+                            }
+
+                            div.checkbox {
+                                label {
+                                    text-transform: capitalize;
+                                    font-family: $text-font;
+                                    color: $black;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

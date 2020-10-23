@@ -54,5 +54,33 @@
   {
     "outputFile": "wwwroot/styles/Trucks/TruckIndexStyling.css",
     "inputFile": "wwwroot/styles/Trucks/TruckIndexStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/LoginStyling.css",
+    "inputFile": "wwwroot/styles/Account/LoginStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/DeleteStyling.css",
+    "inputFile": "wwwroot/styles/Account/DeleteStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/_ManageNavStyling.css",
+    "inputFile": "wwwroot/styles/Account/_ManageNavStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/ChangePasswordStyling.css",
+    "inputFile": "wwwroot/styles/Account/ChangePasswordStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/EditProfileStyling.css",
+    "inputFile": "wwwroot/styles/Account/EditProfileStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/ResetPasswordStyling.css",
+    "inputFile": "wwwroot/styles/Account/ResetPasswordStyling.scss"
+  },
+  {
+    "outputFile": "wwwroot/styles/Account/IndexStyling.css",
+    "inputFile": "wwwroot/styles/Account/IndexStyling.scss"
   }
 ]

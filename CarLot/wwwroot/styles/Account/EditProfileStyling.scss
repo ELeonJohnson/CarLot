@@ -1,0 +1,66 @@
+﻿@import '../Global.scss';
+
+
+div.container {
+    main.pb-3 {
+        div {
+            div.row {
+                div.col-md-9 {
+                    margin-top: 5%;
+
+                    h1 {
+                        font-family: $heading-font;
+                        color: $black;
+                    }
+
+                    form#profile-form {
+                        div.row {
+                            div.col-md-6 {
+                                div.form-group {
+                                    label {
+                                        color: $black;
+                                        font-family: $text-font;
+                                    }
+                                }
+
+                                div.form-group.form-check {
+
+                                    p {
+                                        color: $black;
+                                        font-family: $text-font;
+                                    }
+
+                                    img {
+                                        width: 50%;
+                                        border-radius: 6px;
+                                    }
+
+                                    input#imageInput {
+                                        margin-top: 5%;
+                                    }
+                                }
+                            }
+                        }
+
+                        div.row {
+                            div.col-md-12 {
+                                button#update-profile-button.btn {
+                                    font-family: $text-font;
+                                    border-color: $gray;
+                                    color: $blue !important;
+                                    background-color: $gray;
+
+                                    &:hover {
+                                        border-color: $gray;
+                                        background-color: $gray;
+                                        color: $blue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

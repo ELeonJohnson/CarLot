@@ -1,0 +1,197 @@
+﻿@import '../Global.scss';
+
+body {
+    div.container {
+        main.pb-3 {
+            div {
+                div.row {
+                    div.col-md-9 {
+                        margin-top: 5%;
+
+
+                        div#user-section.row {
+                            margin-left: 5%;
+
+                            div#dealer-info {
+                                display: flex;
+
+
+                                img#users-img {
+                                    width: 150px !important;
+                                    height: 120px !important;
+                                    margin-right: 5%;
+                                }
+
+                                h1#first-name-h1 {
+                                    margin-right: 5%;
+                                    margin-top: 10%;
+                                }
+
+                                h1 {
+                                    color: $black;
+                                    font-family: $heading-font;
+                                    margin-top: 10%;
+                                }
+                            }
+                        }
+
+                        div.row {
+                            div#user-section-two {
+                                margin-left: 3rem !important;
+                                margin-top: 5% !important;
+
+                                div#dealer-info-second {
+                                    font-size: 16px;
+                                    font-family: $text-font;
+
+
+                                    div {
+                                        margin-bottom: 5%;
+                                    }
+                                }
+                            }
+                        }
+
+                        div#nav-row.row {
+                            margin-top: 10%;
+                            display: flex;
+                            justify-content: space-evenly;
+                            border-top: 1px solid $black;
+                            border-bottom: 1px solid $black;
+                            margin-left: 3rem !important;
+
+
+                            ul#pills-tab.nav.nav-pills.mb-3 {
+                                margin-left: 3rem;
+                                margin-top: 2.5%;
+
+                                li.nav-item {
+                                    color: $black;
+                                    font-family: $heading-font;
+
+                                    a#pills-inventory-tab.nav-link {
+                                        color: $black;
+                                    }
+
+                                    a#pills-about-tab.nav-link {
+                                        color: $black;
+                                    }
+
+                                    a#pills-inventory-tab.nav-link.active {
+                                        background-color: $purple-btn;
+                                        border-color: $purple-btn;
+                                        color: $white;
+                                    }
+
+                                    a#pills-about-tab.nav-link.active {
+                                        background-color: $purple-btn;
+                                        border-color: $purple-btn;
+                                        color: $white;
+                                    }
+                                }
+                            }
+                        }
+
+                        div#nav-info-row.row {
+                            margin-left: 3rem;
+                            margin-top: 5%;
+                            margin-bottom: 5%;
+
+                            div#pills-tabContent.tab-content {
+                                background-color: $lightest-gray;
+                                width: 100%;
+                                padding: 5%;
+
+                                div#pills-inventory.tab-pane.fade.show.active {
+                                    width: 100%;
+
+                                    h2 {
+                                        color: $black;
+                                        font-family: $heading-font;
+                                        text-align: center;
+                                    }
+
+                                    h4 {
+                                        margin-bottom: 5%;
+                                        color: $black;
+                                        font-family: $heading-font;
+                                        border-bottom: 2.5px solid #000;
+                                        width: 15% !important;
+                                    }
+
+                                    h4#moto-heading {
+                                        width: 25% !important;
+                                    }
+
+                                    div.row {
+
+                                        div.col-md-6 {
+                                            margin-bottom: 5% !important;
+
+                                            div.card {
+                                                div.card-body {
+                                                    span.text-muted {
+                                                        font-family: $text-font;
+                                                        font-size: .8em;
+                                                    }
+
+                                                    h5.card-title {
+                                                        font-family: $heading-font;
+                                                        color: $black;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    span.card-text {
+                                                        font-family: $text-font;
+                                                        color: $black;
+                                                        font-weight: bold;
+                                                    }
+
+                                                    p.card-text {
+                                                        margin-top: 5%;
+
+                                                        svg {
+                                                            font-size: 5px;
+                                                        }
+                                                    }
+
+                                                    div#details-btn {
+                                                        margin-top: 5%;
+
+                                                        a.btn.btn-block {
+                                                            font-family: $text-font;
+                                                            color: $white;
+                                                            background-color: $purple-btn;
+                                                            border-color: $purple-btn;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                div#pills-about.tab-pane.fade.show.active {
+                                    width: 100%;
+
+                                    h2 {
+                                        color: $black;
+                                        font-family: $heading-font;
+                                        text-align: center;
+                                    }
+
+                                    p {
+                                        color: $black;
+                                        font-family: $text-font;
+                                        line-height: 2em;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
